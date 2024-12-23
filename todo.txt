@@ -1,0 +1,12 @@
+
+Tabs:
+-transfer ($ Transfer), history, account (name, email, phone number)
+
+Transfer:
+-$ amount, conversion to (reals?)
+-select: email, phone, cpf (inputs)
+-input: value
+-confirmation alert popup
+
+History:
+-dateTime, to, amount
