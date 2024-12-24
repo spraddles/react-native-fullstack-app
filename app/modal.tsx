@@ -14,7 +14,7 @@ export default function ModalScreen() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'Back',
+      title: 'About',
     });
   }, [navigation]);
 
