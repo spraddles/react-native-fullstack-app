@@ -1,10 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet } from 'react-native';
+import { useLayoutEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 
 export default function ModalScreen() {
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Back',
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>

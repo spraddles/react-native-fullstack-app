@@ -15,6 +15,23 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
+function ModalTriggerButton(props: { colorScheme: string }) {
+    return (
+        <Link href="/modal" asChild>
+            <Pressable>
+                {({ pressed }) => (
+                    <FontAwesome
+                        name="info-circle"
+                        size={25}
+                        color={Colors[props.colorScheme ?? 'light'].text}
+                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                )}
+            </Pressable>
+        </Link>
+    );
+}
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -26,26 +43,14 @@ export default function TabLayout() {
         tabBarLabelStyle: { fontSize: 12, marginTop: -5 },
         tabBarIconStyle: { marginBottom: 10 },
         headerShown: useClientOnlyValue(false, true),
+        headerTitleStyle: { fontSize: 25 },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Transfer',
           tabBarIcon: ({ color }) => <TabBarIcon name="dollar" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          headerRight: () => <ModalTriggerButton colorScheme={colorScheme} />,
         }}
       />
       <Tabs.Screen
@@ -53,6 +58,7 @@ export default function TabLayout() {
         options={{
           title: 'History',
           tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
+          headerRight: () => <ModalTriggerButton colorScheme={colorScheme} />,
         }}
       />
       <Tabs.Screen
@@ -60,6 +66,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="user-circle" color={color} />,
+          headerRight: () => <ModalTriggerButton colorScheme={colorScheme} />,
         }}
       />
     </Tabs>
