@@ -2,9 +2,11 @@
 Tabs:
 -transfer ($ Transfer), history, account (name, email, phone number)
 
--modal persistent
--splash screen
--info modal: add page details
+Profile:
+-name
+-email
+-number
+-CPF
 
 Transfer:
 -$ amount, conversion to (reals?)
