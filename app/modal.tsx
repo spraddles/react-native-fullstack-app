@@ -29,7 +29,7 @@ export default function ModalScreen() {
         </ExternalLink>
       policies.</Text>
       <Text style={styles.body}>Copyright © 2000–2024 GlobalPay Inc. All rights reserved.</Text>
-      <Text style={styles.body}>Version 1.02.367B </Text>
+      <Text style={styles.versionText}>Version 1.02.367B </Text>
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
@@ -49,8 +49,12 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   image: {
-    width: '300px',
-    height: '10%',
+    width: '300',
+    height: '70',
     marginBottom: 20
+  },
+  versionText: {
+    fontSize: 15,
+    color: '#777',
   }
 });
