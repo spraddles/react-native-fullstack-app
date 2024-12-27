@@ -3,21 +3,18 @@ import { StyleSheet, Image, ScrollView } from 'react-native';
 import { Input } from '@/components/ui/input';
 import { Text, View } from '@/components/Themed';
 
-const fieldValues = {
-    name: 'John',
-    surname: 'Smith',
-    email: 'john.smith@gmail.com',
-    phone: '+55 21 90909-9090',
-    cpf: '123.456.789-00'
-};
+import { useBaseStore } from '@/store/base';
 
 export default function ProfileScreen() {
+
+    const user = useBaseStore((state) => state.user)
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
         <Image style={styles.image} source={require('../../assets/images/profile.png')} />
         <Input
             label={'Name'}
-            value={fieldValues.name}
+            value={user.name}
             placeholder={'Enter your name'}
             keyboardType={'default'}
             returnKeyType="done"
@@ -30,7 +27,7 @@ export default function ProfileScreen() {
         />
         <Input
             label={'Surname'}
-            value={fieldValues.surname}
+            value={user.surname}
             placeholder={'Enter your surname'}
             keyboardType={'default'}
             returnKeyType="done"
@@ -43,7 +40,7 @@ export default function ProfileScreen() {
         />
         <Input
             label={'Email'}
-            value={fieldValues.email}
+            value={user.email}
             placeholder={'Enter your email'}
             keyboardType={'email-address'}
             returnKeyType="done"
@@ -56,7 +53,7 @@ export default function ProfileScreen() {
         />
         <Input
             label={'Phone'}
-            value={fieldValues.phone}
+            value={user.phone}
             placeholder={'Enter your phone'}
             keyboardType={'phone-pad'}
             returnKeyType="done"
@@ -69,7 +66,7 @@ export default function ProfileScreen() {
         />
         <Input
             label={'CPF'}
-            value={fieldValues.cpf}
+            value={user.cpf}
             placeholder={'Enter your CPF'}
             keyboardType={'phone-pad'}
             returnKeyType="done"
