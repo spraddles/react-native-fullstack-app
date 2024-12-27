@@ -1,4 +1,3 @@
-// base.ts
 import { create } from 'zustand'
 
 type State = {
@@ -12,11 +11,17 @@ type State = {
 }
 
 export const useBaseStore = create<State>()((set) => ({
+
   user: {
-    name: 'John',
-    surname: 'Smith',
-    email: 'john.smith@gmail.com',
-    phone: '+55 21 90909-9090',
-    cpf: '123.456.789-00'
-  }
+    name: '',
+    surname: '',
+    email: '',
+    phone: '',
+    cpf: ''
+  },
+
+  setUser: (field: keyof State['user'], value: string) => 
+    set((state) => ({
+      user: { ...state.user, [field]: value }
+    }))
 }))
