@@ -32,6 +32,9 @@ export default function ProfileScreen() {
             label={'Name'}
             value={inputName}
             placeholder={'Enter your name'}
+            autoCorrect={false}
+            autoComplete="off"
+            autoCapitalize="words"
             keyboardType={'default'}
             returnKeyType="done"
             onChangeText={setInputName}
@@ -45,6 +48,9 @@ export default function ProfileScreen() {
             label={'Surname'}
             value={inputSurname}
             placeholder={'Enter your surname'}
+            autoCorrect={false}
+            autoComplete="off"
+            autoCapitalize="words"
             keyboardType={'default'}
             returnKeyType="done"
             onChangeText={setInputSurname}
@@ -58,6 +64,9 @@ export default function ProfileScreen() {
             label={'Email'}
             value={inputEmail}
             placeholder={'Enter your email'}
+            autoCorrect={false}
+            autoComplete="off"
+            autoCapitalize="none"
             keyboardType={'email-address'}
             returnKeyType="done"
             onChangeText={setInputEmail}
@@ -71,6 +80,8 @@ export default function ProfileScreen() {
             label={'Phone'}
             value={inputPhone}
             placeholder={'Enter your phone'}
+            autoCorrect={false}
+            autoComplete="off"
             keyboardType={'phone-pad'}
             returnKeyType="done"
             onChangeText={setInputPhone}
@@ -85,6 +96,8 @@ export default function ProfileScreen() {
             label={'CPF'}
             value={inputCPF}
             placeholder={'Enter your CPF'}
+            autoCorrect={false}
+            autoComplete="off"
             keyboardType={'phone-pad'}
             returnKeyType="done"
             onChangeText={setInputCPF}

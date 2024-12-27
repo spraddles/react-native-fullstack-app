@@ -28,7 +28,7 @@ type InputProps = TextInputProps & {
           ]}
           value={value}
           placeholder={!value ? placeholder : undefined}
-          placeholderTextColor="#666"
+          placeholderTextColor="#999"
           {...props}
         />
         {error && errorText && (
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
    color: '#333',
  },
  input: {
-   
    borderWidth: 1,
    borderColor: '#ddd',
    borderRadius: 8,
