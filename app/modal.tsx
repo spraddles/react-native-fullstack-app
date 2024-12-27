@@ -4,7 +4,6 @@ import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { ExternalLink } from '@/components/ExternalLink';
-import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 
 import Colors from '@/constants/Colors';

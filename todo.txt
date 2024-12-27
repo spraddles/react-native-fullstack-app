@@ -9,4 +9,8 @@ Transfer:
 -confirmation alert popup
 
 History:
--dateTime, to, amount
+-transaction: {
+    dateTime,
+    to,
+    value
+}
