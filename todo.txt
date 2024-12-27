@@ -2,21 +2,6 @@
 Tabs:
 -transfer ($ Transfer), history, account (name, email, phone number)
 
-Profile:
--image holder
--name
--surname
--email
--number
--CPF
--edit profile
-
--components:
-> input (text) > name, surname, email
-> input (email) > email
-> input (number) > phone, cpf
-> button (edit profile)
-
 Transfer:
 -$ amount, conversion to (reals?)
 -select: email, phone, cpf (inputs)

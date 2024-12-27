@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
         padding: 35,
     },
     image: {
-        padding: 30,
-        width: '300',
-        height: '300',
+        padding: 20,
+        width: '200',
+        height: '200',
         textAlign: 'center',
     }
 });
