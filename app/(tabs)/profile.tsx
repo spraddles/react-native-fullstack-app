@@ -4,7 +4,7 @@ import { StyleSheet, Image, ScrollView } from 'react-native';
 import { Input } from '@/components/ui/input';
 import { Text, View } from '@/components/Themed';
 
-import { useBaseStore } from '@/store/base';
+import { useBaseStore, State } from '@/store/base';
 
 export default function ProfileScreen() {
 
@@ -16,6 +16,15 @@ export default function ProfileScreen() {
     const [inputPhone, setInputPhone] = useState('')
     const [inputCPF, setInputCPF] = useState('')
 
+    // @TODO: update this to handle DB requests
+    const handleSubmit = async (field: keyof State['user'], value: string) => {
+        useBaseStore.getState().setLoading(true)
+        console.log(`saving user ${field}...`)
+        useBaseStore.getState().setUser(field, value)
+        await new Promise(resolve => setTimeout(resolve, 2000)) // for demo purposes
+        useBaseStore.getState().setLoading(false)
+    }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
         <Image style={styles.image} source={require('../../assets/images/profile.png')} />
@@ -26,10 +35,8 @@ export default function ProfileScreen() {
             keyboardType={'default'}
             returnKeyType="done"
             onChangeText={setInputName}
-            onSubmitEditing={() => {
-                // do something
-                console.log('saving...')
-                useBaseStore.getState().setUser('name', inputName)
+            onSubmitEditing={async () => {
+                await handleSubmit('name', inputName)
             }}
             error={false}
             errorText={'Name is required'}
@@ -41,10 +48,8 @@ export default function ProfileScreen() {
             keyboardType={'default'}
             returnKeyType="done"
             onChangeText={setInputSurname}
-            onSubmitEditing={() => {
-                // do something
-                console.log('saving...')
-                useBaseStore.getState().setUser('surname', inputSurname)
+            onSubmitEditing={async () => {
+                await handleSubmit('surname', inputSurname)
             }}
             error={false}
             errorText={'Surname is required'}
@@ -56,10 +61,8 @@ export default function ProfileScreen() {
             keyboardType={'email-address'}
             returnKeyType="done"
             onChangeText={setInputEmail}
-            onSubmitEditing={() => {
-                // do something
-                console.log('saving...')
-                useBaseStore.getState().setUser('email', inputEmail)
+            onSubmitEditing={async () => {
+                await handleSubmit('email', inputEmail)
             }}
             error={false}
             errorText={'Email is required'}
@@ -71,10 +74,9 @@ export default function ProfileScreen() {
             keyboardType={'phone-pad'}
             returnKeyType="done"
             onChangeText={setInputPhone}
-            onSubmitEditing={() => {
-                // do something
-                console.log('saving...')
-                useBaseStore.getState().setUser('phone', inputPhone)
+            // note: onEndEditing vs. onSubmitEditing for numpad
+            onEndEditing={async () => {
+                await handleSubmit('phone', inputPhone)
             }}
             error={false}
             errorText={'Phone is required'}
@@ -86,10 +88,9 @@ export default function ProfileScreen() {
             keyboardType={'phone-pad'}
             returnKeyType="done"
             onChangeText={setInputCPF}
-            onSubmitEditing={() => {
-                // do something
-                console.log('saving...')
-                useBaseStore.getState().setUser('cpf', inputCPF)
+            // note: onEndEditing vs. onSubmitEditing for numpad
+            onEndEditing={async () => {
+                await handleSubmit('cpf', inputCPF)
             }}
             error={false}
             errorText={'CPF is required'}

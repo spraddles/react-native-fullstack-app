@@ -9,6 +9,8 @@ import 'react-native-reanimated';
 import { Loader } from '@/components/ui/loader';
 import { useColorScheme } from '@/components/useColorScheme';
 
+import { useBaseStore } from '@/store/base';
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -52,7 +54,7 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <Loader 
-        active={false}
+        active={useBaseStore((state) => state.loading)}
     />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
