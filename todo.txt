@@ -1,7 +1,4 @@
 
-eslint
-scroll up bug - in profile page
-
 Tabs:
 -transfer ($ Transfer), history, account (name, email, phone number)
 
@@ -17,3 +14,6 @@ History:
     to,
     value
 }
+
+Bugs:
+-profile page scroll up bug when editing field
