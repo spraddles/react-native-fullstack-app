@@ -1,4 +1,6 @@
 
+rename transfer to pay
+
 Transfer:
 -input: value
 -next button
