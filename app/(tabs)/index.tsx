@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
+import { router } from 'expo-router'
 
 import { View } from '@/components/Themed'
 import { Tabs } from '@/components/ui/tabs'
@@ -17,6 +18,11 @@ export default function TabOneScreen() {
 	const [inputCPF, setInputCPF] = useState('')
 	const [inputPhone, setInputPhone] = useState('')
 	const [inputEmail, setInputEmail] = useState('')
+
+	const handleNext = () => {
+		console.log('Next')
+		router.push('/pages/confirm')
+	}
 
 	return (
 		<View style={styles.container}>
@@ -91,7 +97,7 @@ export default function TabOneScreen() {
 				</View>
 			</View>
 			<View style={styles.footer}>
-				<Button text={'Next'} onPress={() => console.log('Next')} />
+				<Button text={'Next'} onPress={() => handleNext()} />
 			</View>
 		</View>
 	)

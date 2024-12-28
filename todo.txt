@@ -10,6 +10,7 @@ History:
 -transaction: { dateTime, to, value }
 
 Wishlist:
+-better tab icons
 -field validation
 
 Bugs:

@@ -57,6 +57,14 @@ function RootLayoutNav() {
 			<Stack>
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 				<Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+				<Stack.Screen
+					name="pages/confirm"
+					options={{
+						headerShown: true,
+						headerTitle: 'Confirm',
+						headerBackTitle: 'Back'
+					}}
+				/>
 			</Stack>
 		</ThemeProvider>
 	)
