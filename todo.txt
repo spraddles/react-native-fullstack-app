@@ -1,4 +1,7 @@
 
+eslint
+scroll up bug - in profile page
+
 Tabs:
 -transfer ($ Transfer), history, account (name, email, phone number)
 

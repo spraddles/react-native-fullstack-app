@@ -1,0 +1,24 @@
+{
+    "extends": [
+        "@react-native-community",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "plugins": ["jest", "@typescript-eslint"],
+    "parser": "@typescript-eslint/parser",
+    "rules": {
+        "@typescript-eslint/func-call-spacing": "off",
+        "comma-dangle": "off",
+        "semi": "off",
+        "prettier/prettier": [
+            "warn",
+            {
+                "semi": false,
+                "singleQuote": true,
+                "useTabs": true,
+                "tabWidth": 4,
+                "trailingComma": "none",
+                "printWidth": 100
+            }
+        ]
+    }
+}
