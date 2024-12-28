@@ -94,7 +94,7 @@ export default function ProfileScreen() {
 				placeholder={'Enter your CPF'}
 				autoCorrect={false}
 				autoComplete="off"
-				keyboardType={'phone-pad'}
+				keyboardType={'number-pad'}
 				returnKeyType="done"
 				onChangeText={setInputCPF}
 				// note: onEndEditing vs. onSubmitEditing for numpad

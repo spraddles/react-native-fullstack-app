@@ -25,7 +25,7 @@ export function Input({
 				style={[styles.input, error && styles.errorInput]}
 				value={value}
 				placeholder={!value ? placeholder : undefined}
-				placeholderTextColor="#999"
+				placeholderTextColor="#aaa"
 				{...props}
 			/>
 			{error && errorText && <Text style={styles.errorText}>{errorText}</Text>}
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 		borderColor: '#ddd',
 		borderRadius: 8,
 		padding: 12,
-		fontSize: 16,
+		fontSize: 18,
 		backgroundColor: '#fff'
 	},
 	errorInput: {

@@ -1,19 +1,14 @@
 
-Tabs:
--transfer ($ Transfer), history, account (name, email, phone number)
-
 Transfer:
--$ amount, conversion to (reals?)
--select: email, phone, cpf (inputs)
 -input: value
+-next button
 -confirmation alert popup
 
 History:
--transaction: {
-    dateTime,
-    to,
-    value
-}
+-transaction: { dateTime, to, value }
+
+Wishlist:
+-field validation
 
 Bugs:
--profile page scroll up bug when editing field
+-profile page scroll up bug when editing field (same with Transfer page)
