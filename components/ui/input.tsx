@@ -7,6 +7,7 @@ type InputProps = TextInputProps & {
 	error?: boolean
 	errorText?: string
 	containerStyle?: object
+	disabled?: boolean
 }
 
 export function Input({
@@ -16,16 +17,18 @@ export function Input({
 	errorText,
 	placeholder,
 	containerStyle,
+	disabled = false,
 	...props
 }: InputProps) {
 	return (
 		<View style={[styles.container, containerStyle]}>
 			{label && <Text style={styles.label}>{label}</Text>}
 			<TextInput
-				style={[styles.input, error && styles.errorInput]}
+				style={[styles.input, error && styles.errorInput, disabled && styles.disabledInput]}
 				value={value}
 				placeholder={!value ? placeholder : undefined}
 				placeholderTextColor="#aaa"
+				editable={!disabled}
 				{...props}
 			/>
 			{error && errorText && <Text style={styles.errorText}>{errorText}</Text>}
@@ -58,5 +61,9 @@ const styles = StyleSheet.create({
 		color: '#ff3333',
 		fontSize: 14,
 		marginTop: 4
+	},
+	disabledInput: {
+		backgroundColor: '#fff',
+		color: '#999'
 	}
 })

@@ -12,6 +12,8 @@ import { formatCurrency } from '@/composables/formatCurrency'
 import { formatCPF } from '@/composables/formatCPF'
 import { formatPhone } from '@/composables/formatPhone'
 
+import { useBaseStore, State } from '@/store/base'
+
 export default function TabOneScreen() {
 	const [currentTab, setCurrentTab] = useState('cpf')
 	const [currencyInput, setCurrencyInput] = useState('')
@@ -19,8 +21,11 @@ export default function TabOneScreen() {
 	const [inputPhone, setInputPhone] = useState('')
 	const [inputEmail, setInputEmail] = useState('')
 
-	const handleNext = () => {
+	const handleNext = async () => {
+        useBaseStore.getState().setLoading(true)
 		console.log('Next')
+        await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
+        useBaseStore.getState().setLoading(false)
 		router.push('/pages/confirm')
 	}
 
@@ -97,7 +102,7 @@ export default function TabOneScreen() {
 				</View>
 			</View>
 			<View style={styles.footer}>
-				<Button text={'Next'} onPress={() => handleNext()} />
+				<Button text={'Next'} onPress={async () => await handleNext()} />
 			</View>
 		</View>
 	)

@@ -62,7 +62,8 @@ function RootLayoutNav() {
 					options={{
 						headerShown: true,
 						headerTitle: 'Confirm',
-						headerBackTitle: 'Back'
+                        headerBackVisible: false,
+                        headerTitleStyle: { fontSize: 25 }
 					}}
 				/>
 			</Stack>
