@@ -1,5 +1,5 @@
 
-rename transfer to pay
+send data from transfer to confirm screen
 
 Transfer:
 -input: value
@@ -12,6 +12,7 @@ History:
 Wishlist:
 -better tab icons
 -field validation
+-currency type above country flag
 
 Bugs:
 -profile page scroll up bug when editing field (same with Transfer page)

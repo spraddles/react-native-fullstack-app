@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
 	},
 	buttonFilled: {
 		backgroundColor: 'transparent',
-		borderWidth: 1,
-		borderColor: '#007AFF'
+		borderWidth: 2,
+		borderColor: '#209ff7'
 	},
 	buttonDisabled: {
 		backgroundColor: '#ccc'
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 		fontWeight: '600'
 	},
 	textFilled: {
-		color: '#007AFF'
+		color: '#209ff7'
 	},
 	textDisabled: {
 		color: '#999'

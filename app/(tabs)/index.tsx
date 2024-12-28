@@ -12,7 +12,7 @@ import { formatCurrency } from '@/composables/formatCurrency'
 import { formatCPF } from '@/composables/formatCPF'
 import { formatPhone } from '@/composables/formatPhone'
 
-import { useBaseStore, State } from '@/store/base'
+import { useBaseStore } from '@/store/base'
 
 export default function TabOneScreen() {
 	const [currentTab, setCurrentTab] = useState('cpf')
@@ -21,11 +21,12 @@ export default function TabOneScreen() {
 	const [inputPhone, setInputPhone] = useState('')
 	const [inputEmail, setInputEmail] = useState('')
 
+	// @TODO: fetch PIX name from service
 	const handleNext = async () => {
-        useBaseStore.getState().setLoading(true)
+		useBaseStore.getState().setLoading(true)
 		console.log('Next')
-        await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-        useBaseStore.getState().setLoading(false)
+		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
+		useBaseStore.getState().setLoading(false)
 		router.push('/pages/confirm')
 	}
 
