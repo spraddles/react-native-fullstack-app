@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { router } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 
 import { View } from '@/components/Themed'
 import { Input } from '@/components/ui/input'
@@ -8,9 +8,11 @@ import { Button } from '@/components/ui/button'
 import { useBaseStore } from '@/store/base'
 
 export default function ConfirmPage() {
+	const { amount, paymentType, pixMethod, pixMethodValue } = useLocalSearchParams()
+
 	const handleConfirm = async () => {
 		useBaseStore.getState().setLoading(true)
-		console.log('Confirm')
+		console.log('Confirm: ', { amount, paymentType, pixMethod, pixMethodValue })
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 		useBaseStore.getState().setLoading(false)
 		router.push('/pages/success')
@@ -23,7 +25,7 @@ export default function ConfirmPage() {
 					<Input label={'Reciever'} value={'Frederico Jon da Silva'} disabled={true} />
 				</View>
 				<View style={styles.inputs}>
-					<Input label={'Amount'} value={'2,550.12'} disabled={true} />
+					<Input label={'Amount'} value={amount} disabled={true} />
 				</View>
 				<View style={styles.inputs}>
 					<Input label={'Currency'} value={'Brazillian reals'} disabled={true} />

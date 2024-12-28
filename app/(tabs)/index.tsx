@@ -21,13 +21,33 @@ export default function TabOneScreen() {
 	const [inputPhone, setInputPhone] = useState('')
 	const [inputEmail, setInputEmail] = useState('')
 
+	const getCurrentMethodValue = () => {
+		if (currentTab === 'cpf') {
+			return inputCPF
+		}
+		if (currentTab === 'phone') {
+			return inputPhone
+		}
+		if (currentTab === 'email') {
+			return inputEmail
+		}
+	}
+
 	// @TODO: fetch PIX name from service
 	const handleNext = async () => {
 		useBaseStore.getState().setLoading(true)
 		console.log('Next')
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 		useBaseStore.getState().setLoading(false)
-		router.push('/pages/confirm')
+		router.push({
+			pathname: '/pages/confirm',
+			params: {
+				amount: currencyInput,
+				paymentType: 'pix',
+				pixMethod: currentTab,
+				pixMethodValue: getCurrentMethodValue()
+			}
+		})
 	}
 
 	return (

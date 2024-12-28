@@ -1,11 +1,4 @@
 
-send data from transfer to confirm screen
-
-Transfer:
--input: value
--next button
--confirmation alert popup
-
 History:
 -transaction: { dateTime, to, value }
 
@@ -13,6 +6,7 @@ Wishlist:
 -better tab icons
 -field validation
 -currency type above country flag
+-send copy of receipt via email
 
 Bugs:
 -profile page scroll up bug when editing field (same with Transfer page)
