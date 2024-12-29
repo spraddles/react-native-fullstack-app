@@ -1,6 +1,4 @@
 To do:
--history: add more padding
--historical transaction: { dateTime, to, value }
 -field validations
 -apple pay
 
