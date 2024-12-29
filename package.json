@@ -13,7 +13,8 @@
         "ios": "expo run:ios",
         "android": "expo run:android",
         "lint": "eslint . --ext .ts,.tsx",
-        "format": "prettier --write \"**/*.{ts,tsx}\""
+        "format": "prettier --write \"**/*.{ts,tsx}\"",
+        "cache:remove:xcode": "sh ./scripts/remove-xcode-cache.sh"
     },
     "jest": {
         "preset": "jest-expo"

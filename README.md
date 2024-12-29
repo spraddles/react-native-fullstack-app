@@ -14,3 +14,8 @@
 - run expo in background terminal (`npx expo start`)  
 - in another terminal install app & simulate: `npm run simulate:ios`  
 - make live code changes as hot reload is available
+
+### Tips:  
+- start metro with no cache: `npx expo start --clear`
+- if keyboard doesn't appear in iOS Simulator, select menu > io > connect hardware keyboard & select menu > io > toggle software keyboard
+- clear `xcode` cache with `npm run cache:remove:xcode`
