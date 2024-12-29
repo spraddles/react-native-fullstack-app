@@ -1,12 +1,19 @@
 To do:
+-history: add more padding
 -historical transaction: { dateTime, to, value }
 -field validations
+-apple pay
 
 Wishlist:
 -better tab icons
 -field validation
 -currency type above country flag
 -send copy of receipt via email
+-qr code scan for pix key
 
 Bugs:
 -profile page scroll up bug when editing field (same with Transfer page)
+
+Feedback:
+-there is a random code to transfer pix (chavealeatoria)
+-extra fields on confirm page: institusion, agency (branch), conte corrente (acct. no.)

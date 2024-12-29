@@ -8,8 +8,9 @@ import 'react-native-reanimated'
 
 import { Loader } from '@/components/ui/loader'
 import { useColorScheme } from '@/components/useColorScheme'
-
 import { useBaseStore } from '@/store/base'
+import { dataStoreSeeder } from '@/scripts/seeder'
+import Constants from 'expo-constants'
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary } from 'expo-router'
@@ -23,6 +24,7 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
+	const seedData = Constants.expoConfig?.extra?.seedData
 	const [loaded, error] = useFonts({
 		SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
 		...FontAwesome.font
@@ -40,6 +42,13 @@ export default function RootLayout() {
 			setTimeout(SplashScreen.hideAsync, 3000)
 		}
 	}, [loaded])
+
+	useEffect(() => {
+		if (seedData) {
+			dataStoreSeeder()
+		}
+		console.log('seedData:', seedData)
+	}, [seedData])
 
 	if (!loaded) {
 		return null
@@ -62,17 +71,17 @@ function RootLayoutNav() {
 					options={{
 						headerShown: true,
 						headerTitle: 'Confirm',
-                        headerBackVisible: false,
-                        headerTitleStyle: { fontSize: 25 }
+						headerBackVisible: false,
+						headerTitleStyle: { fontSize: 25 }
 					}}
 				/>
-                <Stack.Screen
+				<Stack.Screen
 					name="pages/success"
 					options={{
 						headerShown: true,
 						headerTitle: 'Complete',
-                        headerBackVisible: false,
-                        headerTitleStyle: { fontSize: 25 }
+						headerBackVisible: false,
+						headerTitleStyle: { fontSize: 25 }
 					}}
 				/>
 			</Stack>

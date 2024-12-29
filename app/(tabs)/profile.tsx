@@ -3,14 +3,18 @@ import { StyleSheet, Image, ScrollView } from 'react-native'
 
 import { Input } from '@/components/ui/input'
 
+import { formatCPF } from '@/composables/formatCPF'
+import { formatPhone } from '@/composables/formatPhone'
+
 import { useBaseStore, State } from '@/store/base'
 
 export default function ProfileScreen() {
-	const [inputName, setInputName] = useState('')
-	const [inputSurname, setInputSurname] = useState('')
-	const [inputEmail, setInputEmail] = useState('')
-	const [inputPhone, setInputPhone] = useState('')
-	const [inputCPF, setInputCPF] = useState('')
+	const user = useBaseStore((state) => state.user)
+	const [inputName, setInputName] = useState(user.name)
+	const [inputSurname, setInputSurname] = useState(user.surname)
+	const [inputEmail, setInputEmail] = useState(user.email)
+	const [inputPhone, setInputPhone] = useState(user.phone)
+	const [inputCPF, setInputCPF] = useState(user.cpf)
 
 	// @TODO: update this to handle DB requests
 	const handleSubmit = async (field: keyof State['user'], value: string) => {
@@ -74,13 +78,13 @@ export default function ProfileScreen() {
 			/>
 			<Input
 				label={'Phone'}
-				value={inputPhone}
+				value={formatPhone(inputPhone)}
 				placeholder={'Enter your phone'}
 				autoCorrect={false}
 				autoComplete="off"
 				keyboardType={'phone-pad'}
 				returnKeyType="done"
-				onChangeText={setInputPhone}
+				onChangeText={(text) => setInputPhone(formatPhone(text))}
 				// note: onEndEditing vs. onSubmitEditing for numpad
 				onEndEditing={async () => {
 					await handleSubmit('phone', inputPhone)
@@ -90,13 +94,13 @@ export default function ProfileScreen() {
 			/>
 			<Input
 				label={'CPF'}
-				value={inputCPF}
+				value={formatCPF(inputCPF)}
 				placeholder={'Enter your CPF'}
 				autoCorrect={false}
 				autoComplete="off"
 				keyboardType={'number-pad'}
 				returnKeyType="done"
-				onChangeText={setInputCPF}
+				onChangeText={(text) => setInputCPF(formatCPF(text))}
 				// note: onEndEditing vs. onSubmitEditing for numpad
 				onEndEditing={async () => {
 					await handleSubmit('cpf', inputCPF)
