@@ -6,11 +6,13 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import 'react-native-reanimated'
 
-import { Loader } from '@/components/ui/loader'
-import { useColorScheme } from '@/components/useColorScheme'
 import { useBaseStore } from '@/store/base'
 import { dataStoreSeeder } from '@/scripts/seeder'
 import Constants from 'expo-constants'
+
+import { Loader } from '@/components/ui/loader'
+import { Toast } from '@/components/ui/toast'
+import { useColorScheme } from '@/components/useColorScheme'
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary } from 'expo-router'
@@ -63,6 +65,11 @@ function RootLayoutNav() {
 	return (
 		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 			<Loader active={useBaseStore((state) => state.loading)} />
+			<Toast
+				visible={useBaseStore(state => state.isToastVisible())}
+				message={useBaseStore(state => state.getToastMessage())}
+				onHide={() => useBaseStore.getState().setToast({ visible: false, message: '' })}
+			/>
 			<Stack>
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 				<Stack.Screen name="modal" options={{ presentation: 'modal' }} />

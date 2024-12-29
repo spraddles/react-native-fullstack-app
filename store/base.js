@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export const useBaseStore = create((set) => ({
+export const useBaseStore = create((set, get) => ({
 	user: {
 		name: '',
 		surname: '',
@@ -11,8 +11,18 @@ export const useBaseStore = create((set) => ({
 
 	loading: false,
 
+	toast: {
+		visible: false,
+		message: ''
+	},
+
 	transactions: [],
 
+	// getters
+	isToastVisible: () => get().toast.visible,
+    getToastMessage: () => get().toast.message,
+
+	// setters
 	setUser: (field, value) =>
 		set((state) => ({
 			user: {
@@ -24,6 +34,11 @@ export const useBaseStore = create((set) => ({
 	setLoading: (value) =>
 		set(() => ({
 			loading: value
+		})),
+
+	setToast: (value) =>
+		set(() => ({
+			toast: value
 		})),
 
 	addTransaction: (transaction) =>
