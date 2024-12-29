@@ -1,10 +1,18 @@
 import { StyleSheet, ScrollView } from 'react-native'
-import { View } from '@/components/Themed'
+import { View, Text } from '@/components/Themed'
 import { Transaction } from '@/components/ui/transaction'
 import { useBaseStore } from '@/store/base'
 
 export default function HistoryScreen() {
 	const transactions = useBaseStore((state) => state.transactions)
+
+	if (transactions.length === 0) {
+		return (
+			<View style={styles.emptyContainer}>
+				<Text style={styles.emptyText}>No transactions yet</Text>
+			</View>
+		)
+	}
 
 	return (
 		<View style={styles.container}>
@@ -22,10 +30,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 20
 	},
-	title: {
-		fontSize: 20,
-		fontWeight: 'bold',
-		marginBottom: 20
+	emptyContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	emptyText: {
+		fontSize: 16,
+		color: '#666'
 	},
 	list: {
 		width: '100%'
