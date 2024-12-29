@@ -1,12 +1,18 @@
-import { StyleSheet } from 'react-native'
-
-import { Text, View } from '@/components/Themed'
+import { StyleSheet, ScrollView } from 'react-native'
+import { View } from '@/components/Themed'
+import { Transaction } from '@/components/ui/transaction'
+import { useBaseStore } from '@/store/base'
 
 export default function HistoryScreen() {
+	const transactions = useBaseStore((state) => state.transactions)
+
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>History</Text>
-			<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+			<ScrollView style={styles.list}>
+				{transactions.map((transaction) => (
+					<Transaction key={transaction.id} {...transaction} />
+				))}
+			</ScrollView>
 		</View>
 	)
 }
@@ -14,16 +20,14 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center'
+		padding: 20
 	},
 	title: {
 		fontSize: 20,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		marginBottom: 20
 	},
-	separator: {
-		marginVertical: 30,
-		height: 1,
-		width: '80%'
+	list: {
+		width: '100%'
 	}
 })

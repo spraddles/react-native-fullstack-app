@@ -10,11 +10,22 @@ import { useBaseStore } from '@/store/base'
 export default function ConfirmPage() {
 	const { amount, paymentType, pixMethod, pixMethodValue } = useLocalSearchParams()
 
+	const receiver = 'Frederico Jon da Silva'
+
 	const handleConfirm = async () => {
 		useBaseStore.getState().setLoading(true)
 		console.log('Confirm: ', { amount, paymentType, pixMethod, pixMethodValue })
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 		useBaseStore.getState().setLoading(false)
+		useBaseStore.getState().addTransaction({
+			id: Math.random().toString(36).substr(2, 9),
+			dateTime: new Date().toISOString(),
+			amount: parseFloat(amount),
+			receiver: receiver,
+			paymentType,
+			pixMethod,
+			pixMethodValue
+		})
 		router.push('/pages/success')
 	}
 
@@ -22,7 +33,7 @@ export default function ConfirmPage() {
 		<View style={styles.container}>
 			<View style={styles.content}>
 				<View style={styles.inputs}>
-					<Input label={'Reciever'} value={'Frederico Jon da Silva'} disabled={true} />
+					<Input label={'Reciever'} value={receiver} disabled={true} />
 				</View>
 				<View style={styles.inputs}>
 					<Input label={'Amount'} value={amount} disabled={true} />

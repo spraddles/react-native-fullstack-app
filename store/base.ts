@@ -1,5 +1,14 @@
 import { create } from 'zustand'
 
+type Transaction = {
+	id: string
+	dateTime: string
+	amount: number
+	paymentType: string
+	pixMethod: string
+	pixMethodValue: string
+}
+
 type State = {
 	user: {
 		name: string
@@ -8,9 +17,14 @@ type State = {
 		phone: string
 		cpf: string
 	}
+
 	loading: boolean
+
+	transactions: Transaction[]
+
 	setUser: (field: keyof State['user'], value: string) => void
 	setLoading: (value: boolean) => void
+	addTransaction: (transaction: Transaction) => void
 }
 
 export const useBaseStore = create<State>()((set) => ({
@@ -24,6 +38,8 @@ export const useBaseStore = create<State>()((set) => ({
 
 	loading: false,
 
+	transactions: [],
+
 	setUser: (field, value) =>
 		set((state) => ({
 			user: {
@@ -35,5 +51,10 @@ export const useBaseStore = create<State>()((set) => ({
 	setLoading: (value) =>
 		set(() => ({
 			loading: value
+		})),
+
+	addTransaction: (transaction) =>
+		set((state) => ({
+			transactions: [...state.transactions, transaction]
 		}))
 }))

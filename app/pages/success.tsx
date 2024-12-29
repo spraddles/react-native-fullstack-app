@@ -4,7 +4,14 @@ import { router } from 'expo-router'
 import { Text, View } from '@/components/Themed'
 import { Button } from '@/components/ui/button'
 
+import { useBaseStore } from '@/store/base'
+
 export default function SuccessPage() {
+	const handleClose = async () => {
+		console.log('close: ', useBaseStore.getState().transactions)
+		router.push('/(tabs)')
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
@@ -13,7 +20,7 @@ export default function SuccessPage() {
 				<Text style={styles.text}>Your payment has been made.</Text>
 			</View>
 			<View style={styles.footer}>
-				<Button text="Close" fill={true} onPress={() => router.push('/(tabs)')} />
+				<Button text="Close" fill={true} onPress={async () => await handleClose()} />
 			</View>
 		</View>
 	)

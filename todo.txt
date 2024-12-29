@@ -1,6 +1,6 @@
-
-History:
--transaction: { dateTime, to, value }
+To do:
+-historical transaction: { dateTime, to, value }
+-field validations
 
 Wishlist:
 -better tab icons
