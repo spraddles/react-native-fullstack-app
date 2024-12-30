@@ -81,30 +81,18 @@ export default function TabOneScreen() {
 	}
 
 	const handleNext = async () => {
-		console.log('handleNext')
-		// valid
-		if (hasError('number', inputCurrency)) {
-			useBaseStore.getState().setLoading(true)
-			await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-			useBaseStore.getState().setLoading(false)
-
-			router.push({
-				pathname: '/pages/confirm',
-				params: {
-					amount: inputCurrency.value,
-					paymentType: 'pix',
-					pixMethod: currentTab,
-					pixMethodValue: getCurrentMethod().value
-				}
-			})
-		}
-
-		// invalid
-		else {
-			console.log('invalid: ', currencyInputValidation.message)
-			// set component message
-			// trigger toast
-		}
+		useBaseStore.getState().setLoading(true)
+		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
+		useBaseStore.getState().setLoading(false)
+		router.push({
+			pathname: '/pages/confirm',
+			params: {
+				amount: inputCurrency.value,
+				paymentType: 'pix',
+				pixMethod: currentTab,
+				pixMethodValue: getCurrentMethod().value
+			}
+		})
 	}
 
 	return (
