@@ -20,7 +20,7 @@ export const useBaseStore = create((set, get) => ({
 
 	// getters
 	isToastVisible: () => get().toast.visible,
-    getToastMessage: () => get().toast.message,
+	getToastMessage: () => get().toast.message,
 
 	// setters
 	setUser: (field, value) =>

@@ -19,3 +19,6 @@
 - start metro with no cache: `npx expo start --clear`
 - if keyboard doesn't appear in iOS Simulator, select menu > io > connect hardware keyboard & select menu > io > toggle software keyboard
 - clear `xcode` cache with `npm run cache:remove:xcode`
+- seeder only works in Expo Go app not iOS app
+- splash screen only works in iOS app not Expo Go app
+- different keyboard inputs (i.e. text vs. numbers) have different hooks: onEndEditing / onSubmitEditing

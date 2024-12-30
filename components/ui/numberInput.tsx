@@ -3,24 +3,27 @@ import { View, TextInput, Text, StyleSheet, NumberInputProps } from 'react-nativ
 
 type InputProps = NumberInputProps & {
 	label?: string
-	value?: string
+	value: string
+	error?: boolean
+	errorText?: string
 	placeholder?: string
 }
 
-export function NumberInput({ label, value, placeholder, ...props }: InputProps) {
+export function NumberInput({ label, value, error, errorText, placeholder, ...props }: InputProps) {
 	return (
 		<View style={[styles.container]}>
 			{label && <Text style={styles.label}>{label}</Text>}
 			<View style={styles.inputContainer}>
 				<TextInput
-					style={[styles.input]}
+					{...props}
+					style={[styles.input, error && styles.inputError]}
 					value={value}
 					placeholder={!value ? placeholder : undefined}
 					placeholderTextColor="#999"
-					{...props}
 				/>
 				<Text style={styles.flag}>🇧🇷</Text>
 			</View>
+			{error && errorText && <Text style={styles.errorMessage}>{errorText}</Text>}
 		</View>
 	)
 }
@@ -48,6 +51,11 @@ const styles = StyleSheet.create({
 		fontSize: 30,
 		backgroundColor: '#fff',
 		letterSpacing: 3
+	},
+	errorMessage: {
+		color: '#ff3333',
+		fontSize: 14,
+		marginTop: 4
 	},
 	flag: {
 		position: 'absolute',
