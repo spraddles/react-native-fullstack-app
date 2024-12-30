@@ -8,9 +8,12 @@ import { Input } from '@/components/ui/input'
 import { NumberInput } from '@/components/ui/numberInput'
 import { Button } from '@/components/ui/button'
 
-import { formatCurrency } from '@/composables/formatCurrency'
-import { formatCPF, removeNonNumbers } from '@/composables/formatCPF'
-import { formatPhone } from '@/composables/formatPhone'
+import {
+	formatCurrency,
+	formatCPF,
+	removeNonNumbers,
+	formatPhone
+} from '@/composables/inputFormatter'
 
 import { useBaseStore } from '@/store/base'
 
@@ -63,12 +66,6 @@ export default function TabOneScreen() {
 
 	const hasError = (type: string, value: string | number, length: number) => {
 		const error = validateInput(type, value, length)
-		console.log('hasError: ', {
-			type: type,
-			value: value,
-			isValid: error.isValid,
-			message: error.message
-		})
 		return !error.isValid
 	}
 

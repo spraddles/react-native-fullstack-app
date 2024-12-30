@@ -3,8 +3,7 @@ import { StyleSheet, Image, ScrollView } from 'react-native'
 
 import { Input } from '@/components/ui/input'
 
-import { formatCPF } from '@/composables/formatCPF'
-import { formatPhone } from '@/composables/formatPhone'
+import { formatCPF, formatPhone } from '@/composables/inputFormatter'
 
 import { useBaseStore, State } from '@/store/base'
 

@@ -12,7 +12,6 @@ export function Toast({ message, visible, onHide }: ToastProps) {
 
 	useEffect(() => {
 		if (visible) {
-			console.log('toast showing...')
 			// fade in
 			Animated.timing(opacity, {
 				toValue: 1,
