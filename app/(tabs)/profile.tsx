@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Image, ScrollView } from 'react-native'
 
 import { Input } from '@/components/ui/input'

@@ -1,6 +1,4 @@
 To do:
--clean handleNext
--new file: inputFormatter.tsx (combine other files into this, fix imports)
 -profile page edit & validation
 
 -apple pay

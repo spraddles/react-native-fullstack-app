@@ -43,8 +43,8 @@ export default function ConfirmPage() {
 				</View>
 			</View>
 			<View style={styles.footer}>
-				<Button text="Back" fill={false} onPress={() => router.back()} />
 				<Button text="Confirm" onPress={async () => await handleConfirm()} />
+				<Button text="Back" fill={false} onPress={() => router.back()} />
 			</View>
 		</View>
 	)
