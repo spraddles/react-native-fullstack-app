@@ -262,7 +262,6 @@ const styles = StyleSheet.create({
 		marginBottom: 40
 	},
 	footer: {
-		width: '100%',
-		paddingBottom: 10
+		width: '100%'
 	}
 })

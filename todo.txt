@@ -6,6 +6,8 @@ To do:
 
 Bugs:
 -profile page scroll up bug when editing field (same with Transfer page)
+-user can tap directly into other inputs bypassing validation logic
+-button fill / not-filled are different heights
 
 Wishlist:
 -better tab icons

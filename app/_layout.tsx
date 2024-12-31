@@ -49,6 +49,7 @@ export default function RootLayout() {
 	useEffect(() => {
 		if (seedData) {
 			dataStoreSeeder()
+			useBaseStore.getState().setEmptyProfile(false)
 		}
 		console.log('seedData:', seedData)
 	}, [seedData])
@@ -67,8 +68,8 @@ function RootLayoutNav() {
 		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 			<Loader active={useBaseStore((state) => state.loading)} />
 			<Toast
-				visible={useBaseStore(state => state.isToastVisible())}
-				message={useBaseStore(state => state.getToastMessage())}
+				visible={useBaseStore((state) => state.isToastVisible())}
+				message={useBaseStore((state) => state.getToastMessage())}
 				onHide={() => useBaseStore.getState().setToast({ visible: false, message: '' })}
 			/>
 			<Stack>
@@ -87,6 +88,24 @@ function RootLayoutNav() {
 					name="pages/success"
 					options={{
 						headerShown: true,
+						headerTitle: 'Complete',
+						headerBackVisible: false,
+						headerTitleStyle: { fontSize: 25 }
+					}}
+				/>
+				<Stack.Screen
+					name="pages/emptyProfile"
+					options={{
+						headerShown: false,
+						headerTitle: 'Complete',
+						headerBackVisible: false,
+						headerTitleStyle: { fontSize: 25 }
+					}}
+				/>
+				<Stack.Screen
+					name="pages/editProfile"
+					options={{
+						headerShown: false,
 						headerTitle: 'Complete',
 						headerBackVisible: false,
 						headerTitleStyle: { fontSize: 25 }

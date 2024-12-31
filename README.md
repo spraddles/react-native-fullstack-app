@@ -22,3 +22,4 @@
 - seeder only works in Expo Go app not iOS app
 - splash screen only works in iOS app not Expo Go app
 - different keyboard inputs (i.e. text vs. numbers) have different hooks: onEndEditing / onSubmitEditing
+- if you make router edits you may need to exit & reopen the app to see changes

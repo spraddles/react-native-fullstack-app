@@ -13,7 +13,7 @@ export const validateInput = (type: string, value: string | number, length?: num
 	// email check
 	if (type === 'email') {
 		const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-		if (!pattern.test(value)) {
+		if (pattern.test(value) === false) {
 			return { isValid: false, message: 'Invalid email address' }
 		}
 	}
