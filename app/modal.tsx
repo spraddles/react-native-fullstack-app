@@ -1,3 +1,4 @@
+import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Platform, StyleSheet, Image } from 'react-native'
 import { useLayoutEffect } from 'react'

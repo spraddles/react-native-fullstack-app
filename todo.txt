@@ -1,21 +1,29 @@
 To do:
--profile page edit & validation
-
--apple pay
+-apple pay: 
+> add in fake cards (for testing)
+> show toast on error
+-pix 'key' unique number (chavealeatoria)
 -database (local)
 
 Bugs:
 -profile page scroll up bug when editing field (same with Transfer page)
 -user can tap directly into other inputs bypassing validation logic
 -button fill / not-filled are different heights
+-fix styling for each transaction top & bottom borders in list
+
 
 Wishlist:
 -better tab icons
--field validation
 -currency type above country flag
 -send copy of receipt via email
 -qr code scan for pix key
 
 Feedback:
--there is a random code to transfer pix (chavealeatoria)
--extra fields on confirm page: institusion, agency (branch), conte corrente (acct. no.)
+-there is a random code to transfer pix (chavealeatoria) (above)
+-extra fields on confirm page: institution, agency (branch), conte corrente (acct. no.)
+
+
+ApplePay libraries:
+-https://github.com/rnw-community/rnw-community/tree/master/packages/react-native-payments
+-https://dev.to/muhammad_harisbaig_1268d/custom-apple-pay-integration-in-react-native-with-nativ-3po8
+

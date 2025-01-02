@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
+
+import { ApplePay } from '@/composables/applePay/index'
 
 import { View } from '@/components/Themed'
 import { Input } from '@/components/ui/input'
@@ -11,23 +13,44 @@ import { useBaseStore } from '@/store/base'
 export default function ConfirmPage() {
 	const { amount, paymentType, pixMethod, pixMethodValue } = useLocalSearchParams()
 
+	const [error, setError] = useState('')
+	const [response, setResponse] = useState<PaymentResponse['details']>()
+
+	useEffect(() => {
+		setError('')
+		setResponse(undefined)
+	}, [setError, setResponse])
+
 	const receiver = 'Frederico Jon da Silva'
 
 	const handleConfirm = async () => {
-		useBaseStore.getState().setLoading(true)
-		console.log('Confirm: ', { amount, paymentType, pixMethod, pixMethodValue })
-		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-		useBaseStore.getState().setLoading(false)
-		useBaseStore.getState().addTransaction({
-			id: Math.random().toString(36).substr(2, 9),
-			dateTime: new Date().toISOString(),
-			amount: parseFloat(amount),
-			receiver: receiver,
-			paymentType,
-			pixMethod,
-			pixMethodValue
-		})
-		router.push('/pages/success')
+		console.log('handleConfirm')
+
+		const { processPayment } = ApplePay()
+
+		try {
+			// payment success
+			const paymentDetails = await processPayment(setError, setResponse)
+			console.log('Payment successful:', paymentDetails)
+			// save details to server
+			useBaseStore.getState().setLoading(true)
+			await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
+			useBaseStore.getState().addTransaction({
+				id: Math.random().toString(36).substr(2, 9),
+				dateTime: new Date().toISOString(),
+				amount: parseFloat(amount),
+				receiver: receiver,
+				paymentType,
+				pixMethod,
+				pixMethodValue
+			})
+			useBaseStore.getState().setLoading(false)
+			router.push('/pages/success')
+		} catch (error) {
+			// payment fail
+			console.log('Payment failed:', error)
+            
+		}
 	}
 
 	return (
