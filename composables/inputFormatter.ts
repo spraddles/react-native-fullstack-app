@@ -1,17 +1,23 @@
 export const formatCPF = (number) => {
+	if (!number) {
+		return ''
+	}
 	const cleaned = number.toString().replace(/\D/g, '')
 	return cleaned.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
 }
 
 export const removeNonNumbers = (value: string) => {
+	if (!value) {
+		return ''
+	}
 	return value.replace(/[^0-9]/g, '')
 }
 
 export const formatCurrency = (text: string) => {
-	const numbers = text.replace(/[^\d]/g, '')
-	if (!numbers) {
+	if (!text) {
 		return ''
 	}
+	const numbers = text.replace(/[^\d]/g, '')
 	const withComma = (parseInt(numbers, 10) / 100).toLocaleString('en-US', {
 		minimumFractionDigits: 2,
 		maximumFractionDigits: 2
@@ -20,6 +26,9 @@ export const formatCurrency = (text: string) => {
 }
 
 export const formatPhone = (number) => {
+	if (!number) {
+		return ''
+	}
 	const cleaned = number.toString().replace(/\D/g, '')
 	return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1)-$2-$3')
 }

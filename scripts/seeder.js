@@ -10,11 +10,14 @@ export const dataStoreSeeder = () => {
 		cpf: '91827361551'
 	}
 
-	useBaseStore.getState().setUser('name', user.name)
-	useBaseStore.getState().setUser('surname', user.surname)
-	useBaseStore.getState().setUser('email', user.email)
-	useBaseStore.getState().setUser('phone', user.phone)
-	useBaseStore.getState().setUser('cpf', user.cpf)
+	useBaseStore.getState().setUserField('name', user.name)
+	useBaseStore.getState().setUserField('surname', user.surname)
+	useBaseStore.getState().setUserField('email', user.email)
+	useBaseStore.getState().setUserField('phone', user.phone)
+	useBaseStore.getState().setUserField('cpf', user.cpf)
+
+	// profile is now populated
+	useBaseStore.getState().setEmptyProfile(false)
 
 	const recipient = {
 		name: faker.person.fullName(),

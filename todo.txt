@@ -1,11 +1,10 @@
 To do:
--fix seeder (user object not updating) / profile page
+-tab bar height
 -database (local)
 -pix 'key' unique number (chavealeatoria)
 
 
 Bugs:
--inputFormatter catch for empty / undefined string inputs
 -profile page scroll up bug when editing field (same with Transfer page)
 -user can tap directly into other inputs bypassing validation logic
 -button fill / not-filled are different heights

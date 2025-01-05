@@ -35,13 +35,13 @@ export default function ProfileScreen() {
 						source={require('../../assets/images/profile.png')}
 					/>
 					<Text style={styles.title}>
-						{user.name.value} {user.surname.value}
+						{user.name} {user.surname}
 					</Text>
 				</View>
 				<View style={styles.bottom}>
-					<Input label={'Email'} value={user.email.value} disabled />
-					<Input label={'Phone'} value={user.phone.value} disabled />
-					<Input label={'CPF'} value={user.cpf.value} disabled />
+					<Input label={'Email'} value={user.email} disabled />
+					<Input label={'Phone'} value={user.phone} disabled />
+					<Input label={'CPF'} value={user.cpf} disabled />
 				</View>
 			</View>
 			<View style={styles.footer}>
