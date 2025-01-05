@@ -51,8 +51,5 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	],
 	experiments: {
 		typedRoutes: true
-	},
-	extra: {
-		seedData: process.env.SEED_DATA === 'true'
 	}
 })

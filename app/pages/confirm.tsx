@@ -29,27 +29,36 @@ export default function ConfirmPage() {
 		const { processPayment } = ApplePay()
 
 		try {
-			// payment success
 			const paymentDetails = await processPayment(setError, setResponse)
-			console.log('Payment successful:', paymentDetails)
-			// save details to server
-			useBaseStore.getState().setLoading(true)
-			await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-			useBaseStore.getState().addTransaction({
-				id: Math.random().toString(36).substr(2, 9),
-				dateTime: new Date().toISOString(),
-				amount: parseFloat(amount),
-				receiver: receiver,
-				paymentType,
-				pixMethod,
-				pixMethodValue
-			})
-			useBaseStore.getState().setLoading(false)
-			router.push('/pages/success')
+			// payment error (dev testing)
+			if (paymentDetails.error === true) {
+				console.log('payment error')
+				await new Promise((resolve) => setTimeout(resolve, 1000))
+				useBaseStore
+					.getState()
+					.setToast({ visible: true, message: 'Sorry, but your payment failed' })
+			}
+			// payment success
+			else {
+				console.log('Payment successful:', paymentDetails)
+				// save details to server
+				useBaseStore.getState().setLoading(true)
+				await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
+				useBaseStore.getState().addTransaction({
+					id: Math.random().toString(36).substr(2, 9),
+					dateTime: new Date().toISOString(),
+					amount: parseFloat(amount),
+					receiver: receiver,
+					paymentType,
+					pixMethod,
+					pixMethodValue
+				})
+				useBaseStore.getState().setLoading(false)
+				router.push('/pages/success')
+			}
 		} catch (error) {
 			// payment fail
 			console.log('Payment failed:', error)
-            
 		}
 	}
 

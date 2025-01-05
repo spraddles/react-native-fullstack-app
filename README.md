@@ -20,11 +20,12 @@
 - (more steps for complete build)
 
 ### Tips:  
-- start metro with no cache: `npx expo start --clear`
-- if keyboard doesn't appear in iOS Simulator, select menu > io > connect hardware keyboard & select menu > io > toggle software keyboard  
-- clear `xcode` cache with `npm run cache:remove:xcode`  
-- seeder only works in Expo Go app not iOS app  
-- splash screen only works in iOS app not Expo Go app  
-- different keyboard inputs (i.e. text vs. numbers) have different hooks: `onEndEditing` / `onSubmitEditing`  
-- if you make router edits you may need to exit & reopen the app to see changes  
-- you can't have multiple instances of `metro` running else you'll get app errors  
+- cache: start metro with no cache: `npx expo start --clear`
+- cache: clear `xcode` cache with `npm run cache:remove:xcode`  
+- keyboard: different keyboard inputs (i.e. text vs. numbers) have different hooks: `onEndEditing` / `onSubmitEditing`  
+- simulator: the handling of inputs from the PC / laptop keyboard is different to the simulator software keyboard, so use the simulator native software keyboard instead
+- simulator: if keyboard doesn't appear in iOS Simulator, select menu > io > connect hardware keyboard & select menu > io > toggle software keyboard  
+- simulator: you can't use real native device features (like phone wallet) in Expo Go app, instead use the device simulator
+- expo: splash screen only works in iOS app not Expo Go app  
+- expo: you can't have multiple instances of `metro` running else you'll get app errors  
+- router: if you make router edits you need to exit & restart the app + expo to see changes  

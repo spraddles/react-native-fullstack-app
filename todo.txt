@@ -1,15 +1,16 @@
 To do:
--apple pay: 
-> add in fake cards (for testing)
-> show toast on error
--pix 'key' unique number (chavealeatoria)
+-fix seeder (user object not updating) / profile page
 -database (local)
+-pix 'key' unique number (chavealeatoria)
+
 
 Bugs:
+-inputFormatter catch for empty / undefined string inputs
 -profile page scroll up bug when editing field (same with Transfer page)
 -user can tap directly into other inputs bypassing validation logic
 -button fill / not-filled are different heights
 -fix styling for each transaction top & bottom borders in list
+-add canMakePayment function to catch payment issues
 
 
 Wishlist:
@@ -18,8 +19,9 @@ Wishlist:
 -send copy of receipt via email
 -qr code scan for pix key
 
+
 Feedback:
--there is a random code to transfer pix (chavealeatoria) (above)
+-there is also a random code to transfer pix (chavealeatoria)
 -extra fields on confirm page: institution, agency (branch), conte corrente (acct. no.)
 
 

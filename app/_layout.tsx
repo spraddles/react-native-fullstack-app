@@ -9,7 +9,6 @@ import 'react-native-reanimated'
 
 import { useBaseStore } from '@/store/base'
 import { dataStoreSeeder } from '@/scripts/seeder'
-import Constants from 'expo-constants'
 
 import { Loader } from '@/components/ui/loader'
 import { Toast } from '@/components/ui/toast'
@@ -27,7 +26,6 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-	const seedData = Constants.expoConfig?.extra?.seedData
 	const [loaded, error] = useFonts({
 		SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
 		...FontAwesome.font
@@ -46,13 +44,15 @@ export default function RootLayout() {
 		}
 	}, [loaded])
 
+	// development ENV
 	useEffect(() => {
-		if (seedData) {
+		if (process.env.EXPO_PUBLIC_SEED_DATA === 'true') {
 			dataStoreSeeder()
-			useBaseStore.getState().setEmptyProfile(false)
 		}
-		console.log('seedData:', seedData)
-	}, [seedData])
+		console.log('__DEV__:', __DEV__)
+		console.log('EXPO_PUBLIC_SEED_DATA:', process.env.EXPO_PUBLIC_SEED_DATA)
+		console.log('EXPO_PUBLIC_FORCE_FAIL_PAYMENT:', process.env.EXPO_PUBLIC_FORCE_FAIL_PAYMENT)
+	}, [])
 
 	if (!loaded) {
 		return null

@@ -22,11 +22,23 @@ export const ApplePay = () => {
 			}).show()
 
 			setResponse(paymentResponse.details)
-			await paymentResponse.complete(PaymentComplete.SUCCESS)
-			return paymentResponse.details
+
+			// fail payment for testing
+			if (process.env.EXPO_PUBLIC_FORCE_FAIL_PAYMENT === 'true') {
+				await paymentResponse.complete(PaymentComplete.FAIL)
+				setError(getErrorMessage())
+				return {
+					error: true
+				}
+			}
+			// normal flow
+			else {
+				await paymentResponse.complete(PaymentComplete.SUCCESS)
+				return paymentResponse.details
+			}
 		} catch (e) {
 			console.log('Payment error: ', e)
-			setError(getErrorMessage(e))
+			setError(getErrorMessage())
 			throw e
 		}
 	}

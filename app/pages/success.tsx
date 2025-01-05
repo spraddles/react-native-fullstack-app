@@ -32,15 +32,17 @@ const styles = StyleSheet.create({
 		padding: 50,
 		paddingTop: 100
 	},
-	text: {
-		fontSize: 22,
-		textAlign: 'center',
-		color: '#999'
+    text: {
+		fontSize: 16,
+		color: '#666',
+		width: '80%',
+		textAlign: 'center'
 	},
 	image: {
 		marginTop: 10,
+        marginBottom: 30,
 		width: '100%',
-		height: 150,
+		height: 120,
 		resizeMode: 'contain'
 	},
 	content: {
