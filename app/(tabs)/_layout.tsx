@@ -40,9 +40,9 @@ export default function TabLayout() {
 			screenOptions={{
 				tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
 				tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
-				tabBarStyle: { height: 70 },
-				tabBarLabelStyle: { fontSize: 12, marginTop: -5 },
-				tabBarIconStyle: { marginBottom: 10 },
+				tabBarStyle: { height: 80, padding: 20 },
+				tabBarLabelStyle: { fontSize: 12, marginTop: 0 },
+				tabBarIconStyle: { marginTop: 5, marginBottom: 7 },
 				headerShown: useClientOnlyValue(false, true),
 				headerTitleStyle: { fontSize: 25 }
 			}}
