@@ -29,3 +29,4 @@
 - expo: splash screen only works in iOS app not Expo Go app  
 - expo: you can't have multiple instances of `metro` running else you'll get app errors  
 - router: if you make router edits you need to exit & restart the app + expo to see changes  
+- make sure you set all the `ENV` vars required  

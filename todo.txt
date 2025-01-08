@@ -1,7 +1,9 @@
 To do:
--tab bar height
 -database (local)
+> create supabase account
+> setup local supabase store in app
 -pix 'key' unique number (chavealeatoria)
+-authentication
 
 
 Bugs:

@@ -5,14 +5,14 @@ node_modules/
 /ios
 /android
 
-# Expo
+# expo
 .expo/
 dist/
 web-build/
 expo-env.d.ts
 *.swp
 
-# Native
+# native
 *.orig.*
 *.jks
 *.p8
@@ -20,7 +20,7 @@ expo-env.d.ts
 *.key
 *.mobileprovision
 
-# Metro
+# metro
 .metro-health-check*
 
 # debug
@@ -28,12 +28,12 @@ npm-debug.*
 yarn-debug.*
 yarn-error.*
 
-# macOS
+# mac
 .DS_Store
 *.pem
 
-# local env files
-.env*.local
+# env
+.env
 
 # typescript
 *.tsbuildinfo
