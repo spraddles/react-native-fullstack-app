@@ -17,12 +17,12 @@ export default function ProfileScreen() {
 		useBaseStore.getState().setLoading(true)
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 		useBaseStore.getState().setLoading(false)
-		router.push('/pages/editProfile')
+		router.push('/(pages)/editProfile')
 	}
 
 	useEffect(() => {
 		if (getEmptyProfileState === true) {
-			router.push('/pages/emptyProfile')
+			router.push('/(pages)/emptyProfile')
 		}
 	}, [getEmptyProfileState])
 

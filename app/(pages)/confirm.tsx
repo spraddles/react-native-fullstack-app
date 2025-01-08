@@ -54,7 +54,7 @@ export default function ConfirmPage() {
 					pixMethodValue
 				})
 				useBaseStore.getState().setLoading(false)
-				router.push('/pages/success')
+				router.push('/(pages)/success')
 			}
 		} catch (error) {
 			// payment fail

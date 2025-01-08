@@ -19,7 +19,7 @@ export { ErrorBoundary } from 'expo-router'
 
 // Ensure that reloading on `/modal` keeps a back button present.
 export const unstable_settings = {
-	initialRouteName: '(tabs)'
+	initialRouteName: '(pages)'
 }
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -73,10 +73,10 @@ function RootLayoutNav() {
 				onHide={() => useBaseStore.getState().setToast({ visible: false, message: '' })}
 			/>
 			<Stack>
-				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+				<Stack.Screen name="(pages)/index" options={{ headerShown: false }} />
 				<Stack.Screen name="modal" options={{ presentation: 'modal' }} />
 				<Stack.Screen
-					name="pages/confirm"
+					name="(pages)/confirm"
 					options={{
 						headerShown: true,
 						headerTitle: 'Confirm',
@@ -85,7 +85,7 @@ function RootLayoutNav() {
 					}}
 				/>
 				<Stack.Screen
-					name="pages/success"
+					name="(pages)/success"
 					options={{
 						headerShown: true,
 						headerTitle: 'Complete',
@@ -94,7 +94,7 @@ function RootLayoutNav() {
 					}}
 				/>
 				<Stack.Screen
-					name="pages/emptyProfile"
+					name="(pages)/emptyProfile"
 					options={{
 						headerShown: false,
 						headerTitle: 'Complete',
@@ -103,7 +103,7 @@ function RootLayoutNav() {
 					}}
 				/>
 				<Stack.Screen
-					name="pages/editProfile"
+					name="(pages)/editProfile"
 					options={{
 						headerShown: false,
 						headerTitle: 'Complete',
@@ -111,6 +111,27 @@ function RootLayoutNav() {
 						headerTitleStyle: { fontSize: 25 }
 					}}
 				/>
+				<Stack.Screen
+					name="(pages)/login"
+					options={{
+						headerShown: true,
+						headerTitle: '',
+						headerBackVisible: true,
+						headerBackTitle: 'Home',
+						headerTitleStyle: { fontSize: 25 }
+					}}
+				/>
+				<Stack.Screen
+					name="(pages)/signUp"
+					options={{
+						headerShown: true,
+						headerTitle: '',
+						headerBackVisible: true,
+						headerBackTitle: 'Home',
+						headerTitleStyle: { fontSize: 25 }
+					}}
+				/>
+				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 			</Stack>
 		</ThemeProvider>
 	)

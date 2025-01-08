@@ -85,7 +85,7 @@ export default function TabOneScreen() {
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 		useBaseStore.getState().setLoading(false)
 		router.push({
-			pathname: '/pages/confirm',
+			pathname: '/(pages)/confirm',
 			params: {
 				amount: inputCurrency.value,
 				paymentType: 'pix',

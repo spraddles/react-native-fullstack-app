@@ -15,7 +15,7 @@ export default function EmptyProfileScreen() {
 					text="Next"
 					fill={true}
 					onPress={() => {
-						router.push('/pages/editProfile')
+						router.push('/(pages)/editProfile')
 					}}
 				/>
 			</View>
