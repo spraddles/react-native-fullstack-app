@@ -94,15 +94,6 @@ function RootLayoutNav() {
 					}}
 				/>
 				<Stack.Screen
-					name="(pages)/emptyProfile"
-					options={{
-						headerShown: false,
-						headerTitle: 'Complete',
-						headerBackVisible: false,
-						headerTitleStyle: { fontSize: 25 }
-					}}
-				/>
-				<Stack.Screen
 					name="(pages)/editProfile"
 					options={{
 						headerShown: false,

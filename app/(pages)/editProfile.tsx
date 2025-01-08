@@ -21,13 +21,12 @@ export default function EditProfileScreen() {
 	})
 
 	const user = useBaseStore((state) => state.user)
-	const emptyProfile = useBaseStore((state) => state.emptyProfile)
 
-	const [inputName, setInputName] = useState(initialState(emptyProfile ? '' : user.name))
-	const [inputSurname, setInputSurname] = useState(initialState(emptyProfile ? '' : user.surname))
-	const [inputEmail, setInputEmail] = useState(initialState(emptyProfile ? '' : user.email))
-	const [inputPhone, setInputPhone] = useState(initialState(emptyProfile ? '' : user.phone))
-	const [inputCPF, setInputCPF] = useState(initialState(emptyProfile ? '' : user.cpf))
+	const [inputName, setInputName] = useState(initialState(user.name))
+	const [inputSurname, setInputSurname] = useState(initialState(user.surname))
+	const [inputEmail, setInputEmail] = useState(initialState(user.email))
+	const [inputPhone, setInputPhone] = useState(initialState(user.phone))
+	const [inputCPF, setInputCPF] = useState(initialState(user.cpf))
 
 	const hasError = (type: string, value: string | number, length: number) => {
 		const error = validateInput(type, value, length)
@@ -42,7 +41,6 @@ export default function EditProfileScreen() {
 	// @TODO: update this to handle DB requests
 	const handleSubmit = async () => {
 		useBaseStore.getState().setLoading(true)
-        useBaseStore.getState().setEmptyProfile(false)
 		console.log('handleSubmit')
 		// update user fields in store
 		useBaseStore.getState().setUserField('name', inputName.value)
@@ -52,7 +50,6 @@ export default function EditProfileScreen() {
 		useBaseStore.getState().setUserField('cpf', inputCPF.value)
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 		useBaseStore.getState().setLoading(false)
-		
 		router.push('/(tabs)/profile')
 	}
 

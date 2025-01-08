@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { StyleSheet, Image, View } from 'react-native'
 
 import { router } from 'expo-router'
@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
 export default function ProfileScreen() {
-	const getEmptyProfileState = useBaseStore((state) => state.getEmptyProfileState())
 	const user = useBaseStore((state) => state.getUser())
 
 	const handleClose = async () => {
@@ -19,12 +18,6 @@ export default function ProfileScreen() {
 		useBaseStore.getState().setLoading(false)
 		router.push('/(pages)/editProfile')
 	}
-
-	useEffect(() => {
-		if (getEmptyProfileState === true) {
-			router.push('/(pages)/emptyProfile')
-		}
-	}, [getEmptyProfileState])
 
 	return (
 		<View style={styles.container}>

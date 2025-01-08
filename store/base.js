@@ -9,8 +9,6 @@ export const useBaseStore = create((set, get) => ({
 		cpf: ''
 	},
 
-	emptyProfile: true,
-
 	loading: false,
 
 	toast: {
@@ -23,7 +21,6 @@ export const useBaseStore = create((set, get) => ({
 	// getters
 	isToastVisible: () => get().toast.visible,
 	getToastMessage: () => get().toast.message,
-	getEmptyProfileState: () => get().emptyProfile,
 	getUser: () => get().user,
 
 	// setters
@@ -48,10 +45,5 @@ export const useBaseStore = create((set, get) => ({
 	addTransaction: (transaction) =>
 		set((state) => ({
 			transactions: [...state.transactions, transaction]
-		})),
-
-	setEmptyProfile: (value) =>
-		set(() => ({
-			emptyProfile: value
 		}))
 }))

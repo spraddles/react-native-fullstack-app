@@ -16,9 +16,6 @@ export const dataStoreSeeder = () => {
 	useBaseStore.getState().setUserField('phone', user.phone)
 	useBaseStore.getState().setUserField('cpf', user.cpf)
 
-	// profile is now populated
-	useBaseStore.getState().setEmptyProfile(false)
-
 	const recipient = {
 		name: faker.person.fullName(),
 		cpf: faker.string.numeric(11),
