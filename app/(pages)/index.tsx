@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Image } from 'react-native'
 import { router } from 'expo-router'
 
-import { Text, View } from '@/components/Themed'
+import { View } from '@/components/Themed'
 import { Button } from '@/components/ui/button'
 
 export default function SuccessPage() {

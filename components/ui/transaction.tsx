@@ -18,7 +18,6 @@ export function Transaction({
 	pixMethodValue,
 	receiver
 }: TransactionProps) {
-
 	const date = new Date(dateTime).toLocaleDateString('en-GB', {
 		day: 'numeric',
 		month: 'short',

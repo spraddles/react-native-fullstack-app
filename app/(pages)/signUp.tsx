@@ -1,6 +1,5 @@
 import React from 'react'
-import { StyleSheet, Image } from 'react-native'
-import { router } from 'expo-router'
+import { StyleSheet } from 'react-native'
 
 import { Text, View } from '@/components/Themed'
 
@@ -26,13 +25,6 @@ const styles = StyleSheet.create({
 		color: '#666',
 		width: '80%',
 		textAlign: 'center'
-	},
-	image: {
-		marginTop: 10,
-		marginBottom: 30,
-		width: '100%',
-		height: 120,
-		resizeMode: 'contain'
 	},
 	content: {
 		flex: 1,
