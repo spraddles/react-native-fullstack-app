@@ -106,7 +106,7 @@ function RootLayoutNav() {
 					name="(pages)/login"
 					options={{
 						headerShown: true,
-						headerTitle: '',
+						headerTitle: 'Login',
 						headerBackVisible: true,
 						headerBackTitle: 'Home',
 						headerTitleStyle: { fontSize: 25 }
@@ -116,7 +116,7 @@ function RootLayoutNav() {
 					name="(pages)/signUp"
 					options={{
 						headerShown: true,
-						headerTitle: '',
+						headerTitle: 'Sign up',
 						headerBackVisible: true,
 						headerBackTitle: 'Home',
 						headerTitleStyle: { fontSize: 25 }

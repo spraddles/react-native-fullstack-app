@@ -1,26 +1,16 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { router } from 'expo-router'
+import { View, Text } from '@/components/Themed'
 
-import { Text, View } from '@/components/Themed'
+import { SocialButton } from '@/components/ui/socialButton'
 
-import { Button } from '@/components/ui/button'
-
-export default function SuccessPage() {
+export default function LoginPage() {
 	return (
 		<View style={styles.container}>
-			<View style={styles.content}>
-				<Text style={styles.text}>LOGIN</Text>
-			</View>
-			<View style={styles.footer}>
-				<Button
-					text="Home"
-					fill={true}
-					onPress={() => {
-						router.push('/(tabs)')
-					}}
-				/>
-			</View>
+			<Text style={styles.text}>Choose a login method:</Text>
+			<SocialButton fill={true} type={'google'} />
+			<SocialButton fill={true} type={'apple'} />
+			<SocialButton fill={true} type={'email'} />
 		</View>
 	)
 }
@@ -28,21 +18,13 @@ export default function SuccessPage() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 50,
-		paddingTop: 100
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 20
 	},
 	text: {
 		fontSize: 16,
 		color: '#666',
-		width: '80%',
-		textAlign: 'center'
-	},
-	content: {
-		flex: 1,
-		alignItems: 'center'
-	},
-	footer: {
-		width: '100%',
-		paddingBottom: 10
+		marginBottom: 20
 	}
 })
