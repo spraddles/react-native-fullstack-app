@@ -17,7 +17,6 @@
 ### Build app:  
 - `npm run prebuild`  
 - `npm run build:ios`
-- (more steps for complete build)
 
 ### Tips:  
 - cache: start metro with no cache: `npx expo start --clear`
@@ -30,3 +29,8 @@
 - expo: you can't have multiple instances of `metro` running else you'll get app errors  
 - router: if you make router edits you need to exit & restart the app + expo to see changes  
 - make sure you set all the `ENV` vars required  
+- authentication: if using social logins configure them before (e.g. on google cloud platform for google login, etc.)
+
+### Production release:
+- google cloud: publish app for oauth: https://console.cloud.google.com/auth/audience
+- 

@@ -19,6 +19,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		entitlements: {
 			'com.apple.developer.in-app-payments': 'some_merchant_id',
 			'com.apple.developer.payment-pass-provisioning': true
+		},
+		config: {
+			googleSignIn: {
+				reservedClientId: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_CLIENT_ID_REVERSE
+			}
 		}
 	},
 	android: {
@@ -46,6 +51,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 					backgroundColor: '#000000'
 				},
 				imageWidth: 350
+			}
+		],
+		[
+			'@react-native-google-signin/google-signin',
+			{
+				iosUrlScheme: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_CLIENT_ID_REVERSE
 			}
 		]
 	],
