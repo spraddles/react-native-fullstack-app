@@ -49,7 +49,7 @@ export const SocialButton = ({ onPress, type }: SocialButtonProps) => {
 			paddingBottom: 15,
 			paddingLeft: 20,
 			paddingRight: 20,
-			width: '75%',
+			width: '80%',
 			marginTop: 15,
 			marginBottom: 15,
 			borderRadius: 5,

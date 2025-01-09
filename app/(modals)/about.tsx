@@ -20,7 +20,7 @@ export default function ModalScreen() {
 
 	return (
 		<View style={styles.container}>
-			<Image style={styles.image} source={require('../assets/images/logo.png')} />
+			<Image style={styles.image} source={require('../../assets/images/logo.png')} />
 			<Text style={styles.body}>
 				GlobalPay ® is a simple but powerful app that allows instant funds transfers to
 				more than 200 countries around the world. Visit our website for more information

@@ -17,7 +17,7 @@ function TabBarIcon(props: {
 
 function ModalTriggerButton(props: { colorScheme: string }) {
 	return (
-		<Link href="/modal" asChild>
+		<Link href="/(modals)/about" asChild>
 			<Pressable>
 				{({ pressed }) => (
 					<FontAwesome

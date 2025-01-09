@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-import { useEffect } from 'react'
 import 'react-native-reanimated'
 
 import { useBaseStore } from '@/store/base'
@@ -74,7 +73,7 @@ function RootLayoutNav() {
 			/>
 			<Stack>
 				<Stack.Screen name="(pages)/index" options={{ headerShown: false }} />
-				<Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+				<Stack.Screen name="(modals)/about" options={{ presentation: 'modal' }} />
 				<Stack.Screen
 					name="(pages)/confirm"
 					options={{

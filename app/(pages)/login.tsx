@@ -2,6 +2,8 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { View, Text } from '@/components/Themed'
 
+import { router } from 'expo-router'
+
 import { SocialButton } from '@/components/ui/socialButton'
 
 export default function LoginPage() {
@@ -10,7 +12,11 @@ export default function LoginPage() {
 			<Text style={styles.text}>Choose a login method:</Text>
 			<SocialButton fill={true} type={'google'} />
 			<SocialButton fill={true} type={'apple'} />
-			<SocialButton fill={true} type={'email'} />
+			<SocialButton
+				fill={true}
+				type={'email'}
+				onPress={() => router.push('/(pages)/emailLoginForm')}
+			/>
 		</View>
 	)
 }
