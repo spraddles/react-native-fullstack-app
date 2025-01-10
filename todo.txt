@@ -11,16 +11,15 @@ Bugs:
 -forgot password (for email method)
 -profile page scroll up bug when editing field (same with Transfer page)
 -user can tap directly into other inputs bypassing validation logic
--button fill / not-filled are different heights
 -fix styling for each transaction top & bottom borders in list
 -add canMakePayment function to catch payment issues
 
 
 Wishlist:
--better tab icons (@expo/vector-icons/* has more icon sets)
 -currency type above country flag
 -send copy of receipt via email
 -qr code scan for pix key
+-add in loader + toast errors for appleLogin
 
 
 Feedback:

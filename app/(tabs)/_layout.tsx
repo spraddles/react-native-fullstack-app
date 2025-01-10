@@ -1,18 +1,47 @@
 import React from 'react'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Link, Tabs } from 'expo-router'
 import { Pressable } from 'react-native'
+
+import Feather from '@expo/vector-icons/Feather'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import Octicons from '@expo/vector-icons/Octicons'
 
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
 import { useClientOnlyValue } from '@/components/useClientOnlyValue'
 
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-	name: React.ComponentProps<typeof FontAwesome>['name']
-	color: string
-}) {
-	return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />
+function TabBarIcon(props: { name: string; color: string }) {
+	if (props.name === 'dollar-sign') {
+		return (
+			<Feather
+				name={props.name}
+				size={32}
+				style={{ marginBottom: -3 }}
+				color={props.color}
+			/>
+		)
+	}
+	if (props.name === 'history') {
+		return (
+			<Octicons
+                name={props.name}
+				size={26}
+				style={{ marginBottom: -3 }}
+				color={props.color}
+			/>
+		)
+	}
+	if (props.name === 'user') {
+		return (
+			<Feather
+                name={props.name}
+				size={30}
+				style={{ marginBottom: 0 }}
+				color={props.color}
+			/>
+		)
+	}
+	return null
 }
 
 function ModalTriggerButton(props: { colorScheme: string }) {
@@ -20,8 +49,8 @@ function ModalTriggerButton(props: { colorScheme: string }) {
 		<Link href="/(modals)/about" asChild>
 			<Pressable>
 				{({ pressed }) => (
-					<FontAwesome
-						name="info-circle"
+					<Ionicons
+						name="information-circle-outline"
 						size={25}
 						color={Colors[props.colorScheme ?? 'light'].text}
 						style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
@@ -51,7 +80,7 @@ export default function TabLayout() {
 				name="index"
 				options={{
 					title: 'Transfer',
-					tabBarIcon: ({ color }) => <TabBarIcon name="dollar" color={color} />,
+					tabBarIcon: ({ color }) => <TabBarIcon name="dollar-sign" color={color} />,
 					headerRight: () => <ModalTriggerButton colorScheme={colorScheme} />
 				}}
 			/>
@@ -67,7 +96,7 @@ export default function TabLayout() {
 				name="profile"
 				options={{
 					title: 'Profile',
-					tabBarIcon: ({ color }) => <TabBarIcon name="user-circle" color={color} />,
+					tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
 					headerRight: () => <ModalTriggerButton colorScheme={colorScheme} />
 				}}
 			/>

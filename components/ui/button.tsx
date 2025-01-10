@@ -13,7 +13,7 @@ export function Button({ onPress, text, fill = true, disabled }: ButtonProps) {
 		<TouchableOpacity
 			style={[
 				styles.button,
-				fill === false && styles.buttonFilled,
+				fill === false && styles.noFillButton,
 				disabled && styles.buttonDisabled
 			]}
 			onPress={onPress}
@@ -22,7 +22,7 @@ export function Button({ onPress, text, fill = true, disabled }: ButtonProps) {
 			<Text
 				style={[
 					styles.text,
-					fill === false && styles.textFilled,
+					fill === false && styles.noFillText,
 					disabled && styles.textDisabled
 				]}
 			>
@@ -40,11 +40,13 @@ const styles = StyleSheet.create({
 		paddingLeft: 20,
 		paddingRight: 20,
 		borderRadius: 15,
+		borderWidth: 2,
+		borderColor: '#209ff7',
 		width: '100%',
 		alignItems: 'center',
 		marginTop: 20
 	},
-	buttonFilled: {
+	noFillButton: {
 		backgroundColor: 'transparent',
 		borderWidth: 2,
 		borderColor: '#209ff7'
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: '600'
 	},
-	textFilled: {
+	noFillText: {
 		color: '#209ff7'
 	},
 	textDisabled: {
