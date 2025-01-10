@@ -7,12 +7,15 @@ To do:
 
 
 Bugs:
+-disabled button colors
 -email login: validate fields & catch blank fields
+-inputs have errors by default, change this
 -forgot password (for email method)
 -profile page scroll up bug when editing field (same with Transfer page)
 -user can tap directly into other inputs bypassing validation logic
 -fix styling for each transaction top & bottom borders in list
 -add canMakePayment function to catch payment issues
+-add canLoginVia (google, apple, etc.) function to catch device issues
 
 
 Wishlist:

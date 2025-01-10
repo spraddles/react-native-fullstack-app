@@ -100,7 +100,7 @@ export default function TabOneScreen() {
 			<View style={styles.content}>
 				<View style={styles.inputs}>
 					<NumberInput
-						label={'R $'}
+						label={'Amount'}
 						value={inputCurrency.value}
 						placeholder={'0.00'}
 						autoCorrect={false}
@@ -128,7 +128,7 @@ export default function TabOneScreen() {
 				</View>
 				<View style={styles.inputs}>
 					<Tabs
-						label={'PIX'}
+						label={'PIX method'}
 						tabs={[
 							{ id: 'cpf', name: 'CPF' },
 							{ id: 'phone', name: 'Phone' },
@@ -146,7 +146,7 @@ export default function TabOneScreen() {
 						<Input
 							label={'CPF'}
 							value={inputCPF.value}
-							placeholder={'Enter CPF'}
+							placeholder={'Recipient CPF'}
 							autoCorrect={false}
 							autoComplete="off"
 							keyboardType={'number-pad'}
@@ -176,7 +176,7 @@ export default function TabOneScreen() {
 						<Input
 							label={'Phone'}
 							value={inputPhone.value}
-							placeholder={'Enter phone'}
+							placeholder={'Recipient phone'}
 							autoCorrect={false}
 							autoComplete="off"
 							keyboardType={'phone-pad'}
@@ -210,7 +210,7 @@ export default function TabOneScreen() {
 						<Input
 							label={'Email'}
 							value={inputEmail.value}
-							placeholder={'Enter email'}
+							placeholder={'Recipient email'}
 							autoCorrect={false}
 							autoComplete="off"
 							autoCapitalize="none"
