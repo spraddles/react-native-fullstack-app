@@ -49,5 +49,8 @@ export const googleLogin = async () => {
 			// some other error happened
 			console.log('googleSignIn: unknown error', error)
 		}
+	} finally {
+		// stop loading spinner in case
+		useBaseStore.getState().setLoading(false)
 	}
 }
