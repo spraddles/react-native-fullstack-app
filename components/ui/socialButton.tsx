@@ -52,7 +52,7 @@ export const SocialButton = ({ onPress, type }: SocialButtonProps) => {
 			width: '80%',
 			marginTop: 15,
 			marginBottom: 15,
-			borderRadius: 5,
+			borderRadius: 15,
 			borderWidth: 2,
 			borderStyle: 'solid',
 			borderColor: borderColor

@@ -7,18 +7,15 @@ import { router } from 'expo-router'
 import { SocialButton } from '@/components/ui/socialButton'
 
 import { googleLogin } from '@/composables/googleLogin'
+import { appleLogin } from '@/composables/appleLogin'
 
 export default function LoginPage() {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.text}>Choose a login method:</Text>
-			<SocialButton fill={true} type={'google'} onPress={async () => await googleLogin()} />
-			<SocialButton fill={true} type={'apple'} />
-			<SocialButton
-				fill={true}
-				type={'email'}
-				onPress={() => router.push('/(pages)/emailLoginForm')}
-			/>
+			<SocialButton type={'google'} onPress={async () => await googleLogin()} />
+			<SocialButton type={'apple'} onPress={async () => await appleLogin()} />
+			<SocialButton type={'email'} onPress={() => router.push('/(pages)/emailLoginForm')} />
 		</View>
 	)
 }
