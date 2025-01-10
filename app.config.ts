@@ -11,6 +11,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	userInterfaceStyle: 'automatic',
 	newArchEnabled: true,
 	ios: {
+		usesAppleSignIn: true,
 		supportsTablet: true,
 		bundleIdentifier: 'com.anonymous.GlobalPay',
 		infoPlist: {
@@ -40,6 +41,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	},
 	plugins: [
 		'expo-router',
+		'expo-apple-authentication',
 		'./node_modules/@rnw-community/react-native-payments/plugins/with-payments.js',
 		[
 			'expo-splash-screen',
