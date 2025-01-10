@@ -41,7 +41,6 @@ export default function EditProfileScreen() {
 	// @TODO: update this to handle DB requests
 	const handleSubmit = async () => {
 		useBaseStore.getState().setLoading(true)
-		console.log('handleSubmit')
 		// update user fields in store
 		useBaseStore.getState().setUserField('name', inputName.value)
 		useBaseStore.getState().setUserField('surname', inputSurname.value)

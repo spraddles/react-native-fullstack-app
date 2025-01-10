@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
 		borderColor: '#209ff7'
 	},
 	buttonDisabled: {
+		borderColor: '#ccc',
 		backgroundColor: '#ccc'
 	},
 	text: {

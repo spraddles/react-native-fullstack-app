@@ -11,7 +11,6 @@ export const appleLogin = async () => {
 					AppleAuthentication.AppleAuthenticationScope.EMAIL
 				]
 			})
-			console.log('credential: ', credential)
 			if (credential.identityToken) {
 				const {
 					error,
@@ -20,7 +19,6 @@ export const appleLogin = async () => {
 					provider: 'apple',
 					token: credential.identityToken
 				})
-				console.log(JSON.stringify({ error, user }, null, 2))
 				if (!error) {
 					// user signed in
 					console.log('user sign in success!')

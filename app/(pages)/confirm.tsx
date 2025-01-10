@@ -40,7 +40,6 @@ export default function ConfirmPage() {
 			}
 			// payment success
 			else {
-				console.log('Payment successful:', paymentDetails)
 				// save details to server
 				useBaseStore.getState().setLoading(true)
 				await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes

@@ -7,7 +7,6 @@ To do:
 
 
 Bugs:
--disabled button colors
 -email login: validate fields & catch blank fields
 -inputs have errors by default, change this
 -forgot password (for email method)
