@@ -24,7 +24,6 @@ export default function ConfirmPage() {
 	const receiver = 'Frederico Jon da Silva'
 
 	const handleConfirm = async () => {
-		console.log('handleConfirm')
 
 		const { processPayment } = ApplePay()
 

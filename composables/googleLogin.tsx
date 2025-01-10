@@ -1,5 +1,5 @@
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin'
-import { supabase } from '@/supabase.ts'
+import { supabase } from '@/supabase/connect'
 
 import { useBaseStore } from '@/store/base'
 

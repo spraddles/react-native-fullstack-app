@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, AppState } from 'react-native'
-import { supabase } from '@/supabase.ts'
+import { supabase } from '@/supabase/connect'
 
 import { router } from 'expo-router'
 

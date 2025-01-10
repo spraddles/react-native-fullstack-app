@@ -1,6 +1,6 @@
 import { Platform } from 'react-native'
 import * as AppleAuthentication from 'expo-apple-authentication'
-import { supabase } from '@/supabase'
+import { supabase } from '@/supabase/connect'
 
 export const appleLogin = async () => {
 	if (Platform.OS === 'ios') {
