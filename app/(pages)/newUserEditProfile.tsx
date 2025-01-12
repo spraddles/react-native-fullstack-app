@@ -61,10 +61,14 @@ export default function NewUserEditProfileScreen() {
 			useBaseStore.getState().setUserField('phone', inputPhone.value)
 			useBaseStore.getState().setUserField('passport', inputPassport.value)
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-			const response = await supabase.auth.signUp({
-				email: user.email,
-				password: password
-			})
+			const response = await supabase.auth.signUp(
+				{
+					email: user.email,
+					password: password
+				},
+				// don't send confirmation email
+				{ disableEmailConfirmation: true }
+			)
 			if (response?.data?.user?.aud === 'authenticated') {
 				// success
 				useBaseStore.getState().setLoading(false)
@@ -73,6 +77,7 @@ export default function NewUserEditProfileScreen() {
 			// failure
 			else {
 				console.log('signUpWithEmail error: ', response)
+				useBaseStore.getState().setLoading(false)
 				useBaseStore.getState().setToast({
 					visible: true,
 					message: `We can't create your account now sorry: ${response.error.toString()}`
