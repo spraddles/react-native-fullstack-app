@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { StyleSheet, ScrollView, View } from 'react-native'
 
-import { router } from 'expo-router'
+import { useLayoutEffect } from 'react'
+import { useNavigation } from '@react-navigation/native'
+
+import { router, useLocalSearchParams } from 'expo-router'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,7 +14,19 @@ import { removeNonNumbers, formatPhone, formatPassport } from '@/composables/inp
 
 import { useBaseStore } from '@/store/base'
 
-export default function EditProfileScreen() {
+import { supabase } from '@/supabase/connect'
+
+export default function NewUserEditProfileScreen() {
+	const { password } = useLocalSearchParams()
+	const navigation = useNavigation()
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerShown: false,
+			headerBackVisible: false
+		})
+	}, [navigation])
+
 	const blankErrorText = 'Please enter a value'
 
 	const initialState = (value: string) => ({
@@ -24,7 +39,6 @@ export default function EditProfileScreen() {
 
 	const [inputName, setInputName] = useState(initialState(user.name))
 	const [inputSurname, setInputSurname] = useState(initialState(user.surname))
-	const [inputEmail, setInputEmail] = useState(initialState(user.email))
 	const [inputPhone, setInputPhone] = useState(initialState(user.phone))
 	const [inputPassport, setInputPassport] = useState(initialState(user.passport))
 
@@ -39,16 +53,37 @@ export default function EditProfileScreen() {
 	}
 
 	const handleSubmit = async () => {
-		useBaseStore.getState().setLoading(true)
-		// update user fields in store
-		useBaseStore.getState().setUserField('name', inputName.value)
-		useBaseStore.getState().setUserField('surname', inputSurname.value)
-		useBaseStore.getState().setUserField('email', inputEmail.value)
-		useBaseStore.getState().setUserField('phone', inputPhone.value)
-		useBaseStore.getState().setUserField('passport', inputPassport.value)
-		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-		useBaseStore.getState().setLoading(false)
-		router.push('/(tabs)/profile')
+		try {
+			useBaseStore.getState().setLoading(true)
+			// update user fields in store
+			useBaseStore.getState().setUserField('name', inputName.value)
+			useBaseStore.getState().setUserField('surname', inputSurname.value)
+			useBaseStore.getState().setUserField('phone', inputPhone.value)
+			useBaseStore.getState().setUserField('passport', inputPassport.value)
+			await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
+			const response = await supabase.auth.signUp({
+				email: user.email,
+				password: password
+			})
+			if (response?.data?.user?.aud === 'authenticated') {
+				// success
+				useBaseStore.getState().setLoading(false)
+				router.push('/(pages)/newUserProfileComplete')
+			}
+			// failure
+			else {
+				console.log('signUpWithEmail error: ', response)
+				useBaseStore.getState().setToast({
+					visible: true,
+					message: `We can't create your account now sorry: ${response.error.toString()}`
+				})
+			}
+		} catch (error) {
+			console.log('signUpWithEmail error: ', error)
+		} finally {
+			// in case spinner isn't already stopped
+			useBaseStore.getState().setLoading(false)
+		}
 	}
 
 	return (
@@ -107,32 +142,6 @@ export default function EditProfileScreen() {
 					}}
 				/>
 				<Input
-					label={'Email'}
-					value={inputEmail.value}
-					placeholder={'Enter email'}
-					autoCorrect={false}
-					autoComplete="off"
-					autoCapitalize="none"
-					keyboardType={'email-address'}
-					returnKeyType="done"
-					error={inputEmail.error}
-					errorText={inputEmail.errorMessage}
-					onChangeText={(text) => {
-						setInputEmail({
-							value: text,
-							error: false,
-							errorMessage: ''
-						})
-					}}
-					onSubmitEditing={() => {
-						setInputEmail((prev) => ({
-							...prev,
-							error: hasError('email', inputEmail.value),
-							errorMessage: getErrorMessage('email', inputEmail.value)
-						}))
-					}}
-				/>
-				<Input
 					label={'Phone'}
 					value={inputPhone.value}
 					placeholder={'Enter phone'}
@@ -152,11 +161,10 @@ export default function EditProfileScreen() {
 					onEndEditing={() => {
 						setInputPhone((prev) => ({
 							...prev,
-							error: hasError('number', removeNonNumbers(inputPhone.value), 11),
+							error: hasError('number', removeNonNumbers(inputPhone.value)),
 							errorMessage: getErrorMessage(
 								'number',
-								Number(removeNonNumbers(inputPhone.value)),
-								11
+								Number(removeNonNumbers(inputPhone.value))
 							)
 						}))
 					}}
@@ -194,7 +202,6 @@ export default function EditProfileScreen() {
 					disabled={
 						inputName.error ||
 						inputSurname.error ||
-						inputEmail.error ||
 						inputPhone.error ||
 						inputPassport.error
 					}
@@ -205,8 +212,8 @@ export default function EditProfileScreen() {
 				<Button
 					text="Cancel"
 					fill={false}
-					onPress={async () => {
-						await router.back()
+					onPress={() => {
+						router.push('/(pages)')
 					}}
 				/>
 			</View>

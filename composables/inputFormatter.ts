@@ -32,3 +32,12 @@ export const formatPhone = (number) => {
 	const cleaned = number.toString().replace(/\D/g, '')
 	return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1)-$2-$3')
 }
+
+export const formatPassport = (string) => {
+	if (!string) {
+		return ''
+	}
+	string = String(string)
+	const cleaned = string.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
+	return cleaned
+}

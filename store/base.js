@@ -6,7 +6,8 @@ export const useBaseStore = create((set, get) => ({
 		surname: '',
 		email: '',
 		phone: '',
-		cpf: ''
+		cpf: '',
+		passport: ''
 	},
 
 	loading: false,

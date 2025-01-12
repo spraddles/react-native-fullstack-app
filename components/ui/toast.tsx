@@ -15,7 +15,7 @@ export function Toast({ message, visible, onHide }: ToastProps) {
 			// fade in
 			Animated.timing(opacity, {
 				toValue: 1,
-				duration: 300,
+				duration: 350,
 				useNativeDriver: true
 			}).start()
 			// auto hide after X seconds

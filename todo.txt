@@ -1,27 +1,31 @@
 To do:
--database (local)
-> create supabase account
-> setup local supabase store in app
+-signup: email
+-signup: socials
+-login: email
+-login: socials
 -pix 'key' unique number (chavealeatoria)
+-persist state
+-reset state on cancel (in new user flow)
 -authentication
 
 
 Bugs:
--email login: validate fields & catch blank fields
+-email login + signup: validate fields & catch blank fields
 -inputs have errors by default, change this
 -forgot password (for email method)
 -profile page scroll up bug when editing field (same with Transfer page)
 -user can tap directly into other inputs bypassing validation logic
 -fix styling for each transaction top & bottom borders in list
--add canMakePayment function to catch payment issues
--add canLoginVia (google, apple, etc.) function to catch device issues
+-add canMakePayment function to catch potential device payment issues
+-add canLoginVia (google, apple, etc.) function to catch potential device login issues
 
 
 Wishlist:
--currency type above country flag
 -send copy of receipt via email
 -qr code scan for pix key
 -add in loader + toast errors for appleLogin
+-add email confirmation for email signups
+-add info icons / buttons to explain (things like) why certain fields are needed, etc.
 
 
 Feedback:

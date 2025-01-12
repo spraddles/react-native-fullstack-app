@@ -1,7 +1,7 @@
 /* 
 *   Run these queries in the supabase SQL editor.
-*   This will now let you run 'supabase.rpc()' rest
-*   calls. Example below:
+*   This will now let you run 'supabase.rpc()' 
+*   remote procedure calls. Example below:
 *
 *   const response = await supabase.rpc('get_user_by_email', { 
 *       email_param: 'some@email.com 
