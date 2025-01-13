@@ -12,6 +12,8 @@ import { useBaseStore } from '@/store/base'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+import { hasOnboarded } from '@/composables/authHelpers'
+
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
 // `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
@@ -36,23 +38,44 @@ export default function EmailLoginForm() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
-	const loginWithEmail = async () => {
+	const handleEmailLogin = async () => {
 		useBaseStore.getState().setLoading(true)
-		const response = await supabase.auth.signInWithPassword({
-			email: email,
-			password: password
-		})
-		// authenticated
-		if (response.data?.user?.aud === 'authenticated') {
-			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+		try {
+			const response = await supabase.auth.signInWithPassword({
+				email: email,
+				password: password
+			})
+			// authenticated
+			if (response.data?.user?.aud === 'authenticated') {
+				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+				useBaseStore.getState().setLoading(false)
+				const has_been_onboarded = await hasOnboarded(email)
+				// user needs onboarding
+				if (!has_been_onboarded) {
+					console.log('handleEmailLogin: user needs onboarding')
+					useBaseStore.getState().setLoading(false)
+					router.push('/(pages)/newUserEditProfile')
+				}
+				// user already onboarded
+				else {
+					console.log('handleEmailLogin: user already onboarded')
+					useBaseStore.getState().setLoading(false)
+					router.push('/(tabs)')
+				}
+			}
+			// not authenticated
+			else {
+				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+				useBaseStore.getState().setLoading(false)
+				useBaseStore.getState().setToast({ visible: true, message: response.error.message })
+			}
+		} catch (error) {
+			// other error
 			useBaseStore.getState().setLoading(false)
-			router.push('/(tabs)')
-		}
-		// not authenticated
-		else {
-			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+			useBaseStore.getState().setToast({ visible: true, message: error })
+		} finally {
+			// in case spinner isn't already stopped
 			useBaseStore.getState().setLoading(false)
-			useBaseStore.getState().setToast({ visible: true, message: response.error.message })
 		}
 	}
 
@@ -87,7 +110,7 @@ export default function EmailLoginForm() {
 					text="Login"
 					fill={true}
 					onPress={async () => {
-						await loginWithEmail()
+						await handleEmailLogin()
 					}}
 				/>
 			</View>
