@@ -1,12 +1,10 @@
 To do:
--signup: email
--signup: socials
--login: email
--login: socials
+-new user: upload fields to db, set onboarding status
+-
+
 -pix 'key' unique number (chavealeatoria)
 -persist state
 -reset state on cancel (in new user flow)
--authentication
 
 
 Bugs:

@@ -6,12 +6,23 @@ import { View } from '@/components/Themed'
 import { Button } from '@/components/ui/button'
 
 export default function SuccessPage() {
+
 	const login = async () => {
-		router.push('/(pages)/login')
+		router.push({
+			pathname: '/(pages)/loginSignup',
+			params: {
+				loginType: 'login'
+			}
+		})
 	}
 
 	const signUp = async () => {
-		router.push('/(pages)/signUp')
+		router.push({
+			pathname: '/(pages)/loginSignup',
+			params: {
+				loginType: 'signup'
+			}
+		})
 	}
 
 	return (

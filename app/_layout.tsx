@@ -102,20 +102,10 @@ function RootLayoutNav() {
 					}}
 				/>
 				<Stack.Screen
-					name="(pages)/login"
+					name="(pages)/loginSignup"
 					options={{
 						headerShown: true,
 						headerTitle: 'Login',
-						headerBackVisible: true,
-						headerBackTitle: 'Home',
-						headerTitleStyle: { fontSize: 25 }
-					}}
-				/>
-				<Stack.Screen
-					name="(pages)/signUp"
-					options={{
-						headerShown: true,
-						headerTitle: 'Sign up',
 						headerBackVisible: true,
 						headerBackTitle: 'Home',
 						headerTitleStyle: { fontSize: 25 }
