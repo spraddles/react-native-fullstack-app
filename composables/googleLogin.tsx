@@ -1,18 +1,19 @@
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin'
 import { supabase } from '@/supabase/connect'
 
-import { useBaseStore } from '@/store/base'
-
-import { router } from 'expo-router'
-
 export const googleLogin = async () => {
 	GoogleSignin.configure({
 		scopes: [],
 		iosClientId: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_CLIENT_ID
 	})
 
+	/*  Note: all social auth methods should return an object
+	 **  like this { status: true/ false, message: 'Example auth message' }
+	 **  so that social auth can be reused in all login or signup
+	 **  screens
+	 */
+
 	try {
-		useBaseStore.getState().setLoading(true)
 		await GoogleSignin.hasPlayServices()
 		const userInfo = await GoogleSignin.signIn()
 		if (userInfo.data.idToken) {
@@ -22,15 +23,11 @@ export const googleLogin = async () => {
 			})
 			// authenticated
 			if (response.data?.user?.aud === 'authenticated') {
-				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
-				useBaseStore.getState().setLoading(false)
-				router.push('/(tabs)')
+				return { status: true, email: response.data.user.email }
 			}
 			// not authenticated
 			else {
-				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
-				useBaseStore.getState().setLoading(false)
-				useBaseStore.getState().setToast({ visible: true, message: response.error.message })
+				return { status: false, message: response.message }
 			}
 		} else {
 			throw new Error('no ID token present!')
@@ -39,18 +36,19 @@ export const googleLogin = async () => {
 		if (error.code === statusCodes.SIGN_IN_CANCELLED) {
 			// user cancelled the login flow
 			console.log('googleSignIn: SIGN_IN_CANCELLED', error)
+			return { status: false, message: error }
 		} else if (error.code === statusCodes.IN_PROGRESS) {
 			// operation (e.g. sign in) is in progress already
 			console.log('googleSignIn: IN_PROGRESS', error)
+			return { status: false, message: error }
 		} else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
 			// play services not available or outdated
 			console.log('googleSignIn: PLAY_SERVICES_NOT_AVAILABLE', error)
+			return { status: false, message: error }
 		} else {
 			// some other error happened
 			console.log('googleSignIn: unknown error', error)
+			return { status: false, message: error }
 		}
-	} finally {
-		// in case spinner isn't already stopped
-		useBaseStore.getState().setLoading(false)
 	}
 }

@@ -23,7 +23,6 @@ Bugs:
 Wishlist:
 -send copy of receipt via email
 -qr code scan for pix key
--add in loader + toast errors for appleLogin
 -add email confirmation for email signups
 -add info icons / buttons to explain (things like) why certain fields are needed, etc.
 
