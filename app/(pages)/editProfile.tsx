@@ -8,8 +8,11 @@ import { Input } from '@/components/ui/input'
 
 import { validateInput } from '@/composables/inputValidator'
 import { removeNonNumbers, formatPhone, formatPassport } from '@/composables/inputFormatter'
+import { updateUserMeta } from '@/composables/updateUserMeta'
 
 import { useBaseStore } from '@/store/base'
+
+import { supabase } from '@/supabase/connect'
 
 export default function EditProfileScreen() {
 	const blankErrorText = 'Please enter a value'
@@ -46,6 +49,22 @@ export default function EditProfileScreen() {
 		useBaseStore.getState().setUserField('email', inputEmail.value)
 		useBaseStore.getState().setUserField('phone', inputPhone.value)
 		useBaseStore.getState().setUserField('passport', inputPassport.value)
+		// database: update user meta
+		await updateUserMeta(user.email, {
+			name: inputName.value,
+			surname: inputSurname.value,
+			phone: inputPhone.value,
+			passport: inputPassport.value,
+			has_onboarded: true
+		})
+		// database: update user email
+		const emailHasChanged = user.email !== inputEmail.value
+		if (emailHasChanged) {
+			await supabase.auth.updateUser({
+				email: inputEmail.value
+			})
+		}
+
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 		useBaseStore.getState().setLoading(false)
 		router.push('/(tabs)/profile')

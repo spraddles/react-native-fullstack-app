@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 
 import { validateInput } from '@/composables/inputValidator'
 import { removeNonNumbers, formatPhone, formatPassport } from '@/composables/inputFormatter'
+import { updateUserMeta } from '@/composables/updateUserMeta'
 
 import { useBaseStore } from '@/store/base'
 
@@ -69,12 +70,20 @@ export default function NewUserEditProfileScreen() {
 				// don't send confirmation email
 				{ disableEmailConfirmation: true }
 			)
+			// auth success
 			if (response?.data?.user?.aud === 'authenticated') {
-				// success
+				// update database
+				const updateUserResponse = await updateUserMeta(user.email, {
+					name: inputName.value,
+					surname: inputSurname.value,
+					phone: inputPhone.value,
+					passport: inputPassport.value,
+					has_onboarded: true
+				})
 				useBaseStore.getState().setLoading(false)
 				router.push('/(pages)/newUserProfileComplete')
 			}
-			// failure
+			// auth failure
 			else {
 				console.log('signUpWithEmail error: ', response)
 				useBaseStore.getState().setLoading(false)

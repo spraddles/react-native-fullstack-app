@@ -1,10 +1,15 @@
 To do:
--new user: upload fields to db, set onboarding status
--
+-new user:
+> upload fields to db, 
+> set onboarding status
 
+-social signup, email signup
+
+-test delete user foreign keys propagation
 -pix 'key' unique number (chavealeatoria)
 -persist state
 -reset state on cancel (in new user flow)
+-sign up to expo & test build on testflight
 
 
 Bugs:
@@ -19,7 +24,7 @@ Bugs:
 
 
 Wishlist:
--send copy of receipt via email
+-send copy of transaction receipt via email
 -qr code scan for pix key
 -add email confirmation for email signups
 -add info icons / buttons to explain (things like) why certain fields are needed, etc.
