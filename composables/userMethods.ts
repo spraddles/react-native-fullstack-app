@@ -36,3 +36,19 @@ export const updateUserMeta = async (id: string, data: object) => {
 		return { status: false, error: error.message }
 	}
 }
+
+export const fetchUserProfile = async () => {
+	const supabaseUser = await supabase.auth.getUser()
+	const supabaseUserID = supabaseUser?.data?.user?.id
+	const userProfile = await supabase
+		.from('user_meta')
+		.select()
+		.eq('user_id', supabaseUserID)
+		.single()
+
+	const object = {
+		...userProfile?.data,
+		email: supabaseUser?.data?.user?.email
+	}
+	return object
+}

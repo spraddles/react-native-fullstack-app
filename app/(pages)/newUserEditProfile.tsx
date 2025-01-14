@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 
 import { validateInput } from '@/composables/inputValidator'
 import { removeNonNumbers, formatPhone, formatPassport } from '@/composables/inputFormatter'
-import { updateUserMeta } from '@/composables/updateUserMeta'
+import { updateUserMeta } from '@/composables/userMethods'
 
 import { useBaseStore } from '@/store/base'
 

@@ -1,4 +1,5 @@
 To do:
+-google cancel login causes error
 -merge: editProfile + newUserEditProfile
 -add pix 'key' unique number (chavealeatoria)
 -transactions: db fields, api methods, connect to ui
@@ -25,6 +26,7 @@ Wishlist:
 -qr code scan for pix key
 -add email confirmation for email signups
 -add info icons / buttons to explain (things like) why certain fields are needed, etc.
+-home screen should be transactions + add a button for new payment
 
 
 Feedback:

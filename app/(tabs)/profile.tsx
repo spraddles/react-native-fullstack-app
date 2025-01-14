@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Image, View } from 'react-native'
 
 import { router } from 'expo-router'
 
 import { useBaseStore } from '@/store/base'
+
+import { fetchUserProfile } from '@/composables/userMethods'
 
 import { Text } from '@/components/Themed'
 import { Input } from '@/components/ui/input'
@@ -18,6 +20,18 @@ export default function ProfileScreen() {
 		useBaseStore.getState().setLoading(false)
 		router.push('/(pages)/editProfile')
 	}
+
+	useEffect(() => {
+		const getProfileData = async () => {
+			try {
+				const profileData = await fetchUserProfile()
+				useBaseStore.getState().setUser(profileData)
+			} catch (error) {
+				console.error('Error fetching getProfileData:', error)
+			}
+		}
+		getProfileData()
+	}, [])
 
 	return (
 		<View style={styles.container}>

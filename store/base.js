@@ -6,7 +6,6 @@ export const useBaseStore = create((set, get) => ({
 		surname: '',
 		email: '',
 		phone: '',
-		cpf: '',
 		passport: ''
 	},
 
@@ -31,6 +30,11 @@ export const useBaseStore = create((set, get) => ({
 				...state.user,
 				[field]: value
 			}
+		})),
+
+	setUser: (value) =>
+		set(() => ({
+			user: value
 		})),
 
 	setLoading: (value) =>
