@@ -29,7 +29,7 @@ export default function LoginPage() {
 				if (!has_been_onboarded) {
 					console.log('handleLogin: user needs onboarding')
 					useBaseStore.getState().setLoading(false)
-					router.push('/(pages)/newUserEditProfile')
+					router.push('/(pages)/newUser')
 				}
 				// user already onboarded
 				else {

@@ -35,8 +35,7 @@ export default function NewUserPage() {
 		<View style={styles.container}>
 			<View style={styles.content}>
 				<Text style={styles.text}>
-					To get started, we need some more information from you to complete your
-					profile...
+					We need some more information from you to complete your profile...
 				</Text>
 			</View>
 			<View style={styles.footer}>
