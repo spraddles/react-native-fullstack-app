@@ -1,12 +1,7 @@
 To do:
--new user:
-> upload fields to db, 
-> set onboarding status
-
--social signup, email signup
-
--test delete user foreign keys propagation
--pix 'key' unique number (chavealeatoria)
+-merge: editProfile + newUserEditProfile
+-add pix 'key' unique number (chavealeatoria)
+-transactions: db fields, api methods, connect to ui
 -persist state
 -reset state on cancel (in new user flow)
 -sign up to expo & test build on testflight
@@ -21,9 +16,11 @@ Bugs:
 -fix styling for each transaction top & bottom borders in list
 -add canMakePayment function to catch potential device payment issues
 -add canLoginVia (google, apple, etc.) function to catch potential device login issues
+-collect errors & log them online
 
 
 Wishlist:
+-android app for 40% of all users
 -send copy of transaction receipt via email
 -qr code scan for pix key
 -add email confirmation for email signups

@@ -18,8 +18,9 @@ import { useBaseStore } from '@/store/base'
 import { supabase } from '@/supabase/connect'
 
 export default function NewUserEditProfileScreen() {
-	const { password } = useLocalSearchParams()
+	const { password, method } = useLocalSearchParams()
 	const navigation = useNavigation()
+	const user = useBaseStore((state) => state.user)
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -35,8 +36,6 @@ export default function NewUserEditProfileScreen() {
 		error: !value,
 		errorMessage: value ? '' : blankErrorText
 	})
-
-	const user = useBaseStore((state) => state.user)
 
 	const [inputName, setInputName] = useState(initialState(user.name))
 	const [inputSurname, setInputSurname] = useState(initialState(user.surname))
@@ -62,38 +61,37 @@ export default function NewUserEditProfileScreen() {
 			useBaseStore.getState().setUserField('phone', inputPhone.value)
 			useBaseStore.getState().setUserField('passport', inputPassport.value)
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-			const response = await supabase.auth.signUp(
-				{
-					email: user.email,
-					password: password
-				},
-				// don't send confirmation email
-				{ disableEmailConfirmation: true }
-			)
-			// auth success
-			if (response?.data?.user?.aud === 'authenticated') {
-				// update database
-				const updateUserResponse = await updateUserMeta(user.email, {
-					name: inputName.value,
-					surname: inputSurname.value,
-					phone: inputPhone.value,
-					passport: inputPassport.value,
-					has_onboarded: true
-				})
-				useBaseStore.getState().setLoading(false)
-				router.push('/(pages)/newUserProfileComplete')
+			// for email accounts
+			if (method !== 'social') {
+				const signUpUserResponse = await supabase.auth.signUp(
+					{
+						email: user.email,
+						password: password
+					},
+					// don't send confirmation email
+					{ disableEmailConfirmation: true }
+				)
 			}
-			// auth failure
-			else {
-				console.log('signUpWithEmail error: ', response)
-				useBaseStore.getState().setLoading(false)
-				useBaseStore.getState().setToast({
-					visible: true,
-					message: `We can't create your account now sorry: ${response.error.toString()}`
-				})
-			}
+			// for all accounts (email + social)
+			const supabaseUser = await supabase.auth.getUser()
+			const supabaseUserID = supabaseUser?.data?.user?.id
+			const updateUserMetaResponse = await updateUserMeta(supabaseUserID, {
+				user_id: supabaseUserID,
+				name: inputName.value,
+				surname: inputSurname.value,
+				phone: inputPhone.value,
+				passport: inputPassport.value,
+				has_onboarded: true
+			})
+			useBaseStore.getState().setLoading(false)
+			router.push('/(pages)/newUserProfileComplete')
 		} catch (error) {
-			console.log('signUpWithEmail error: ', error)
+			console.log('NewUserEditProfileScreen unknown error: ', error)
+			useBaseStore.getState().setLoading(false)
+			useBaseStore.getState().setToast({
+				visible: true,
+				message: `We can't create your account now sorry: ${error}`
+			})
 		} finally {
 			// in case spinner isn't already stopped
 			useBaseStore.getState().setLoading(false)

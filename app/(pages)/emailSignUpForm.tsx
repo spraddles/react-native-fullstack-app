@@ -103,7 +103,7 @@ export default function EmailSignUoForm() {
 				useBaseStore.getState().setUserField('email', email.value) // save user email
 				useBaseStore.getState().setLoading(false)
 				router.push({
-					pathname: '/(pages)/newUser',
+					pathname: '/(pages)/completeProfile',
 					params: {
 						password: password.value
 					}

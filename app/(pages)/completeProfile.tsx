@@ -12,7 +12,7 @@ import { View } from '@/components/Themed'
 import { Button } from '@/components/ui/button'
 
 export default function NewUserPage() {
-	const { password } = useLocalSearchParams()
+	const { password, method } = useLocalSearchParams()
 	const navigation = useNavigation()
 
 	useLayoutEffect(() => {
@@ -26,7 +26,8 @@ export default function NewUserPage() {
 		router.push({
 			pathname: '/(pages)/newUserEditProfile',
 			params: {
-				password: password
+				password: password,
+				method: method
 			}
 		})
 	}

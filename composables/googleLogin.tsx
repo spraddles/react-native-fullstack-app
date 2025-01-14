@@ -23,7 +23,7 @@ export const googleLogin = async () => {
 			})
 			// authenticated
 			if (response.data?.user?.aud === 'authenticated') {
-				return { status: true, email: response.data.user.email }
+				return { status: true, email: response.data.user.email, id: response.data.user.id }
 			}
 			// not authenticated
 			else {

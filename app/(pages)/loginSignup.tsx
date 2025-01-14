@@ -15,7 +15,7 @@ import { hasOnboarded } from '@/composables/authHelpers'
 export default function LoginPage() {
 	const { loginType } = useLocalSearchParams()
 
-	const handleSocialLogin = async (method: string) => {
+	const handleSocialAccess = async (method: string) => {
 		useBaseStore.getState().setLoading(true)
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 		try {
@@ -24,16 +24,22 @@ export default function LoginPage() {
 				authResponse = await googleLogin()
 			}
 			if (authResponse.status === true) {
+				// set state
+				useBaseStore.getState().setUserField('id', authResponse.id)
+				useBaseStore.getState().setUserField('email', authResponse.email)
 				const has_been_onboarded = await hasOnboarded(authResponse.email)
 				// user needs onboarding
 				if (!has_been_onboarded) {
-					console.log('handleLogin: user needs onboarding')
 					useBaseStore.getState().setLoading(false)
-					router.push('/(pages)/newUser')
+					router.push({
+						pathname: '/(pages)/completeProfile',
+						params: {
+							method: 'social' // for all social auth methods
+						}
+					})
 				}
 				// user already onboarded
 				else {
-					console.log('handleLogin: user already onboarded')
 					useBaseStore.getState().setLoading(false)
 					router.push('/(tabs)')
 				}
@@ -52,7 +58,7 @@ export default function LoginPage() {
 		}
 	}
 
-	const handleEmailLogin = () => {
+	const handleEmailAccess = () => {
 		if (loginType === 'login') {
 			router.push('/(pages)/emailLoginForm')
 		}
@@ -65,9 +71,12 @@ export default function LoginPage() {
 		<View style={styles.container}>
 			{loginType === 'login' && <Text style={styles.text}>Choose a login method:</Text>}
 			{loginType === 'signup' && <Text style={styles.text}>Choose a sign up method:</Text>}
-			<SocialButton type={'google'} onPress={async () => await handleSocialLogin('google')} />
+			<SocialButton
+				type={'google'}
+				onPress={async () => await handleSocialAccess('google')}
+			/>
 			{/* <SocialButton type={'apple'} onPress={async () => await appleLogin()} /> */}
-			<SocialButton type={'email'} onPress={() => handleEmailLogin()} />
+			<SocialButton type={'email'} onPress={() => handleEmailAccess()} />
 		</View>
 	)
 }

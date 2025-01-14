@@ -52,13 +52,11 @@ export default function EmailLoginForm() {
 				const has_been_onboarded = await hasOnboarded(email)
 				// user needs onboarding
 				if (!has_been_onboarded) {
-					console.log('handleEmailLogin: user needs onboarding')
 					useBaseStore.getState().setLoading(false)
-					router.push('/(pages)/newUser')
+					router.push('/(pages)/completeProfile')
 				}
 				// user already onboarded
 				else {
-					console.log('handleEmailLogin: user already onboarded')
 					useBaseStore.getState().setLoading(false)
 					router.push('/(tabs)')
 				}
