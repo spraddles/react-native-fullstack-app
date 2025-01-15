@@ -27,7 +27,6 @@ export default function EditProfileScreen() {
 
 	const [inputName, setInputName] = useState(initialState(user.name))
 	const [inputSurname, setInputSurname] = useState(initialState(user.surname))
-	const [inputEmail, setInputEmail] = useState(initialState(user.email))
 	const [inputPhone, setInputPhone] = useState(initialState(user.phone))
 	const [inputPassport, setInputPassport] = useState(initialState(user.passport))
 
@@ -46,25 +45,19 @@ export default function EditProfileScreen() {
 		// update user fields in store
 		useBaseStore.getState().setUserField('name', inputName.value)
 		useBaseStore.getState().setUserField('surname', inputSurname.value)
-		useBaseStore.getState().setUserField('email', inputEmail.value)
 		useBaseStore.getState().setUserField('phone', inputPhone.value)
 		useBaseStore.getState().setUserField('passport', inputPassport.value)
 		// database: update user meta
-		await updateUserMeta(user.email, {
+		const supabaseUser = await supabase.auth.getUser()
+		const supabaseUserID = supabaseUser?.data?.user?.id
+		await updateUserMeta(supabaseUserID, {
+			user_id: supabaseUserID,
 			name: inputName.value,
 			surname: inputSurname.value,
 			phone: inputPhone.value,
 			passport: inputPassport.value,
 			has_onboarded: true
 		})
-		// database: update user email
-		const emailHasChanged = user.email !== inputEmail.value
-		if (emailHasChanged) {
-			await supabase.auth.updateUser({
-				email: inputEmail.value
-			})
-		}
-
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 		useBaseStore.getState().setLoading(false)
 		router.push('/(tabs)/profile')
@@ -122,32 +115,6 @@ export default function EditProfileScreen() {
 							...prev,
 							error: hasError('text', inputSurname.value),
 							errorMessage: getErrorMessage('text', inputSurname.value)
-						}))
-					}}
-				/>
-				<Input
-					label={'Email'}
-					value={inputEmail.value}
-					placeholder={'Enter email'}
-					autoCorrect={false}
-					autoComplete="off"
-					autoCapitalize="none"
-					keyboardType={'email-address'}
-					returnKeyType="done"
-					error={inputEmail.error}
-					errorText={inputEmail.errorMessage}
-					onChangeText={(text) => {
-						setInputEmail({
-							value: text,
-							error: false,
-							errorMessage: ''
-						})
-					}}
-					onSubmitEditing={() => {
-						setInputEmail((prev) => ({
-							...prev,
-							error: hasError('email', inputEmail.value),
-							errorMessage: getErrorMessage('email', inputEmail.value)
 						}))
 					}}
 				/>
@@ -213,7 +180,6 @@ export default function EditProfileScreen() {
 					disabled={
 						inputName.error ||
 						inputSurname.error ||
-						inputEmail.error ||
 						inputPhone.error ||
 						inputPassport.error
 					}

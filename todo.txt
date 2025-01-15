@@ -1,6 +1,5 @@
 To do:
 -merge: editProfile + newUserEditProfile
--add pix 'key' unique number (chavealeatoria)
 -transactions: db fields, api methods, connect to ui
 -persist state
 -reset state on cancel (in new user flow)
@@ -14,6 +13,7 @@ Bugs:
 -profile page scroll up bug when editing field (same with Transfer page)
 -user can tap directly into other inputs bypassing validation logic
 -fix styling for each transaction top & bottom borders in list
+-fix styling for pix method, make responsive right now its fixed width
 -add canMakePayment function to catch potential device payment issues
 -add canLoginVia (google, apple, etc.) function to catch potential device login issues
 -collect errors & log them online
@@ -24,8 +24,10 @@ Wishlist:
 -send copy of transaction receipt via email
 -qr code scan for pix key
 -add email confirmation for email signups
+-let users change their email (how does this work with social logins)
 -add info icons / buttons to explain (things like) why certain fields are needed, etc.
 -home screen should be transactions + add a button for new payment
+-add logout button (clear all state)
 
 
 Feedback:
