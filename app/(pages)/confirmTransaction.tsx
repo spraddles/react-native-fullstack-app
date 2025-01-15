@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 
 import { ApplePay } from '@/composables/applePay/index'
+import { createTransaction } from '@/composables/transactionMethods'
 
 import { View } from '@/components/Themed'
 import { Input } from '@/components/ui/input'
@@ -11,7 +12,8 @@ import { Button } from '@/components/ui/button'
 import { useBaseStore } from '@/store/base'
 
 export default function ConfirmPage() {
-	const { amount, paymentType, pixMethod, pixMethodValue } = useLocalSearchParams()
+	const params = useLocalSearchParams()
+	const transaction = JSON.parse(params.transaction as string)
 
 	const [error, setError] = useState('')
 	const [response, setResponse] = useState<PaymentResponse['details']>()
@@ -21,15 +23,12 @@ export default function ConfirmPage() {
 		setResponse(undefined)
 	}, [setError, setResponse])
 
-	const receiver = 'Frederico Jon da Silva'
-
 	const handleConfirm = async () => {
-
 		const { processPayment } = ApplePay()
 
 		try {
 			const paymentDetails = await processPayment(setError, setResponse)
-			// payment error (dev testing)
+			// payment error
 			if (paymentDetails.error === true) {
 				console.log('payment error')
 				await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -41,16 +40,9 @@ export default function ConfirmPage() {
 			else {
 				// save details to server
 				useBaseStore.getState().setLoading(true)
-				await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-				useBaseStore.getState().addTransaction({
-					id: Math.random().toString(36).substr(2, 9),
-					dateTime: new Date().toISOString(),
-					amount: parseFloat(amount),
-					receiver: receiver,
-					paymentType,
-					pixMethod,
-					pixMethodValue
-				})
+				// upload to database
+				await createTransaction(transaction)
+				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 				useBaseStore.getState().setLoading(false)
 				router.push('/(pages)/success')
 			}
@@ -64,13 +56,13 @@ export default function ConfirmPage() {
 		<View style={styles.container}>
 			<View style={styles.content}>
 				<View style={styles.inputs}>
-					<Input label={'Reciever'} value={receiver} disabled={true} />
+					<Input label={'Reciever'} value={transaction.receiver} disabled={true} />
 				</View>
 				<View style={styles.inputs}>
-					<Input label={'Amount'} value={amount} disabled={true} />
+					<Input label={'Amount'} value={transaction.amount} disabled={true} />
 				</View>
 				<View style={styles.inputs}>
-					<Input label={'Currency'} value={'Brazillian reals'} disabled={true} />
+					<Input label={'Currency'} value={'Brazilian reals'} disabled={true} />
 				</View>
 			</View>
 			<View style={styles.footer}>

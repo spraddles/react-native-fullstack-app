@@ -1,6 +1,17 @@
 To do:
--merge: editProfile + newUserEditProfile
--transactions: db fields, api methods, connect to ui
+
+
+fix value formats into db, should be stripped back (no spaces, no chars, except decimal dot place for numbers)
+"message": "invalid input syntax for type numeric: \"23,524.52\""
+
+
+-transactions: 
+> (done) db fields
+> api method: createTransaction, fetchTransactions
+> connect to ui: history screen, transfer screen
+> is state needed for transations
+
+-move authHelpers into userMethods
 -persist state
 -reset state on cancel (in new user flow)
 -sign up to expo & test build on testflight
@@ -17,6 +28,7 @@ Bugs:
 -add canMakePayment function to catch potential device payment issues
 -add canLoginVia (google, apple, etc.) function to catch potential device login issues
 -collect errors & log them online
+-seeder decision, use supabase or local db for dev environment
 
 
 Wishlist:
@@ -28,6 +40,7 @@ Wishlist:
 -add info icons / buttons to explain (things like) why certain fields are needed, etc.
 -home screen should be transactions + add a button for new payment
 -add logout button (clear all state)
+-user_meta add device meta like phone type + os version
 
 
 Feedback:

@@ -75,10 +75,10 @@ function RootLayoutNav() {
 				<Stack.Screen name="(pages)/index" options={{ headerShown: false }} />
 				<Stack.Screen name="(modals)/about" options={{ presentation: 'modal' }} />
 				<Stack.Screen
-					name="(pages)/confirm"
+					name="(pages)/confirmTransaction"
 					options={{
 						headerShown: true,
-						headerTitle: 'Confirm',
+						headerTitle: 'Payment',
 						headerBackVisible: false,
 						headerTitleStyle: { fontSize: 25 }
 					}}

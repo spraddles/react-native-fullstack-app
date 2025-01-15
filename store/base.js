@@ -22,6 +22,7 @@ export const useBaseStore = create((set, get) => ({
 	isToastVisible: () => get().toast.visible,
 	getToastMessage: () => get().toast.message,
 	getUser: () => get().user,
+	getTransactions: () => get().transactions,
 
 	// setters
 	setUserField: (field, value) =>
@@ -50,5 +51,10 @@ export const useBaseStore = create((set, get) => ({
 	addTransaction: (transaction) =>
 		set((state) => ({
 			transactions: [...state.transactions, transaction]
+		})),
+
+	setTransactions: (value) =>
+		set(() => ({
+			transactions: value
 		}))
 }))

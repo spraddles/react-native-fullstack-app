@@ -27,7 +27,7 @@ export default function ProfileScreen() {
 				const profileData = await fetchUserProfile()
 				useBaseStore.getState().setUser(profileData)
 			} catch (error) {
-				console.error('Error fetching getProfileData:', error)
+				console.error('Error fetching profile:', error)
 			}
 		}
 		getProfileData()

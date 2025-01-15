@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { router } from 'expo-router'
 
 import { View } from '@/components/Themed'
@@ -93,15 +93,20 @@ export default function TabOneScreen() {
 
 	const handleNext = async () => {
 		useBaseStore.getState().setLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
+		const fakeReceiver = 'Frederico Jon da Silva' // update this for prod
+		const transaction = {
+			pix_method: currentTab,
+			pix_method_value: getCurrentMethod().value,
+			receiver: fakeReceiver,
+			digital_wallet: Platform.OS === 'ios' ? 'apple' : 'google',
+			amount: inputCurrency.value
+		}
+		await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 		useBaseStore.getState().setLoading(false)
 		router.push({
-			pathname: '/(pages)/confirm',
+			pathname: '/(pages)/confirmTransaction',
 			params: {
-				amount: inputCurrency.value,
-				paymentType: 'pix',
-				pixMethod: currentTab,
-				pixMethodValue: getCurrentMethod().value
+				transaction: JSON.stringify(transaction)
 			}
 		})
 	}

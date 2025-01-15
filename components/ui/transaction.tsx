@@ -3,27 +3,25 @@ import { View, Text, StyleSheet } from 'react-native'
 
 type TransactionProps = {
 	amount: number
-	dateTime: string
-	id: string
-	paymentType: string
-	pixMethod: string
-	pixMethodValue: string
+	created_at: string
+	pix_method: string
+	pix_method_value: string
 	receiver: string
 }
 
 export function Transaction({
 	amount,
-	dateTime,
-	pixMethod,
-	pixMethodValue,
+	created_at,
+	pix_method,
+	pix_method_value,
 	receiver
 }: TransactionProps) {
-	const date = new Date(dateTime).toLocaleDateString('en-GB', {
+	const date = new Date(created_at).toLocaleDateString('en-GB', {
 		day: 'numeric',
 		month: 'short',
 		year: 'numeric'
 	})
-	const time = new Date(dateTime).toLocaleTimeString()
+	const time = new Date(created_at).toLocaleTimeString()
 
 	return (
 		<View style={styles.container}>
@@ -33,8 +31,8 @@ export function Transaction({
 			</View>
 
 			<View style={styles.pixInfo}>
-				<Text style={styles.method}>{pixMethod.toUpperCase()}:</Text>
-				<Text style={styles.value}>{pixMethodValue}</Text>
+				<Text style={styles.method}>{pix_method.toUpperCase()}:</Text>
+				<Text style={styles.value}>{pix_method_value}</Text>
 			</View>
 
 			<Text style={styles.date}>{date}</Text>
