@@ -1,5 +1,4 @@
 To do:
--google cancel login causes error
 -merge: editProfile + newUserEditProfile
 -add pix 'key' unique number (chavealeatoria)
 -transactions: db fields, api methods, connect to ui

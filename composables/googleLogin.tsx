@@ -16,21 +16,23 @@ export const googleLogin = async () => {
 	try {
 		await GoogleSignin.hasPlayServices()
 		const userInfo = await GoogleSignin.signIn()
-		if (userInfo.data.idToken) {
+		if (userInfo?.data?.idToken) {
 			const response = await supabase.auth.signInWithIdToken({
 				provider: 'google',
-				token: userInfo.data.idToken
+				token: userInfo?.data?.idToken
 			})
 			// authenticated
 			if (response.data?.user?.aud === 'authenticated') {
-				return { status: true, email: response.data.user.email, id: response.data.user.id }
+				return {
+					status: true,
+					email: response?.data?.user?.email,
+					id: response?.data?.user?.id
+				}
 			}
 			// not authenticated
 			else {
 				return { status: false, message: response.message }
 			}
-		} else {
-			throw new Error('no ID token present!')
 		}
 	} catch (error: any) {
 		if (error.code === statusCodes.SIGN_IN_CANCELLED) {

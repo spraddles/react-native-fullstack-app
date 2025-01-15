@@ -24,7 +24,7 @@ export const appleLogin = async () => {
 					console.log('user sign in success!')
 				}
 			} else {
-				throw new Error('No identityToken.')
+				console.log('No identityToken')
 			}
 		} catch (error) {
 			if (error.code === 'ERR_REQUEST_CANCELED') {

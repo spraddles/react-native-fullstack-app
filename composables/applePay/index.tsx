@@ -39,7 +39,6 @@ export const ApplePay = () => {
 		} catch (e) {
 			console.log('Payment error: ', e)
 			setError(getErrorMessage())
-			throw e
 		}
 	}
 

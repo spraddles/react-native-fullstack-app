@@ -50,8 +50,8 @@ export default function LoginPage() {
 			}
 		} catch (error) {
 			// other error
+			console.log('handleSocialAccess: user cancelled social login/signin', error)
 			useBaseStore.getState().setLoading(false)
-			useBaseStore.getState().setToast({ visible: true, message: error })
 		} finally {
 			// in case spinner isn't already stopped
 			useBaseStore.getState().setLoading(false)
