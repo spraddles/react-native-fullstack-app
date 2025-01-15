@@ -5,9 +5,8 @@ import { router } from 'expo-router'
 import { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 
-import { Text } from '@/components/Themed'
+import { Text, View } from '@/components/Themed'
 
-import { View } from '@/components/Themed'
 import { Button } from '@/components/ui/button'
 
 export default function NewUserProfileCompletePage() {

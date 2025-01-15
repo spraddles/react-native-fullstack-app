@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
 	tab: {
 		paddingTop: '15',
 		paddingBottom: '15',
-		paddingLeft: '32.5',
-		paddingRight: '32.5',
+		paddingLeft: '21',
+		paddingRight: '21',
 		marginLeft: 0,
 		marginRight: 0
 	},

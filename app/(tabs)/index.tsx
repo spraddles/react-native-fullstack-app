@@ -52,6 +52,13 @@ export default function TabOneScreen() {
 		errorMessage: blankErrorText
 	})
 
+	// key input
+	const [inputKey, setInputKey] = useState({
+		value: '',
+		error: true,
+		errorMessage: blankErrorText
+	})
+
 	const getCurrentMethod = () => {
 		if (currentTab === 'cpf') {
 			return inputCPF
@@ -61,6 +68,9 @@ export default function TabOneScreen() {
 		}
 		if (currentTab === 'email') {
 			return inputEmail
+		}
+		if (currentTab === 'key') {
+			return inputKey
 		}
 	}
 
@@ -78,6 +88,7 @@ export default function TabOneScreen() {
 		setInputCPF({ value: '', error: true, errorMessage: blankErrorText })
 		setInputPhone({ value: '', error: true, errorMessage: blankErrorText })
 		setInputEmail({ value: '', error: true, errorMessage: blankErrorText })
+		setInputKey({ value: '', error: true, errorMessage: blankErrorText })
 	}
 
 	const handleNext = async () => {
@@ -132,7 +143,8 @@ export default function TabOneScreen() {
 						tabs={[
 							{ id: 'cpf', name: 'CPF' },
 							{ id: 'phone', name: 'Phone' },
-							{ id: 'email', name: 'Email' }
+							{ id: 'email', name: 'Email' },
+							{ id: 'key', name: 'Key' }
 						]}
 						activeTab={currentTab}
 						onTabChange={(newTab) => {
@@ -230,6 +242,33 @@ export default function TabOneScreen() {
 									...prev,
 									error: hasError('email', inputEmail.value),
 									errorMessage: getErrorMessage('email', inputEmail.value)
+								}))
+							}}
+						/>
+					) : currentTab === 'key' ? (
+						<Input
+							label={'Key'}
+							value={inputKey.value}
+							placeholder={'Recipient key'}
+							autoCorrect={false}
+							autoComplete="off"
+							autoCapitalize="none"
+							keyboardType={'default'}
+							returnKeyType="done"
+							error={inputKey.error}
+							errorText={inputKey.errorMessage}
+							onChangeText={(text) => {
+								setInputKey({
+									value: text,
+									error: false,
+									errorMessage: ''
+								})
+							}}
+							onSubmitEditing={() => {
+								setInputKey((prev) => ({
+									...prev,
+									error: hasError('number', inputKey.value),
+									errorMessage: getErrorMessage('number', inputKey.value)
 								}))
 							}}
 						/>
