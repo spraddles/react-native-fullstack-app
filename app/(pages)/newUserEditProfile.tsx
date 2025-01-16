@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { StyleSheet, ScrollView, View } from 'react-native'
 
-import { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 
 import { router, useLocalSearchParams } from 'expo-router'
@@ -96,6 +95,11 @@ export default function NewUserEditProfileScreen() {
 			// in case spinner isn't already stopped
 			useBaseStore.getState().setLoading(false)
 		}
+	}
+
+	const handleCancel = () => {
+		useBaseStore.getState().resetUser()
+		router.push('/(pages)')
 	}
 
 	return (
@@ -225,7 +229,7 @@ export default function NewUserEditProfileScreen() {
 					text="Cancel"
 					fill={false}
 					onPress={() => {
-						router.push('/(pages)')
+						handleCancel()
 					}}
 				/>
 			</View>

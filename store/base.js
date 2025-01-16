@@ -25,6 +25,11 @@ export const useBaseStore = create((set, get) => ({
 	getTransactions: () => get().transactions,
 
 	// setters
+	resetUser: () =>
+		set(() => ({
+			user: {}
+		})),
+
 	setUserField: (field, value) =>
 		set((state) => ({
 			user: {

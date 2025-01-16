@@ -1,6 +1,4 @@
 To do:
--persist state
--reset state on cancel (in new user flow)
 -sign up to expo & test build on testflight
 
 
@@ -11,7 +9,7 @@ Bugs:
 -profile page scroll up bug when editing field (same with Transfer page)
 -user can tap directly into other inputs bypassing validation logic
 -fix styling for each transaction top & bottom borders in list
--fix styling for pix method, make responsive right now its fixed width
+-fix styling for pix method tabs, make responsive right now its fixed width
 -add canMakePayment function to catch potential device payment issues
 -add canLoginVia (google, apple, etc.) function to catch potential device login issues
 -collect errors & log them online

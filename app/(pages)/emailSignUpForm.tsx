@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { StyleSheet, View, AppState } from 'react-native'
 import { supabase } from '@/supabase/connect'
 
-import { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 
 import { Button } from '@/components/ui/button'
@@ -95,6 +94,7 @@ export default function EmailSignUoForm() {
 					message:
 						"It looks like you've already signed up. Please use the login form instead!"
 				})
+				useBaseStore.getState().resetUser()
 				router.push('/(pages)')
 			}
 			// no user exists: create account

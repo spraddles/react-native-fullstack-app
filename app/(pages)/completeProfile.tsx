@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { StyleSheet } from 'react-native'
 
 import { router, useLocalSearchParams } from 'expo-router'
 
-import { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 
 import { Text, View } from '@/components/Themed'
-
 import { Button } from '@/components/ui/button'
+
+import { useBaseStore } from '@/store/base'
 
 export default function NewUserPage() {
 	const { password, method } = useLocalSearchParams()
@@ -31,6 +31,11 @@ export default function NewUserPage() {
 		})
 	}
 
+	const handleCancel = () => {
+		useBaseStore.getState().resetUser()
+		router.push('/(pages)')
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
@@ -40,7 +45,7 @@ export default function NewUserPage() {
 			</View>
 			<View style={styles.footer}>
 				<Button text="Next" fill={true} onPress={() => handleNext()} />
-				<Button text="Cancel" fill={false} onPress={() => router.push('/(pages)')} />
+				<Button text="Cancel" fill={false} onPress={() => handleCancel()} />
 			</View>
 		</View>
 	)
