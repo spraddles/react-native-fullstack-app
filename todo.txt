@@ -1,18 +1,4 @@
 To do:
-
-
-clean data before upload:
--transaction
--user_meta
-
-
-
--transactions: 
-> (done) db fields
-> api method: createTransaction, fetchTransactions
-> connect to ui: history screen, transfer screen
-> is state needed for transations
-
 -move authHelpers into userMethods
 -persist state
 -reset state on cancel (in new user flow)

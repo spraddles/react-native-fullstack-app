@@ -1,7 +1,10 @@
 import { supabase } from '@/supabase/connect'
+import { cleanDataByKey } from '@/composables/inputFormatter'
 
 export const updateUserMeta = async (id: string, data: object) => {
 	try {
+		// clean data first
+		const cleanData = cleanDataByKey(data, ['phone', 'passport'])
 		// check if data exists
 		const checkUser = await supabase.from('user_meta').select().eq('user_id', id).single()
 
@@ -9,11 +12,10 @@ export const updateUserMeta = async (id: string, data: object) => {
 		if (checkUser.data === null) {
 			const insertCommand = await supabase
 				.from('user_meta')
-				.insert(data)
+				.insert(cleanData)
 				.eq('user_id', id)
 				.select()
 				.single()
-
 			return { status: true }
 		}
 
@@ -21,7 +23,7 @@ export const updateUserMeta = async (id: string, data: object) => {
 		if (checkUser.data !== null) {
 			const updateCommand = await supabase
 				.from('user_meta')
-				.update(data)
+				.update(cleanData)
 				.eq('user_id', id)
 				.select()
 				.single()
