@@ -9,7 +9,7 @@ import { useBaseStore } from '@/store/base'
 import { SocialButton } from '@/components/ui/socialButton'
 
 import { googleLogin } from '@/composables/googleLogin'
-import { hasOnboarded } from '@/composables/authHelpers'
+import { hasOnboarded } from '@/composables/userMethods'
 // import { appleLogin } from '@/composables/appleLogin'
 
 export default function LoginPage() {

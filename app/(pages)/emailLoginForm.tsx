@@ -12,7 +12,7 @@ import { useBaseStore } from '@/store/base'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { hasOnboarded } from '@/composables/authHelpers'
+import { hasOnboarded } from '@/composables/userMethods'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive

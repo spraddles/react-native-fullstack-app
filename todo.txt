@@ -1,5 +1,4 @@
 To do:
--move authHelpers into userMethods
 -persist state
 -reset state on cancel (in new user flow)
 -sign up to expo & test build on testflight
