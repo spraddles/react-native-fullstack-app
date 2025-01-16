@@ -41,3 +41,18 @@ export const formatPassport = (string) => {
 	const cleaned = string.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
 	return cleaned
 }
+
+export const stripFormat = (value: any): string => {
+	const stringValue = String(value)
+	return stringValue.replace(/[^a-zA-Z0-9]/g, '')
+}
+
+export const cleanDataByKey = (data: object, keysToClean: string[]) => {
+	const cleanedData = { ...data }
+	keysToClean.forEach((key) => {
+		if (key in cleanedData) {
+			cleanedData[key] = stripFormat(cleanedData[key])
+		}
+	})
+	return cleanedData
+}

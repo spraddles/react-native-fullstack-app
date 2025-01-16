@@ -1,8 +1,10 @@
 To do:
 
 
-fix value formats into db, should be stripped back (no spaces, no chars, except decimal dot place for numbers)
-"message": "invalid input syntax for type numeric: \"23,524.52\""
+clean data before upload:
+-transaction
+-user_meta
+
 
 
 -transactions: 
