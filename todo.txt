@@ -1,8 +1,23 @@
 To do:
+
+
+add/update fields:
+-phone number (with country code)
+-cpf (optional)
+-nationality
+-date of birth
+
+
+Pipeline:
 -sign up to expo & test build on testflight
+> setup apple developer account
+> configure expo to build apple app
+> deploy app to testflight
 
 
 Bugs:
+-security: only only users to read/write their own data, not others
+-add profile loading status (like transaction history)
 -email login + signup: validate fields & catch blank fields
 -inputs have errors by default, change this
 -forgot password (for email method)

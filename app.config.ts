@@ -1,9 +1,12 @@
 import { ExpoConfig, ConfigContext } from 'expo/config'
+import dotenv from 'dotenv'
+
+dotenv.config({ path: '.env' })
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
 	...config,
 	name: 'GlobalPay',
-	slug: 'GlobalPay',
+	slug: process.env.EXPO_PROJECT_SLUG,
 	version: '1.0.0',
 	orientation: 'portrait',
 	icon: './assets/images/icon.png',
@@ -15,10 +18,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		supportsTablet: true,
 		bundleIdentifier: 'com.anonymous.GlobalPay',
 		infoPlist: {
-			merchant_id: 'some_merchant_id'
+			merchant_id: process.env.MERCHANT_ID
 		},
 		entitlements: {
-			'com.apple.developer.in-app-payments': 'some_merchant_id',
 			'com.apple.developer.payment-pass-provisioning': true
 		},
 		config: {
@@ -64,5 +66,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	],
 	experiments: {
 		typedRoutes: true
+	},
+	extra: {
+		eas: {
+			projectId: process.env.EXPO_PROJECT_ID
+		}
 	}
 })

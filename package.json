@@ -27,6 +27,7 @@
         "@rnw-community/react-native-payments": "^0.82.0",
         "@rnw-community/shared": "^0.82.0",
         "@supabase/supabase-js": "^2.47.12",
+        "dotenv": "^16.4.7",
         "expo": "~52.0.20",
         "expo-apple-authentication": "^7.1.2",
         "expo-font": "~13.0.2",
