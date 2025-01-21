@@ -6,7 +6,7 @@
     "scripts": {
         "start": "NODE_ENV=development npx expo start",
         "prebuild:dev": "NODE_ENV=development npx expo prebuild",
-        "build:ios": "cd ios && pod install && cd .. && xcodebuild -workspace ios/GlobalPay.xcworkspace -scheme GlobalPay -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16 pro' -derivedDataPath ./ios/build/xcode build",
+        "build:ios:dev": "export NODE_ENV=development && cd ios && pod install && cd .. && xcodebuild -workspace ios/GlobalPay.xcworkspace -scheme GlobalPay -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16 pro' -derivedDataPath ./ios/build/xcode build",
         "simulate:ios": "sh ./scripts/simulate.sh",
         "test": "jest --watchAll",
         "ios": "expo run:ios",
