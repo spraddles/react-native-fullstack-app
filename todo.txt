@@ -1,13 +1,14 @@
 To do:
 
--add/update fields
--update migrations
 
 add/update fields:
--phone number (with country code)
 -cpf (optional)
 -nationality
 -date of birth
+
+-update migrations
+
+remove seeder, and script method
 
 
 Pipeline:

@@ -33,6 +33,11 @@ export const formatPhone = (number) => {
 	return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1)-$2-$3')
 }
 
+export const formatPhoneInternational = (number) => {
+	const cleaned = String(number).replace(/[^\d]/g, '')
+	return `+${cleaned}`
+}
+
 export const formatPassport = (string) => {
 	if (!string) {
 		return ''
@@ -40,6 +45,10 @@ export const formatPassport = (string) => {
 	string = String(string)
 	const cleaned = string.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
 	return cleaned
+}
+
+export const stripSpaces = (string) => {
+	return string.replace(/\s/g, '')
 }
 
 export const stripFormat = (value: any): string => {

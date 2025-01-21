@@ -4,7 +4,7 @@ import { cleanDataByKey } from '@/composables/inputFormatter'
 export const updateUserMeta = async (id: string, data: object) => {
 	try {
 		// clean data first
-		const cleanData = cleanDataByKey(data, ['phone', 'passport'])
+		const cleanData = cleanDataByKey(data, ['passport'])
 		// check if data exists
 		const checkUser = await supabase.from('user_meta').select().eq('user_id', id).single()
 

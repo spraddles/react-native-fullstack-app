@@ -1,7 +1,13 @@
 export const validateInput = (type: string, value: string | number, length?: number) => {
-
 	// empty check
-	if (!value || value === '0.00' || value === '0' || value === 0 || value === '') {
+	if (
+		!value ||
+		value === '0.00' ||
+		value === '0' ||
+		value === 0 ||
+		value === '' ||
+		value === '+'
+	) {
 		return { isValid: false, message: 'Please enter a value' }
 	}
 
@@ -15,6 +21,15 @@ export const validateInput = (type: string, value: string | number, length?: num
 		const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 		if (pattern.test(value) === false) {
 			return { isValid: false, message: 'Invalid email address' }
+		}
+	}
+
+	// international number check
+	if (type === 'international-number') {
+        console.log('value: ', value)
+		const pattern = /^\+\d+$/
+		if (pattern.test(value) === false) {
+			return { isValid: false, message: 'Invalid phone number' }
 		}
 	}
 

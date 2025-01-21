@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { validateInput } from '@/composables/inputValidator'
-import { removeNonNumbers, formatPhone, formatPassport } from '@/composables/inputFormatter'
+import { stripSpaces, formatPhoneInternational, formatPassport } from '@/composables/inputFormatter'
 import { updateUserMeta } from '@/composables/userMethods'
 
 import { useBaseStore } from '@/store/base'
@@ -119,7 +119,7 @@ export default function EditProfileScreen() {
 					}}
 				/>
 				<Input
-					label={'Phone'}
+					label={'Phone (incl. country code)'}
 					value={inputPhone.value}
 					placeholder={'Enter phone'}
 					autoCorrect={false}
@@ -130,7 +130,7 @@ export default function EditProfileScreen() {
 					errorText={inputPhone.errorMessage}
 					onChangeText={(text) => {
 						setInputPhone({
-							value: formatPhone(text),
+							value: formatPhoneInternational(text),
 							error: false,
 							errorMessage: ''
 						})
@@ -138,11 +138,10 @@ export default function EditProfileScreen() {
 					onEndEditing={() => {
 						setInputPhone((prev) => ({
 							...prev,
-							error: hasError('number', removeNonNumbers(inputPhone.value), 11),
+							error: hasError('international-number', stripSpaces(inputPhone.value)),
 							errorMessage: getErrorMessage(
-								'number',
-								Number(removeNonNumbers(inputPhone.value)),
-								11
+								'international-number',
+								stripSpaces(inputPhone.value)
 							)
 						}))
 					}}
