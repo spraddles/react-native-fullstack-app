@@ -4,17 +4,18 @@
     "license": "0BSD",
     "version": "1.0.0",
     "scripts": {
-        "start": "expo start",
-        "prebuild": "expo prebuild",
+        "start": "NODE_ENV=development npx expo start",
+        "prebuild:dev": "NODE_ENV=development npx expo prebuild",
         "build:ios": "cd ios && pod install && cd .. && xcodebuild -workspace ios/GlobalPay.xcworkspace -scheme GlobalPay -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16 pro' -derivedDataPath ./ios/build/xcode build",
         "simulate:ios": "sh ./scripts/simulate.sh",
-        "web": "expo start --web",
         "test": "jest --watchAll",
         "ios": "expo run:ios",
         "android": "expo run:android",
         "lint": "eslint . --ext .ts,.tsx",
         "format": "prettier --write \"**/*.{ts,tsx}\"",
-        "cache:remove:xcode": "sh ./scripts/remove-xcode-cache.sh"
+        "cache:remove:xcode": "sh ./scripts/remove-xcode-cache.sh",
+        "supabase:reset:dev": "sh ./scripts/reset-dev-database.sh",
+        "supabase:migrate:new": "supabase migration new my_migration_name"
     },
     "jest": {
         "preset": "jest-expo"

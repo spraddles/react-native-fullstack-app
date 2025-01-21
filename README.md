@@ -36,6 +36,3 @@
 - google cloud: publish app for oauth: https://console.cloud.google.com/auth/audience  
 - create apple developer account  
 - add testflight users  
-
-### Supabase 
-- you need to run some `SQL` queries in the admin dashboard, they are located in the `supabase/sql-queries.txt` file in this project  

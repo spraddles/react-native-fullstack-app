@@ -1,5 +1,7 @@
 To do:
 
+-add/update fields
+-update migrations
 
 add/update fields:
 -phone number (with country code)
