@@ -9,7 +9,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { validateInput } from '@/composables/inputValidator'
-import { stripSpaces, formatPhoneInternational, formatPassport } from '@/composables/inputFormatter'
+import {
+	stripSpaces,
+	formatPhoneInternational,
+	formatPassport,
+	formatCPF
+} from '@/composables/inputFormatter'
 import { updateUserMeta } from '@/composables/userMethods'
 
 import { useBaseStore } from '@/store/base'
@@ -40,6 +45,7 @@ export default function NewUserEditProfileScreen() {
 	const [inputSurname, setInputSurname] = useState(initialState(user.surname))
 	const [inputPhone, setInputPhone] = useState(initialState(user.phone))
 	const [inputPassport, setInputPassport] = useState(initialState(user.passport))
+	const [inputCPF, setInputCPF] = useState(initialState(user.cpf))
 
 	const hasError = (type: string, value: string | number, length: number) => {
 		const error = validateInput(type, value, length)
@@ -59,6 +65,7 @@ export default function NewUserEditProfileScreen() {
 			useBaseStore.getState().setUserField('surname', inputSurname.value)
 			useBaseStore.getState().setUserField('phone', inputPhone.value)
 			useBaseStore.getState().setUserField('passport', inputPassport.value)
+			useBaseStore.getState().setUserField('cpf', inputCPF.value)
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 			// for email accounts
 			if (method !== 'social') {
@@ -80,6 +87,7 @@ export default function NewUserEditProfileScreen() {
 				surname: inputSurname.value,
 				phone: inputPhone.value,
 				passport: inputPassport.value,
+				cpf: inputCPF.value,
 				has_onboarded: true
 			})
 			useBaseStore.getState().setLoading(false)
@@ -207,6 +215,31 @@ export default function NewUserEditProfileScreen() {
 							...prev,
 							error: hasError('generic', inputPassport.value),
 							errorMessage: getErrorMessage('generic', inputPassport.value)
+						}))
+					}}
+				/>
+				<Input
+					label={'CPF (optional)'}
+					value={inputCPF.value}
+					placeholder={'Recipient CPF'}
+					autoCorrect={false}
+					autoComplete="off"
+					keyboardType={'number-pad'}
+					returnKeyType="done"
+					error={inputCPF.error}
+					errorText={inputCPF.errorMessage}
+					onChangeText={(text) => {
+						setInputCPF({
+							value: formatCPF(text),
+							error: false,
+							errorMessage: ''
+						})
+					}}
+					onEndEditing={() => {
+						setInputCPF((prev) => ({
+							...prev,
+							error: false,
+							errorMessage: ''
 						}))
 					}}
 				/>

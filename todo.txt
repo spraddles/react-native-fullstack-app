@@ -2,7 +2,7 @@ To do:
 
 
 add/update fields:
--cpf (optional)
+-cpf (optional)L newUserEditProfile, editProfile, profileIndex
 -nationality
 -date of birth
 

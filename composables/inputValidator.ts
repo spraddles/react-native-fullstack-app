@@ -26,7 +26,6 @@ export const validateInput = (type: string, value: string | number, length?: num
 
 	// international number check
 	if (type === 'international-number') {
-        console.log('value: ', value)
 		const pattern = /^\+\d+$/
 		if (pattern.test(value) === false) {
 			return { isValid: false, message: 'Invalid phone number' }

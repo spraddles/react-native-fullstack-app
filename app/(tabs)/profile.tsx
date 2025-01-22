@@ -49,6 +49,7 @@ export default function ProfileScreen() {
 					<Input label={'Email'} value={user.email} disabled />
 					<Input label={'Phone'} value={user.phone} disabled />
 					<Input label={'Passport'} value={user.passport} disabled />
+					<Input label={'CPF'} value={user.cpf} disabled />
 				</View>
 			</View>
 			<View style={styles.footer}>
