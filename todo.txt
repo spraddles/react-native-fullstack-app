@@ -2,13 +2,11 @@ To do:
 
 
 add/update fields:
--date of birth
-
 -nationality
 > dropdown picker component
 > pass countries-list data into it
 
--update migrations
+record flow of screens & send to caroline
 
 remove seeder, and script method
 
