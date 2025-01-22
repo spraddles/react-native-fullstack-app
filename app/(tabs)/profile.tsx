@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Image, View } from 'react-native'
+import { StyleSheet, Image, ScrollView, View } from 'react-native'
 
 import { router } from 'expo-router'
 
@@ -8,7 +8,6 @@ import { useBaseStore } from '@/store/base'
 import { fetchUserProfile } from '@/composables/userMethods'
 
 import { Text } from '@/components/Themed'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
 export default function ProfileScreen() {
@@ -35,23 +34,26 @@ export default function ProfileScreen() {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.content}>
-				<View style={styles.top}>
-					<Image
-						style={styles.image}
-						source={require('../../assets/images/profile.png')}
-					/>
-					<Text style={styles.title}>
-						{user.name} {user.surname}
-					</Text>
-				</View>
-				<View style={styles.bottom}>
-					<Input label={'Email'} value={user.email} disabled />
-					<Input label={'Phone'} value={user.phone} disabled />
-					<Input label={'Passport'} value={user.passport} disabled />
-					<Input label={'CPF'} value={user.cpf} disabled />
-				</View>
+			<View style={styles.top}>
+				<Image style={styles.image} source={require('../../assets/images/profile.png')} />
+				<Text style={styles.title}>
+					{user.name} {user.surname}
+				</Text>
 			</View>
+
+			<ScrollView style={styles.scrollView}>
+				<View style={styles.bottom}>
+					<Text style={styles.label}>{'Email'}</Text>
+					<Text style={styles.text}>{user.email}</Text>
+					<Text style={styles.label}>{'Phone'}</Text>
+					<Text style={styles.text}>{user.phone}</Text>
+					<Text style={styles.label}>{'Passport'}</Text>
+					<Text style={styles.text}>{user.passport}</Text>
+					<Text style={styles.label}>{'CPF'}</Text>
+					<Text style={styles.text}>{user.cpf}</Text>
+				</View>
+			</ScrollView>
+
 			<View style={styles.footer}>
 				<Button text="Edit" fill={true} onPress={async () => await handleClose()} />
 			</View>
@@ -65,29 +67,41 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		padding: 50
 	},
-	content: {
-		flex: 1,
-		alignItems: 'center'
-	},
-	image: {
-		padding: 10,
-		width: '150',
-		height: '150',
-		textAlign: 'center'
-	},
 	top: {
 		backgroundColor: '#fff',
 		width: '100%',
 		alignItems: 'center'
+	},
+	image: {
+		padding: 10,
+		width: 150,
+		height: 150,
+		textAlign: 'center'
 	},
 	title: {
 		marginTop: 15,
 		marginBottom: 25,
 		fontSize: 25
 	},
+	scrollView: {
+		flex: 1,
+		width: '100%'
+	},
+	label: {
+		fontSize: 13,
+		marginTop: 10,
+		marginBottom: 8,
+		color: '#333'
+	},
+	text: {
+		fontSize: 17,
+		marginBottom: 20,
+		color: '#000'
+	},
 	bottom: {
 		width: '100%',
-		backgroundColor: '#fff'
+		backgroundColor: '#fff',
+		paddingHorizontal: 20
 	},
 	footer: {
 		width: '100%',
