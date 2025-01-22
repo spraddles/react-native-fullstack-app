@@ -11,7 +11,8 @@ import {
 	stripSpaces,
 	formatPhoneInternational,
 	formatPassport,
-	formatCPF
+	formatCPF,
+	formatDOB
 } from '@/composables/inputFormatter'
 import { updateUserMeta } from '@/composables/userMethods'
 
@@ -22,16 +23,20 @@ import { supabase } from '@/supabase/connect'
 export default function EditProfileScreen() {
 	const blankErrorText = 'Please enter a value'
 
+	const user = useBaseStore((state) => state.user)
+	const setUser = useBaseStore((state) => state.setUser)
+
 	const initialState = (value: string) => ({
 		value: value,
 		error: !value,
 		errorMessage: value ? '' : blankErrorText
 	})
 
-	const user = useBaseStore((state) => state.user)
-
 	const [inputName, setInputName] = useState(initialState(user.name))
 	const [inputSurname, setInputSurname] = useState(initialState(user.surname))
+	const [inputDOByear, setInputDOByear] = useState(initialState(user.dob.year))
+	const [inputDOBmonth, setInputDOBmonth] = useState(initialState(user.dob.month))
+	const [inputDOBday, setInputDOBday] = useState(initialState(user.dob.day))
 	const [inputPhone, setInputPhone] = useState(initialState(user.phone))
 	const [inputPassport, setInputPassport] = useState(initialState(user.passport))
 	const [inputCPF, setInputCPF] = useState(initialState(user.cpf))
@@ -47,28 +52,61 @@ export default function EditProfileScreen() {
 	}
 
 	const handleSubmit = async () => {
-		useBaseStore.getState().setLoading(true)
-		// update user fields in store
-		useBaseStore.getState().setUserField('name', inputName.value)
-		useBaseStore.getState().setUserField('surname', inputSurname.value)
-		useBaseStore.getState().setUserField('phone', inputPhone.value)
-		useBaseStore.getState().setUserField('passport', inputPassport.value)
-		useBaseStore.getState().setUserField('cpf', inputCPF.value)
-		// database: update user meta
-		const supabaseUser = await supabase.auth.getUser()
-		const supabaseUserID = supabaseUser?.data?.user?.id
-		await updateUserMeta(supabaseUserID, {
-			user_id: supabaseUserID,
-			name: inputName.value,
-			surname: inputSurname.value,
-			phone: inputPhone.value,
-			passport: inputPassport.value,
-			cpf: inputCPF.value,
-			has_onboarded: true
-		})
-		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-		useBaseStore.getState().setLoading(false)
-		router.push('/(tabs)/profile')
+		try {
+			useBaseStore.getState().setLoading(true)
+			// update user fields in store
+			const updatedUser = {
+				...user,
+				name: inputName.value,
+				surname: inputSurname.value,
+				phone: inputPhone.value,
+				passport: inputPassport.value,
+				cpf: inputCPF.value,
+				dob: {
+					...user.dob,
+					year: inputDOByear.value,
+					month: inputDOBmonth.value,
+					day: inputDOBday.value
+				}
+			}
+			setUser(updatedUser)
+			// database: update user meta
+			const supabaseUser = await supabase.auth.getUser()
+			const supabaseUserID = supabaseUser?.data?.user?.id
+			const updateUserMetaResponse = await updateUserMeta(supabaseUserID, {
+				user_id: supabaseUserID,
+				name: inputName.value,
+				surname: inputSurname.value,
+				dob_year: inputDOByear.value,
+				dob_month: inputDOBmonth.value,
+				dob_day: inputDOBday.value,
+				phone: inputPhone.value,
+				passport: inputPassport.value,
+				cpf: inputCPF.value,
+				has_onboarded: true
+			})
+			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+			if (!updateUserMetaResponse.status) {
+				useBaseStore.getState().setLoading(false)
+				useBaseStore.getState().setToast({
+					visible: true,
+					message: "We can't update your account now sorry"
+				})
+			} else {
+				useBaseStore.getState().setLoading(false)
+				router.push('/(tabs)/profile')
+			}
+		} catch (error) {
+			console.log('editProfileScreen unknown error: ', error)
+			useBaseStore.getState().setLoading(false)
+			useBaseStore.getState().setToast({
+				visible: true,
+				message: "We can't update your account now sorry"
+			})
+		} finally {
+			// in case spinner isn't already stopped
+			useBaseStore.getState().setLoading(false)
+		}
 	}
 
 	return (
@@ -126,6 +164,89 @@ export default function EditProfileScreen() {
 						}))
 					}}
 				/>
+				<View style={styles.row}>
+					<View style={styles.item}>
+						<Input
+							label={'Year of birth'}
+							value={inputDOByear.value}
+							placeholder={'YYYY'}
+							autoCorrect={false}
+							autoComplete="off"
+							keyboardType={'phone-pad'}
+							returnKeyType="done"
+							error={inputDOByear.error}
+							errorText={inputDOByear.errorMessage}
+							onChangeText={(text) => {
+								setInputDOByear({
+									value: formatDOB(text),
+									error: false,
+									errorMessage: ''
+								})
+							}}
+							onEndEditing={() => {
+								setInputDOByear((prev) => ({
+									...prev,
+									error: hasError('year', inputDOByear.value),
+									errorMessage: getErrorMessage('year', inputDOByear.value)
+								}))
+							}}
+						/>
+					</View>
+					<View style={styles.item}>
+						<Input
+							label={'Month'}
+							value={inputDOBmonth.value}
+							placeholder={'MM'}
+							autoCorrect={false}
+							autoComplete="off"
+							keyboardType={'phone-pad'}
+							returnKeyType="done"
+							error={inputDOBmonth.error}
+							errorText={inputDOBmonth.errorMessage}
+							onChangeText={(text) => {
+								setInputDOBmonth({
+									value: formatDOB(text),
+									error: false,
+									errorMessage: ''
+								})
+							}}
+							onEndEditing={() => {
+								setInputDOBmonth((prev) => ({
+									...prev,
+									error: hasError('month', inputDOBmonth.value),
+									errorMessage: getErrorMessage('month', inputDOBmonth.value)
+								}))
+							}}
+						/>
+					</View>
+					<View style={styles.item}>
+						<Input
+							label={'Day'}
+							value={inputDOBday.value}
+							placeholder={'DD'}
+							autoCorrect={false}
+							autoComplete="off"
+							keyboardType={'phone-pad'}
+							returnKeyType="done"
+							error={inputDOBday.error}
+							errorText={inputDOBday.errorMessage}
+							onChangeText={(text) => {
+								setInputDOBday({
+									value: formatDOB(text),
+									error: false,
+									errorMessage: ''
+								})
+							}}
+							onEndEditing={() => {
+								setInputDOBday((prev) => ({
+									...prev,
+									error: hasError('day', inputDOBday.value),
+									errorMessage: getErrorMessage('day', inputDOBday.value)
+								}))
+							}}
+						/>
+					</View>
+				</View>
 				<Input
 					label={'Phone (incl. country code)'}
 					value={inputPhone.value}
@@ -181,7 +302,7 @@ export default function EditProfileScreen() {
 				/>
 				<Input
 					label={'CPF (optional)'}
-					value={inputCPF.value}
+					value={inputCPF.value ? formatCPF(inputCPF.value) : inputCPF.value}
 					placeholder={'Recipient CPF'}
 					autoCorrect={false}
 					autoComplete="off"
@@ -199,8 +320,8 @@ export default function EditProfileScreen() {
 					onEndEditing={() => {
 						setInputCPF((prev) => ({
 							...prev,
-							error: false,
-							errorMessage: ''
+							error: hasError('cpf', inputCPF.value),
+							errorMessage: getErrorMessage('cpf', inputCPF.value)
 						}))
 					}}
 				/>
@@ -213,7 +334,10 @@ export default function EditProfileScreen() {
 						inputName.error ||
 						inputSurname.error ||
 						inputPhone.error ||
-						inputPassport.error
+						inputPassport.error ||
+						inputDOByear.error ||
+						inputDOBmonth.error ||
+						inputDOBday.error
 					}
 					onPress={async () => {
 						await handleSubmit()
@@ -245,5 +369,13 @@ const styles = StyleSheet.create({
 	footer: {
 		width: '100%',
 		paddingBottom: 10
+	},
+	row: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		width: '100%'
+	},
+	item: {
+		width: '31%'
 	}
 })

@@ -1,8 +1,8 @@
-export const formatCPF = (number) => {
-	if (!number) {
+export const formatCPF = (value) => {
+	if (!value) {
 		return ''
 	}
-	const cleaned = number.toString().replace(/\D/g, '')
+	const cleaned = value.toString().replace(/\D/g, '')
 	return cleaned.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
 }
 
@@ -13,11 +13,11 @@ export const removeNonNumbers = (value: string) => {
 	return value.replace(/[^0-9]/g, '')
 }
 
-export const formatCurrency = (text: string) => {
-	if (!text) {
+export const formatCurrency = (value: string) => {
+	if (!value) {
 		return ''
 	}
-	const numbers = text.replace(/[^\d]/g, '')
+	const numbers = value.replace(/[^\d]/g, '')
 	const withComma = (parseInt(numbers, 10) / 100).toLocaleString('en-US', {
 		minimumFractionDigits: 2,
 		maximumFractionDigits: 2
@@ -25,30 +25,41 @@ export const formatCurrency = (text: string) => {
 	return withComma
 }
 
-export const formatPhone = (number) => {
-	if (!number) {
+export const formatPhone = (value) => {
+	if (!value) {
 		return ''
 	}
-	const cleaned = number.toString().replace(/\D/g, '')
+	const cleaned = value.toString().replace(/\D/g, '')
 	return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1)-$2-$3')
 }
 
-export const formatPhoneInternational = (number) => {
-	const cleaned = String(number).replace(/[^\d]/g, '')
+export const formatPhoneInternational = (value) => {
+	const cleaned = String(value).replace(/[^\d]/g, '')
 	return `+${cleaned}`
 }
 
-export const formatPassport = (string) => {
-	if (!string) {
+// @TODO: rename to allowAlphaNumeric
+export const formatPassport = (value) => {
+	if (!value) {
 		return ''
 	}
-	string = String(string)
-	const cleaned = string.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
+	value = String(value)
+	const cleaned = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
 	return cleaned
 }
 
-export const stripSpaces = (string) => {
-	return string.replace(/\s/g, '')
+// @TODO: rename to allowNumeric
+export const formatDOB = (value: string) => {
+	if (!value) {
+		return ''
+	}
+	value = String(value)
+	const cleaned = value.replace(/[^0-9]/g, '')
+	return cleaned
+}
+
+export const stripSpaces = (value) => {
+	return value.replace(/\s/g, '')
 }
 
 export const stripFormat = (value: any): string => {

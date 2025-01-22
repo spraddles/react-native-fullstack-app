@@ -1,0 +1,4 @@
+ALTER TABLE user_meta
+ADD COLUMN dob_year INT CHECK (dob_year BETWEEN 1950 AND 2050),
+ADD COLUMN dob_month INT CHECK (dob_month BETWEEN 1 AND 12),
+ADD COLUMN dob_day INT CHECK (dob_day BETWEEN 1 AND 31);

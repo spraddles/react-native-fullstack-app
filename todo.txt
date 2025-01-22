@@ -2,9 +2,11 @@ To do:
 
 
 add/update fields:
--cpf (optional)L newUserEditProfile, editProfile, profileIndex
--nationality
 -date of birth
+
+-nationality
+> dropdown picker component
+> pass countries-list data into it
 
 -update migrations
 
@@ -19,13 +21,15 @@ Pipeline:
 
 
 Bugs:
+-add contact support ability
 -security: only only users to read/write their own data, not others
+-display error toast message when not connected to the internet
+-handle transaction errors (in transactionMethods) so users cant continue if db field write/update is incorrect (see editProfile + newUserEditProfile)
 -add profile loading status (like transaction history)
 -email login + signup: validate fields & catch blank fields
 -inputs have errors by default, change this
 -forgot password (for email method)
 -profile page scroll up bug when editing field (same with Transfer page)
--user can tap directly into other inputs bypassing validation logic
 -fix styling for each transaction top & bottom borders in list
 -fix styling for pix method tabs, make responsive right now its fixed width
 -add canMakePayment function to catch potential device payment issues
@@ -37,6 +41,7 @@ Bugs:
 Wishlist:
 -android app for 40% of all users
 -send copy of transaction receipt via email
+-add server logging for app
 -qr code scan for pix key
 -add email confirmation for email signups
 -let users change their email (how does this work with social logins)

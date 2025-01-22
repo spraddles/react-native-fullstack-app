@@ -2,12 +2,19 @@ import { create } from 'zustand'
 
 export const useBaseStore = create((set, get) => ({
 	user: {
+		id: '',
 		name: '',
 		surname: '',
+		dob: {
+			year: '',
+			month: '',
+			day: ''
+		},
 		email: '',
 		phone: '',
 		passport: '',
-		cpf: ''
+		cpf: '',
+		has_onboarded: ''
 	},
 
 	loading: false,
@@ -31,6 +38,11 @@ export const useBaseStore = create((set, get) => ({
 			user: {}
 		})),
 
+	setUser: (value) =>
+		set(() => ({
+			user: value
+		})),
+
 	setUserField: (field, value) =>
 		set((state) => ({
 			user: {
@@ -39,9 +51,15 @@ export const useBaseStore = create((set, get) => ({
 			}
 		})),
 
-	setUser: (value) =>
-		set(() => ({
-			user: value
+	setDOB: (data) =>
+		set((state) => ({
+			user: {
+				...state.user,
+				dob: {
+					...state.user.dob,
+					...data
+				}
+			}
 		})),
 
 	setLoading: (value) =>

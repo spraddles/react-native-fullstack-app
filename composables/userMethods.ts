@@ -3,9 +3,7 @@ import { cleanDataByKey } from '@/composables/inputFormatter'
 
 export const updateUserMeta = async (id: string, data: object) => {
 	try {
-		// clean data first
 		const cleanData = cleanDataByKey(data, ['passport', 'cpf'])
-		// check if data exists
 		const checkUser = await supabase.from('user_meta').select().eq('user_id', id).single()
 
 		// no user data exists: create entry
@@ -16,7 +14,16 @@ export const updateUserMeta = async (id: string, data: object) => {
 				.eq('user_id', id)
 				.select()
 				.single()
-			return { status: true }
+
+			// error
+			if (insertCommand.data === null && insertCommand.error.code) {
+				console.log('insertCommand error: ', insertCommand.error)
+				return { status: false, error: 'There is an error creating your profile' }
+			}
+			// success
+			if (insertCommand.error === null) {
+				return { status: true }
+			}
 		}
 
 		// data exists: update it
@@ -28,7 +35,15 @@ export const updateUserMeta = async (id: string, data: object) => {
 				.select()
 				.single()
 
-			return { status: true }
+			// error
+			if (updateCommand.data === null && updateCommand.error.code) {
+				console.log('updateCommand error: ', updateCommand.error)
+				return { status: false, error: 'There is an error updating your profile' }
+			}
+			// success
+			if (updateCommand.error === null) {
+				return { status: true }
+			}
 		} else {
 			console.log('updateUserMeta: error')
 			return { status: false }
