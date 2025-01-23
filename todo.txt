@@ -1,7 +1,4 @@
-To do:
-
-
-remove seeder js, and supabase seeder
+To do
 
 
 Pipeline:

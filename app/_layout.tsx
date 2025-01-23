@@ -7,7 +7,6 @@ import * as SplashScreen from 'expo-splash-screen'
 import 'react-native-reanimated'
 
 import { useBaseStore } from '@/store/base'
-import { dataStoreSeeder } from '@/scripts/seeder'
 
 import { Loader } from '@/components/ui/loader'
 import { Toast } from '@/components/ui/toast'
@@ -45,11 +44,7 @@ export default function RootLayout() {
 
 	// development ENV
 	useEffect(() => {
-		if (process.env.EXPO_PUBLIC_SEED_DATA === 'true') {
-			dataStoreSeeder()
-		}
 		console.log('__DEV__:', __DEV__)
-		console.log('EXPO_PUBLIC_SEED_DATA:', process.env.EXPO_PUBLIC_SEED_DATA)
 		console.log('EXPO_PUBLIC_FORCE_FAIL_PAYMENT:', process.env.EXPO_PUBLIC_FORCE_FAIL_PAYMENT)
 	}, [])
 
