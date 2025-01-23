@@ -1,13 +1,14 @@
 import React, { useState, useLayoutEffect } from 'react'
 import { StyleSheet, ScrollView, View } from 'react-native'
 
-import { useNavigation } from '@react-navigation/native'
-
 import { router, useLocalSearchParams } from 'expo-router'
+import { useNavigation } from '@react-navigation/native'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { CountryPicker } from '@/components/ui/countryPicker'
 
+import { updateUserMeta } from '@/composables/userMethods'
 import { validateInput } from '@/composables/inputValidator'
 import {
 	stripSpaces,
@@ -16,7 +17,6 @@ import {
 	formatCPF,
 	formatDOB
 } from '@/composables/inputFormatter'
-import { updateUserMeta } from '@/composables/userMethods'
 
 import { useBaseStore } from '@/store/base'
 
@@ -44,14 +44,15 @@ export default function NewUserEditProfileScreen() {
 		errorMessage: value ? '' : blankErrorText
 	})
 
-	const [inputName, setInputName] = useState(initialState(user.name))
-	const [inputSurname, setInputSurname] = useState(initialState(user.surname))
-	const [inputDOByear, setInputDOByear] = useState(initialState(user.dob.year))
-	const [inputDOBmonth, setInputDOBmonth] = useState(initialState(user.dob.month))
-	const [inputDOBday, setInputDOBday] = useState(initialState(user.dob.day))
-	const [inputPhone, setInputPhone] = useState(initialState(user.phone))
-	const [inputPassport, setInputPassport] = useState(initialState(user.passport))
-	const [inputCPF, setInputCPF] = useState(initialState(user.cpf))
+	const [selectedCountry, setSelectedCountry] = useState() // different handling
+	const [inputName, setInputName] = useState(initialState())
+	const [inputSurname, setInputSurname] = useState(initialState())
+	const [inputDOByear, setInputDOByear] = useState(initialState())
+	const [inputDOBmonth, setInputDOBmonth] = useState(initialState())
+	const [inputDOBday, setInputDOBday] = useState(initialState())
+	const [inputPhone, setInputPhone] = useState(initialState())
+	const [inputPassport, setInputPassport] = useState(initialState())
+	const [inputCPF, setInputCPF] = useState(initialState())
 
 	const hasError = (type: string, value: string | number, length: number) => {
 		const error = validateInput(type, value, length)
@@ -74,6 +75,7 @@ export default function NewUserEditProfileScreen() {
 				phone: inputPhone.value,
 				passport: inputPassport.value,
 				cpf: inputCPF.value,
+				country: selectedCountry.code,
 				dob: {
 					...user.dob,
 					year: inputDOByear.value,
@@ -101,6 +103,7 @@ export default function NewUserEditProfileScreen() {
 				user_id: supabaseUserID,
 				name: inputName.value,
 				surname: inputSurname.value,
+				country: selectedCountry.code,
 				dob_year: inputDOByear.value,
 				dob_month: inputDOBmonth.value,
 				dob_day: inputDOBday.value,
@@ -114,7 +117,8 @@ export default function NewUserEditProfileScreen() {
 				useBaseStore.getState().setLoading(false)
 				useBaseStore.getState().setToast({
 					visible: true,
-					message: "We can't create your account now sorry"
+					message:
+						"We can't create your account now sorry, please check all the fields below"
 				})
 			} else {
 				useBaseStore.getState().setLoading(false)
@@ -125,7 +129,7 @@ export default function NewUserEditProfileScreen() {
 			useBaseStore.getState().setLoading(false)
 			useBaseStore.getState().setToast({
 				visible: true,
-				message: "We can't create your account now sorry"
+				message: "We can't create your account now sorry, please check all the fields below"
 			})
 		} finally {
 			// in case spinner isn't already stopped
@@ -276,6 +280,12 @@ export default function NewUserEditProfileScreen() {
 						/>
 					</View>
 				</View>
+				<CountryPicker
+					selectedCountry={selectedCountry}
+					onSelect={setSelectedCountry}
+					error={!selectedCountry}
+					errorText={'Please select a country'}
+				/>
 				<Input
 					label={'Phone (incl. country code)'}
 					value={inputPhone.value}
@@ -366,7 +376,8 @@ export default function NewUserEditProfileScreen() {
 						inputPassport.error ||
 						inputDOByear.error ||
 						inputDOBmonth.error ||
-						inputDOBday.error
+						inputDOBday.error ||
+						!selectedCountry
 					}
 					onPress={async () => {
 						await handleSubmit()
@@ -392,8 +403,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff'
 	},
 	content: {
-		flex: 1,
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: 170
 	},
 	footer: {
 		width: '100%',

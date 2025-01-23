@@ -34,6 +34,9 @@ export const formatPhone = (value) => {
 }
 
 export const formatPhoneInternational = (value) => {
+	if (!value) {
+		return '+'
+	}
 	const cleaned = String(value).replace(/[^\d]/g, '')
 	return `+${cleaned}`
 }
@@ -59,20 +62,16 @@ export const formatDOB = (value: string) => {
 }
 
 export const stripSpaces = (value) => {
+	if (!value) {
+		return ''
+	}
 	return value.replace(/\s/g, '')
 }
 
 export const stripFormat = (value: any): string => {
+	if (!value) {
+		return ''
+	}
 	const stringValue = String(value)
 	return stringValue.replace(/[^a-zA-Z0-9]/g, '')
-}
-
-export const cleanDataByKey = (data: object, keysToClean: string[]) => {
-	const cleanedData = { ...data }
-	keysToClean.forEach((key) => {
-		if (key in cleanedData) {
-			cleanedData[key] = stripFormat(cleanedData[key])
-		}
-	})
-	return cleanedData
 }

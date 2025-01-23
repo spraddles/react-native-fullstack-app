@@ -5,6 +5,12 @@ export const useBaseStore = create((set, get) => ({
 		id: '',
 		name: '',
 		surname: '',
+		country: {
+			code: '',
+			name: '',
+			flag: '',
+			demonym: ''
+		},
 		dob: {
 			year: '',
 			month: '',

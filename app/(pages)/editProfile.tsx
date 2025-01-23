@@ -5,7 +5,9 @@ import { router } from 'expo-router'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { CountryPicker } from '@/components/ui/countryPicker'
 
+import { updateUserMeta } from '@/composables/userMethods'
 import { validateInput } from '@/composables/inputValidator'
 import {
 	stripSpaces,
@@ -14,7 +16,6 @@ import {
 	formatCPF,
 	formatDOB
 } from '@/composables/inputFormatter'
-import { updateUserMeta } from '@/composables/userMethods'
 
 import { useBaseStore } from '@/store/base'
 
@@ -32,11 +33,12 @@ export default function EditProfileScreen() {
 		errorMessage: value ? '' : blankErrorText
 	})
 
+	const [selectedCountry, setSelectedCountry] = useState(user.country)
 	const [inputName, setInputName] = useState(initialState(user.name))
 	const [inputSurname, setInputSurname] = useState(initialState(user.surname))
-	const [inputDOByear, setInputDOByear] = useState(initialState(user.dob.year))
-	const [inputDOBmonth, setInputDOBmonth] = useState(initialState(user.dob.month))
-	const [inputDOBday, setInputDOBday] = useState(initialState(user.dob.day))
+	const [inputDOByear, setInputDOByear] = useState(initialState(user.dob.year.toString()))
+	const [inputDOBmonth, setInputDOBmonth] = useState(initialState(user.dob.month.toString()))
+	const [inputDOBday, setInputDOBday] = useState(initialState(user.dob.day.toString()))
 	const [inputPhone, setInputPhone] = useState(initialState(user.phone))
 	const [inputPassport, setInputPassport] = useState(initialState(user.passport))
 	const [inputCPF, setInputCPF] = useState(initialState(user.cpf))
@@ -62,6 +64,7 @@ export default function EditProfileScreen() {
 				phone: inputPhone.value,
 				passport: inputPassport.value,
 				cpf: inputCPF.value,
+				country: selectedCountry.code,
 				dob: {
 					...user.dob,
 					year: inputDOByear.value,
@@ -77,6 +80,7 @@ export default function EditProfileScreen() {
 				user_id: supabaseUserID,
 				name: inputName.value,
 				surname: inputSurname.value,
+				country: selectedCountry.code,
 				dob_year: inputDOByear.value,
 				dob_month: inputDOBmonth.value,
 				dob_day: inputDOBday.value,
@@ -90,7 +94,8 @@ export default function EditProfileScreen() {
 				useBaseStore.getState().setLoading(false)
 				useBaseStore.getState().setToast({
 					visible: true,
-					message: "We can't update your account now sorry"
+					message:
+						"We can't update your account now sorry, please check all the fields below"
 				})
 			} else {
 				useBaseStore.getState().setLoading(false)
@@ -101,7 +106,7 @@ export default function EditProfileScreen() {
 			useBaseStore.getState().setLoading(false)
 			useBaseStore.getState().setToast({
 				visible: true,
-				message: "We can't update your account now sorry"
+				message: "We can't update your account now sorry, please check all the fields below"
 			})
 		} finally {
 			// in case spinner isn't already stopped
@@ -247,6 +252,12 @@ export default function EditProfileScreen() {
 						/>
 					</View>
 				</View>
+				<CountryPicker
+					selectedCountry={selectedCountry}
+					onSelect={setSelectedCountry}
+					error={!selectedCountry}
+					errorText={'Please select a country'}
+				/>
 				<Input
 					label={'Phone (incl. country code)'}
 					value={inputPhone.value}
@@ -337,7 +348,8 @@ export default function EditProfileScreen() {
 						inputPassport.error ||
 						inputDOByear.error ||
 						inputDOBmonth.error ||
-						inputDOBday.error
+						inputDOBday.error ||
+						!selectedCountry
 					}
 					onPress={async () => {
 						await handleSubmit()
@@ -363,8 +375,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff'
 	},
 	content: {
-		flex: 1,
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: 170
 	},
 	footer: {
 		width: '100%',

@@ -1,9 +1,23 @@
 import { supabase } from '@/supabase/connect'
-import { cleanDataByKey } from '@/composables/inputFormatter'
+import { stripFormat } from '@/composables/inputFormatter'
+import countries from '@/assets/data/countries.json'
 
 export const updateUserMeta = async (id: string, data: object) => {
 	try {
-		const cleanData = cleanDataByKey(data, ['passport', 'cpf'])
+		const cleanData = {
+			country: data.country,
+			cpf: !data.cpf ? null : stripFormat(data.cpf), // if CPF empty write NULL in db as CPF is an optional field
+			dob_day: data.dob_day,
+			dob_month: data.dob_month,
+			dob_year: data.dob_year,
+			has_onboarded: data.has_onboarded,
+			name: data.name,
+			passport: stripFormat(data.passport),
+			phone: data.phone,
+			surname: data.surname,
+			user_id: data.user_id
+		}
+
 		const checkUser = await supabase.from('user_meta').select().eq('user_id', id).single()
 
 		// no user data exists: create entry
@@ -98,4 +112,11 @@ export const hasOnboarded = async (email) => {
 			error: error.message
 		}
 	}
+}
+
+export const getCountry = (code: string) => {
+	if (!code) {
+		return {}
+	}
+	return countries.find((c) => c.code === code.toUpperCase()) || null
 }

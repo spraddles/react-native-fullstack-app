@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Accordion } from '@/components/ui/accordion'
 
 import { formatCPF } from '@/composables/inputFormatter'
-import { fetchUserProfile } from '@/composables/userMethods'
+import { fetchUserProfile, getCountry } from '@/composables/userMethods'
 
 export default function ProfileScreen() {
 	const user = useBaseStore((state) => state.getUser())
@@ -33,12 +33,17 @@ export default function ProfileScreen() {
 						id: profileData.user_id,
 						name: profileData.name,
 						surname: profileData.surname,
+						country: getCountry(profileData.country),
 						email: profileData.email,
 						phone: profileData.phone,
 						passport: profileData.passport,
 						cpf: profileData.cpf,
 						has_onboarded: profileData.has_onboarded,
-						dob: user.dob
+						dob: {
+							year: profileData.dob_year,
+							month: profileData.dob_month,
+							day: profileData.dob_day
+						}
 					}
 					setUser(updatedUser)
 				}
@@ -83,7 +88,7 @@ export default function ProfileScreen() {
 							</Text>
 							<Text style={styles.text}>
 								<Text style={styles.label}>Nationality:</Text>{' '}
-								<Text style={styles.value}>Brazilian</Text>
+								<Text style={styles.value}>{user.country.demonym}</Text>
 							</Text>
 						</View>
 					</Accordion>
