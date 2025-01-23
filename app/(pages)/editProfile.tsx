@@ -314,7 +314,7 @@ export default function EditProfileScreen() {
 				<Input
 					label={'CPF (optional)'}
 					value={inputCPF.value ? formatCPF(inputCPF.value) : inputCPF.value}
-					placeholder={'Recipient CPF'}
+					placeholder={'If you have a CPF'}
 					autoCorrect={false}
 					autoComplete="off"
 					keyboardType={'number-pad'}
