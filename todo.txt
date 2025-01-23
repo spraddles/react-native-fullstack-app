@@ -1,6 +1,10 @@
 To do
 
 
+-setup docker
+-auth for app & server
+
+
 Pipeline:
 -sign up to expo & test build on testflight
 > setup apple developer account
@@ -9,7 +13,7 @@ Pipeline:
 
 
 Bugs:
--clear AsyncStorage: [AuthApiError: Invalid Refresh Token: Refresh Token Not Found] 
+-[AuthApiError: Invalid Refresh Token: Refresh Token Not Found], solve with AsyncStorage.clear()
 -add contact support ability
 -security: only only users to read/write their own data, not others
 -display error toast message when not connected to the internet
