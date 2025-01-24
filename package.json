@@ -16,7 +16,7 @@
         "format": "prettier --write \"**/*.{ts,tsx}\"",
         "cache:remove:xcode": "sh ./scripts/remove-xcode-cache.sh",
         "docker": "sh ./scripts/docker-run.sh development",
-        "docker:build:": "docker build -t node-express -f ./docker/services/express/dockerfile .",
+        "docker:build": "docker build -t node-express -f ./docker/services/express/dockerfile .",
         "docker:prune": "docker system prune",
         "docker:purge": "sh ./scripts/docker-purge.sh && docker system prune -f",
         "supabase:reset:dev": "sh ./scripts/reset-dev-database.sh",
