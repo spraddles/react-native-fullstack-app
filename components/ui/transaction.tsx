@@ -58,8 +58,8 @@ export function Transaction({
 const styles = StyleSheet.create({
 	container: {
 		padding: 15,
-        paddingTop: 15,
-        paddingBottom: 15,
+		paddingTop: 15,
+		paddingBottom: 15,
 		backgroundColor: '#fff',
 
 		borderBottomWidth: 1,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 		fontSize: 18
 	},
 	date: {
-        marginTop: 5,
+		marginTop: 5,
 		color: '#666'
 	},
 	receiver: {
