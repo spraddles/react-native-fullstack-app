@@ -14,21 +14,18 @@ Pipeline:
 
 Bugs:
 -[AuthApiError: Invalid Refresh Token: Refresh Token Not Found], solve with AsyncStorage.clear()
+-inputs have errors by default, change this
 -add contact support ability
 -security: only only users to read/write their own data, not others
 -display error toast message when not connected to the internet
 -handle transaction errors (in transactionMethods) so users cant continue if db field write/update is incorrect (see editProfile + newUserEditProfile)
 -add profile loading status (like transaction history)
 -email login + signup: validate fields & catch blank fields
--inputs have errors by default, change this
 -forgot password (for email method)
--profile page scroll up bug when editing field (same with Transfer page)
--fix styling for each transaction top & bottom borders in list
 -fix styling for pix method tabs, make responsive right now its fixed width
 -add canMakePayment function to catch potential device payment issues
 -add canLoginVia (google, apple, etc.) function to catch potential device login issues
 -collect errors & log them online
--seeder decision, use supabase or local db for dev environment
 
 
 Wishlist:

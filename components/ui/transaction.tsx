@@ -59,12 +59,9 @@ const styles = StyleSheet.create({
 	container: {
 		padding: 15,
 		backgroundColor: '#fff',
-		borderRadius: 8,
 		marginBottom: 10,
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 1 },
-		shadowOpacity: 0.1,
-		shadowRadius: 2
+		borderBottomWidth: 1,
+		borderBottomColor: '#ccc'
 	},
 	row: {
 		flexDirection: 'row',
