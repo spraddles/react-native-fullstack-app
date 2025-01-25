@@ -115,7 +115,7 @@ export default function ProfileScreen() {
 							<Text style={styles.text}>
 								<Text style={styles.label}>CPF:</Text>{' '}
 								<Text style={styles.value}>
-									{user.cpf ? formatCPF(user.cpf) : user.cpf}
+									{user.cpf ? formatCPF(user.cpf) : '(none)'}
 								</Text>
 							</Text>
 							<Text style={styles.text}>
