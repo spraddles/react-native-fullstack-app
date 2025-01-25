@@ -42,7 +42,7 @@ export const CountryPicker = ({ onSelect, selectedCountry, error = false, errorT
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.label}>Country</Text>
+			<Text style={styles.label}>Nationality</Text>
 			<TouchableOpacity
 				style={[styles.pickerButton, error && styles.errorInput]}
 				onPress={() => setModalVisible(true)}
