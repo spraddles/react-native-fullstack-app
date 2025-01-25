@@ -58,20 +58,22 @@ export function Transaction({
 const styles = StyleSheet.create({
 	container: {
 		padding: 15,
+        paddingTop: 25,
+        paddingBottom: 30,
 		backgroundColor: '#fff',
-		marginBottom: 10,
+
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc'
 	},
 	row: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
-		marginBottom: 5
+		justifyContent: 'space-between'
 	},
 	amount: {
 		fontSize: 18
 	},
 	date: {
+        marginTop: 5,
 		color: '#666'
 	},
 	receiver: {
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
 	},
 	pixInfo: {
 		flexDirection: 'row',
-		gap: 10
+		gap: 5
 	},
 	method: {
 		color: '#666'
