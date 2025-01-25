@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
+import { formatCurrency, formatCPF, formatPhone } from '@/composables/inputFormatter'
+
 type TransactionProps = {
 	amount: number
 	created_at: string
@@ -23,16 +25,28 @@ export function Transaction({
 	})
 	const time = new Date(created_at).toLocaleTimeString()
 
+	const formatPixMethodValue = (method: string, value: any) => {
+		if (method === 'cpf') {
+			return formatCPF(value)
+		}
+		if (method === 'phone') {
+			return formatPhone(value)
+		}
+		return value
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.row}>
 				<Text style={styles.receiver}>{receiver}</Text>
-				<Text style={styles.amount}>R$ {Number(amount).toFixed(2)}</Text>
+				<Text style={styles.amount}>R$ {formatCurrency(Number(amount).toFixed(2))}</Text>
 			</View>
 
 			<View style={styles.pixInfo}>
-				<Text style={styles.method}>{pix_method.toUpperCase()}:</Text>
-				<Text style={styles.value}>{pix_method_value}</Text>
+				<Text style={styles.method}>Pix key:</Text>
+				<Text style={styles.value}>
+					{formatPixMethodValue(pix_method, pix_method_value)}
+				</Text>
 			</View>
 
 			<Text style={styles.date}>{date}</Text>
