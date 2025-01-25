@@ -101,6 +101,7 @@ export default function EmailLoginForm() {
 					autoCapitalize={'none'}
 					keyboardType={'default'}
 					returnKeyType="done"
+					secureTextEntry={true}
 				/>
 			</View>
 			<View style={styles.footer}>

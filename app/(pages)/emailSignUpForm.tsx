@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react'
-import { StyleSheet, View, AppState } from 'react-native'
+import { StyleSheet, View, AppState, TextInput } from 'react-native'
 import { supabase } from '@/supabase/connect'
 
 import { useNavigation } from '@react-navigation/native'
@@ -157,6 +157,7 @@ export default function EmailSignUoForm() {
 					returnKeyType="done"
 					error={password.error}
 					errorText={password.errorMessage}
+					secureTextEntry={true}
 					onChangeText={(text) => {
 						setPassword({
 							value: text,
@@ -172,6 +173,7 @@ export default function EmailSignUoForm() {
 						}))
 					}}
 				/>
+				<TextInput style={{ height: 0.1 }} />
 				<Input
 					label={'Confirm password'}
 					placeholder={'Password'}
@@ -183,6 +185,7 @@ export default function EmailSignUoForm() {
 					returnKeyType="done"
 					error={confirmPassword.error}
 					errorText={confirmPassword.errorMessage}
+					secureTextEntry={true}
 					onChangeText={(text) => {
 						setConfirmPassword({
 							value: text,
