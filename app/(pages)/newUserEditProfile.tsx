@@ -33,23 +33,27 @@ export default function NewUserEditProfileScreen() {
 		})
 	}, [navigation])
 
-	const blankErrorText = 'Please enter a value'
-
 	const user = useBaseStore((state) => state.user)
 	const setUser = useBaseStore((state) => state.setUser)
 
 	const initialState = (value: string) => ({
 		value: value,
-		error: !value,
-		errorMessage: value ? '' : blankErrorText
+		error: false,
+		errorMessage: ''
 	})
 
-	const [selectedCountry, setSelectedCountry] = useState() // different handling
 	const [inputName, setInputName] = useState(initialState())
 	const [inputSurname, setInputSurname] = useState(initialState())
 	const [inputDOByear, setInputDOByear] = useState(initialState())
 	const [inputDOBmonth, setInputDOBmonth] = useState(initialState())
 	const [inputDOBday, setInputDOBday] = useState(initialState())
+
+	const [selectedCountry, setSelectedCountry] = useState({
+		value: null,
+		error: false,
+		errorMessage: ''
+	})
+
 	const [inputPhone, setInputPhone] = useState(initialState())
 	const [inputPassport, setInputPassport] = useState(initialState())
 	const [inputCPF, setInputCPF] = useState(initialState())
@@ -64,76 +68,146 @@ export default function NewUserEditProfileScreen() {
 		return error.message
 	}
 
+	const checkForErrors = () => {
+		const inputNameError = hasError('text', inputName.value)
+		const inputSurnameError = hasError('text', inputSurname.value)
+		const inputDOByearError = hasError('year', inputDOByear.value)
+		const inputDOBmonthError = hasError('month', inputDOBmonth.value)
+		const inputDOBdayError = hasError('day', inputDOBday.value)
+		const selectedCountryError = !selectedCountry.value ? true : false
+		const inputPhoneError = hasError('international-number', stripSpaces(inputPhone.value))
+		const inputPassportError = hasError('generic', inputPassport.value)
+		const inputCPFError = hasError('text', inputCPF.value)
+		setInputName((prev) => ({
+			...prev,
+			error: inputNameError,
+			errorMessage: getErrorMessage('text', inputName.value)
+		}))
+		setInputSurname((prev) => ({
+			...prev,
+			error: inputSurnameError,
+			errorMessage: getErrorMessage('text', inputSurname.value)
+		}))
+		setInputDOByear((prev) => ({
+			...prev,
+			error: inputDOByearError,
+			errorMessage: getErrorMessage('year', inputDOByear.value)
+		}))
+		setInputDOBmonth((prev) => ({
+			...prev,
+			error: inputDOBmonthError,
+			errorMessage: getErrorMessage('month', inputDOBmonth.value)
+		}))
+		setInputDOBday((prev) => ({
+			...prev,
+			error: inputDOBdayError,
+			errorMessage: getErrorMessage('day', inputDOBday.value)
+		}))
+		setSelectedCountry((prev) => ({
+			...prev,
+			error: selectedCountryError,
+			errorMessage: 'Please select a country',
+			value: null
+		}))
+		setInputPhone((prev) => ({
+			...prev,
+			error: inputPhoneError,
+			errorMessage: getErrorMessage('international-number', stripSpaces(inputPhone.value))
+		}))
+		setInputPassport((prev) => ({
+			...prev,
+			error: inputPassportError,
+			errorMessage: getErrorMessage('generic', inputPassport.value)
+		}))
+		setInputCPF((prev) => ({
+			...prev,
+			error: inputCPFError,
+			errorMessage: getErrorMessage('cpf', inputCPF.value)
+		}))
+		return
+		!inputNameError &&
+			!inputSurnameError &&
+			!inputDOByearError &&
+			!inputDOBmonthError &&
+			!inputDOBdayError &&
+			!selectedCountryError &&
+			!inputPhoneError &&
+			!inputCPFError
+	}
+
 	const handleSubmit = async () => {
-		try {
+		if (checkForErrors()) {
 			useBaseStore.getState().setLoading(true)
-			// update user fields in store
-			const updatedUser = {
-				...user,
-				name: inputName.value,
-				surname: inputSurname.value,
-				phone: inputPhone.value,
-				passport: inputPassport.value,
-				cpf: inputCPF.value,
-				country: selectedCountry.code,
-				dob: {
-					...user.dob,
-					year: inputDOByear.value,
-					month: inputDOBmonth.value,
-					day: inputDOBday.value
+			try {
+				// update user fields in store
+				const updatedUser = {
+					...user,
+					name: inputName.value,
+					surname: inputSurname.value,
+					phone: inputPhone.value,
+					passport: inputPassport.value,
+					cpf: inputCPF.value,
+					country: selectedCountry.code,
+					dob: {
+						...user.dob,
+						year: inputDOByear.value,
+						month: inputDOBmonth.value,
+						day: inputDOBday.value
+					}
 				}
-			}
-			setUser(updatedUser)
-			await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
-			// for email accounts
-			if (method !== 'social') {
-				const signUpUserResponse = await supabase.auth.signUp(
-					{
-						email: user.email,
-						password: password
-					},
-					// don't send confirmation email
-					{ disableEmailConfirmation: true }
-				)
-			}
-			// for all accounts (email + social)
-			const supabaseUser = await supabase.auth.getUser()
-			const supabaseUserID = supabaseUser?.data?.user?.id
-			const updateUserMetaResponse = await updateUserMeta(supabaseUserID, {
-				user_id: supabaseUserID,
-				name: inputName.value,
-				surname: inputSurname.value,
-				country: selectedCountry.code,
-				dob_year: inputDOByear.value,
-				dob_month: inputDOBmonth.value,
-				dob_day: inputDOBday.value,
-				phone: inputPhone.value,
-				passport: inputPassport.value,
-				cpf: inputCPF.value,
-				has_onboarded: true
-			})
-			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
-			if (!updateUserMetaResponse.status) {
+				setUser(updatedUser)
+				await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
+				// for email accounts
+				if (method !== 'social') {
+					const signUpUserResponse = await supabase.auth.signUp(
+						{
+							email: user.email,
+							password: password
+						},
+						// don't send confirmation email
+						{ disableEmailConfirmation: true }
+					)
+				}
+				// for all accounts (email + social)
+				const supabaseUser = await supabase.auth.getUser()
+				const supabaseUserID = supabaseUser?.data?.user?.id
+				const updateUserMetaResponse = await updateUserMeta(supabaseUserID, {
+					user_id: supabaseUserID,
+					name: inputName.value,
+					surname: inputSurname.value,
+					country: selectedCountry.code,
+					dob_year: inputDOByear.value,
+					dob_month: inputDOBmonth.value,
+					dob_day: inputDOBday.value,
+					phone: inputPhone.value,
+					passport: inputPassport.value,
+					cpf: inputCPF.value,
+					has_onboarded: true
+				})
+				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+				if (!updateUserMetaResponse.status) {
+					useBaseStore.getState().setLoading(false)
+					useBaseStore.getState().setToast({
+						visible: true,
+						message:
+							"We can't create your account now sorry, please check all the fields below"
+					})
+				} else {
+					useBaseStore.getState().setLoading(false)
+					router.push('/(pages)/newUserProfileComplete')
+				}
+			} catch (error) {
+				console.log('NewUserEditProfileScreen unknown error: ', error)
 				useBaseStore.getState().setLoading(false)
 				useBaseStore.getState().setToast({
 					visible: true,
 					message:
 						"We can't create your account now sorry, please check all the fields below"
 				})
-			} else {
+			} finally {
+				// in case spinner isn't already stopped
 				useBaseStore.getState().setLoading(false)
-				router.push('/(pages)/newUserProfileComplete')
 			}
-		} catch (error) {
-			console.log('NewUserEditProfileScreen unknown error: ', error)
-			useBaseStore.getState().setLoading(false)
-			useBaseStore.getState().setToast({
-				visible: true,
-				message: "We can't create your account now sorry, please check all the fields below"
-			})
-		} finally {
-			// in case spinner isn't already stopped
-			useBaseStore.getState().setLoading(false)
 		}
 	}
 
@@ -281,9 +355,15 @@ export default function NewUserEditProfileScreen() {
 					</View>
 				</View>
 				<CountryPicker
-					selectedCountry={selectedCountry}
-					onSelect={setSelectedCountry}
-					error={!selectedCountry}
+					selectedCountry={selectedCountry.value}
+					onSelect={(value) => {
+						setSelectedCountry({
+							value: value,
+							error: false,
+							errorMessage: ''
+						})
+					}}
+					error={selectedCountry.error}
 					errorText={'Please select a country'}
 				/>
 				<Input
@@ -369,16 +449,6 @@ export default function NewUserEditProfileScreen() {
 				<Button
 					text="Save"
 					fill={true}
-					disabled={
-						inputName.error ||
-						inputSurname.error ||
-						inputPhone.error ||
-						inputPassport.error ||
-						inputDOByear.error ||
-						inputDOBmonth.error ||
-						inputDOBday.error ||
-						!selectedCountry
-					}
 					onPress={async () => {
 						await handleSubmit()
 					}}
