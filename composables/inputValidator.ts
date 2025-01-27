@@ -71,9 +71,6 @@ export const validateInput = (type: string, value: string | number, length?: num
 	// month check
 	if (type === 'month') {
 		let newValue = String(value)
-		if (newValue.length !== 2) {
-			return { isValid: false, message: 'Invalid month' }
-		}
 		newValue = Number(value)
 		if (newValue < 1 || newValue > 12) {
 			return { isValid: false, message: 'Invalid month' }

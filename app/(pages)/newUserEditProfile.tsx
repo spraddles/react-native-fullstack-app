@@ -107,7 +107,7 @@ export default function NewUserEditProfileScreen() {
 			...prev,
 			error: selectedCountryError,
 			errorMessage: 'Please select a country',
-			value: null
+			value: selectedCountry.value
 		}))
 		setInputPhone((prev) => ({
 			...prev,
