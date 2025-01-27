@@ -83,12 +83,12 @@ export default function ProfileScreen() {
 							<Text style={styles.text}>
 								<Text style={styles.label}>Date of Birth:</Text>{' '}
 								<Text style={styles.value}>
-									{user?.dob.year}/{user?.dob.month}/{user?.dob.day}
+									{user?.dob?.year}/{user?.dob?.month}/{user?.dob?.day}
 								</Text>
 							</Text>
 							<Text style={styles.text}>
 								<Text style={styles.label}>Nationality:</Text>{' '}
-								<Text style={styles.value}>{user?.country.demonym}</Text>
+								<Text style={styles.value}>{user?.country?.demonym}</Text>
 							</Text>
 						</View>
 					</Accordion>

@@ -124,8 +124,8 @@ export default function NewUserEditProfileScreen() {
 			error: inputCPFError,
 			errorMessage: getErrorMessage('cpf', inputCPF.value)
 		}))
-		return
-		!inputNameError &&
+		return (
+			!inputNameError &&
 			!inputSurnameError &&
 			!inputDOByearError &&
 			!inputDOBmonthError &&
@@ -133,6 +133,7 @@ export default function NewUserEditProfileScreen() {
 			!selectedCountryError &&
 			!inputPhoneError &&
 			!inputCPFError
+		)
 	}
 
 	const handleSubmit = async () => {
@@ -147,7 +148,7 @@ export default function NewUserEditProfileScreen() {
 					phone: inputPhone.value,
 					passport: inputPassport.value,
 					cpf: inputCPF.value,
-					country: selectedCountry.code,
+					country: selectedCountry.value.code,
 					dob: {
 						...user.dob,
 						year: inputDOByear.value,
@@ -175,7 +176,7 @@ export default function NewUserEditProfileScreen() {
 					user_id: supabaseUserID,
 					name: inputName.value,
 					surname: inputSurname.value,
-					country: selectedCountry.code,
+					country: selectedCountry.value.code,
 					dob_year: inputDOByear.value,
 					dob_month: inputDOBmonth.value,
 					dob_day: inputDOBday.value,

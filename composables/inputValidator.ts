@@ -83,9 +83,6 @@ export const validateInput = (type: string, value: string | number, length?: num
 	// day check
 	if (type === 'day') {
 		let newValue = String(value)
-		if (newValue.length !== 2) {
-			return { isValid: false, message: 'Invalid day' }
-		}
 		newValue = Number(value)
 		if (newValue < 1 || newValue > 31) {
 			return { isValid: false, message: 'Invalid day' }
