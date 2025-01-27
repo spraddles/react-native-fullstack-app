@@ -1,11 +1,29 @@
 To do
 
 
--setup docker
--auth for app & server
+
+remove red errors on page load
+> (done) email signup
+> (done) newUserEdit page
+> (done) editProfile page
+> (done) email login (no validation?)
+
+> transfer page
+
+bugs:
+-cpf field
 
 
-Pipeline:
+-pix key (add back pix method)
+-support link (in "i" icon top right): add new email address (support@gringopay.app)
+-terms of service (caroline)
+-privacy policy (caroline)
+-new website: super basic, with above 2 links
+-add text in app "when you sign up you agree to our TOS + PP"
+
+
+
+Mobile:
 -sign up to expo & test build on testflight
 > setup apple developer account
 > configure expo to build apple app

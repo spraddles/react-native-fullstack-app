@@ -20,46 +20,23 @@ import { useBaseStore } from '@/store/base'
 import { validateInput } from '@/composables/inputValidator'
 
 export default function TabOneScreen() {
-	const [currentTab, setCurrentTab] = useState('cpf')
-
 	const blankErrorText = 'Please enter a value'
 
-	// number input
-	const [inputCurrency, setInputCurrency] = useState({
-		value: '0.00',
-		error: true,
-		errorMessage: blankErrorText
+	const initialState = (value: string) => ({
+		value: value,
+		error: false,
+		errorMessage: ''
 	})
 
-	// cpf input
-	const [inputCPF, setInputCPF] = useState({
-		value: '',
-		error: true,
-		errorMessage: blankErrorText
-	})
+	const [currentTab, setCurrentTab] = useState('cpf')
 
-	// phone input
-	const [inputPhone, setInputPhone] = useState({
-		value: '',
-		error: true,
-		errorMessage: blankErrorText
-	})
+	const [inputCurrency, setInputCurrency] = useState(initialState('0.00'))
+	const [inputCPF, setInputCPF] = useState(initialState(''))
+	const [inputPhone, setInputPhone] = useState(initialState(''))
+	const [inputEmail, setInputEmail] = useState(initialState(''))
+	const [inputKey, setInputKey] = useState(initialState(''))
 
-	// email input
-	const [inputEmail, setInputEmail] = useState({
-		value: '',
-		error: true,
-		errorMessage: blankErrorText
-	})
-
-	// key input
-	const [inputKey, setInputKey] = useState({
-		value: '',
-		error: true,
-		errorMessage: blankErrorText
-	})
-
-	const getCurrentMethod = () => {
+	const getCurrentTab = () => {
 		if (currentTab === 'cpf') {
 			return inputCPF
 		}
@@ -91,24 +68,79 @@ export default function TabOneScreen() {
 		setInputKey({ value: '', error: true, errorMessage: blankErrorText })
 	}
 
-	const handleNext = async () => {
-		useBaseStore.getState().setLoading(true)
-		const fakeReceiver = 'Frederico Jon da Silva' // update this for prod
-		const transaction = {
-			pix_method: currentTab,
-			pix_method_value: getCurrentMethod().value,
-			receiver: fakeReceiver,
-			digital_wallet: Platform.OS === 'ios' ? 'apple' : 'google',
-			amount: inputCurrency.value
+	const checkTabsForErrors = (tabErrors) => {
+		return tabErrors[currentTab]
+	}
+
+	const checkForErrors = () => {
+		const currencyError = hasError('number', Number(inputCurrency.value))
+		const cpfError = hasError('number', removeNonNumbers(inputCPF.value), 11)
+		const phoneError = hasError('number', removeNonNumbers(inputPhone.value), 11)
+		const emailError = hasError('email', inputEmail.value)
+		const keyError = hasError('number', inputKey.value)
+		setInputCurrency((prev) => ({
+			...prev,
+			error: currencyError,
+			errorMessage: getErrorMessage('number', Number(inputCurrency.value))
+		}))
+		setInputCPF((prev) => ({
+			...prev,
+			error: cpfError,
+			errorMessage: getErrorMessage('number', Number(removeNonNumbers(inputCPF.value)), 11)
+		}))
+		setInputPhone((prev) => ({
+			...prev,
+			error: phoneError,
+			errorMessage: getErrorMessage('number', Number(removeNonNumbers(inputPhone.value)), 11)
+		}))
+		setInputEmail((prev) => ({
+			...prev,
+			error: emailError,
+			errorMessage: getErrorMessage('email', inputEmail.value)
+		}))
+		setInputKey((prev) => ({
+			...prev,
+			error: keyError,
+			errorMessage: getErrorMessage('number', inputKey.value)
+		}))
+		const tabErrors = {
+			cpf: cpfError,
+			phone: phoneError,
+			email: emailError,
+			key: keyError
 		}
-		await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
-		useBaseStore.getState().setLoading(false)
-		router.push({
-			pathname: '/(pages)/confirmTransaction',
-			params: {
-				transaction: JSON.stringify(transaction)
+		return !currencyError && !checkTabsForErrors(tabErrors)
+	}
+
+	const handleNext = async () => {
+		if (checkForErrors()) {
+			useBaseStore.getState().setLoading(true)
+			try {
+				const fakeReceiver = 'Frederico Jon da Silva' // update this for prod
+				const transaction = {
+					pix_method: currentTab,
+					pix_method_value: getCurrentTab().value,
+					receiver: fakeReceiver,
+					digital_wallet: Platform.OS === 'ios' ? 'apple' : 'google',
+					amount: inputCurrency.value
+				}
+				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+				useBaseStore.getState().setLoading(false)
+				router.push({
+					pathname: '/(pages)/confirmTransaction',
+					params: {
+						transaction: JSON.stringify(transaction)
+					}
+				})
+			} catch (error) {
+				// other error
+				useBaseStore.getState().setLoading(false)
+				useBaseStore.getState().setToast({ visible: true, message: error })
+			} finally {
+				// in case spinner isn't already stopped
+				useBaseStore.getState().setLoading(false)
 			}
-		})
+		}
 	}
 
 	return (
@@ -144,7 +176,7 @@ export default function TabOneScreen() {
 				</View>
 				<View style={styles.inputs}>
 					<Tabs
-						label={'PIX method'}
+						label={'Pix method'}
 						tabs={[
 							{ id: 'cpf', name: 'CPF' },
 							{ id: 'phone', name: 'Phone' },
@@ -281,11 +313,7 @@ export default function TabOneScreen() {
 				</View>
 			</View>
 			<View style={styles.footer}>
-				<Button
-					text={'Next'}
-					disabled={inputCurrency.error || getCurrentMethod().error}
-					onPress={async () => await handleNext()}
-				/>
+				<Button text={'Next'} onPress={async () => await handleNext()} />
 			</View>
 		</View>
 	)
