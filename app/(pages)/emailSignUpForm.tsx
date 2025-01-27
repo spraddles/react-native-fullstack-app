@@ -31,15 +31,15 @@ export default function EmailSignUoForm() {
 		})
 	}, [navigation])
 
-	const stateObject = (value: string) => ({
+	const initialState = (value: string) => ({
 		value: value,
 		error: false,
 		errorMessage: ''
 	})
 
-	const [email, setEmail] = useState(stateObject(''))
-	const [password, setPassword] = useState(stateObject(''))
-	const [confirmPassword, setConfirmPassword] = useState(stateObject(''))
+	const [email, setEmail] = useState(initialState(''))
+	const [password, setPassword] = useState(initialState(''))
+	const [confirmPassword, setConfirmPassword] = useState(initialState(''))
 
 	const hasError = (type: string, value: string | number, length: number) => {
 		const error = validateInput(type, value, length)
@@ -191,7 +191,7 @@ export default function EmailSignUoForm() {
 						}))
 					}}
 				/>
-				<TextInput style={{ height: 0.1 }} />
+				<TextInput style={{ height: 0.1, visibility: 'none' }} />
 				<Input
 					label={'Confirm password'}
 					placeholder={'Password'}
