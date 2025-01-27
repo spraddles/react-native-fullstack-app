@@ -2,17 +2,6 @@ To do
 
 
 
-remove red errors on page load
-> (done) email signup
-> (done) newUserEdit page
-> (done) editProfile page
-> (done) email login (no validation?)
-
-> transfer page
-
-bugs:
--cpf field
-
 
 -pix key (add back pix method)
 -support link (in "i" icon top right): add new email address (support@gringopay.app)

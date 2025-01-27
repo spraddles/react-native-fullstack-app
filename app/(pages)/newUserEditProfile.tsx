@@ -77,7 +77,7 @@ export default function NewUserEditProfileScreen() {
 		const selectedCountryError = !selectedCountry.value ? true : false
 		const inputPhoneError = hasError('international-number', stripSpaces(inputPhone.value))
 		const inputPassportError = hasError('generic', inputPassport.value)
-		const inputCPFError = hasError('text', inputCPF.value)
+		const inputCPFError = hasError('cpf', inputCPF.value)
 		setInputName((prev) => ({
 			...prev,
 			error: inputNameError,
@@ -124,6 +124,7 @@ export default function NewUserEditProfileScreen() {
 			error: inputCPFError,
 			errorMessage: getErrorMessage('cpf', inputCPF.value)
 		}))
+
 		return (
 			!inputNameError &&
 			!inputSurnameError &&
@@ -423,7 +424,7 @@ export default function NewUserEditProfileScreen() {
 				<Input
 					label={'CPF (optional)'}
 					value={inputCPF.value}
-					placeholder={'If you have a CPF'}
+					placeholder={'000.000.000-00'}
 					autoCorrect={false}
 					autoComplete="off"
 					keyboardType={'number-pad'}

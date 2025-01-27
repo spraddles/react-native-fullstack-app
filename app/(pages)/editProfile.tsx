@@ -66,7 +66,7 @@ export default function EditProfileScreen() {
 		const selectedCountryError = !selectedCountry.value ? true : false
 		const inputPhoneError = hasError('international-number', stripSpaces(inputPhone.value))
 		const inputPassportError = hasError('generic', inputPassport.value)
-		const inputCPFError = hasError('text', inputCPF.value)
+		const inputCPFError = hasError('cpf', inputCPF.value)
 		setInputName((prev) => ({
 			...prev,
 			error: inputNameError,
@@ -120,6 +120,7 @@ export default function EditProfileScreen() {
 			!inputDOBmonthError &&
 			!inputDOBdayError &&
 			!selectedCountryError &&
+			!inputPassportError &&
 			!inputPhoneError &&
 			!inputCPFError
 		)
@@ -395,7 +396,7 @@ export default function EditProfileScreen() {
 				<Input
 					label={'CPF (optional)'}
 					value={inputCPF.value ? formatCPF(inputCPF.value) : inputCPF.value}
-					placeholder={'If you have a CPF'}
+					placeholder={'000.000.000-00'}
 					autoCorrect={false}
 					autoComplete="off"
 					keyboardType={'number-pad'}
