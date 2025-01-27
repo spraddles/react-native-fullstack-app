@@ -3,8 +3,6 @@ To do
 
 
 
--pix key (add back pix method)
--support link (in "i" icon top right): add new email address (support@gringopay.app)
 -terms of service (caroline)
 -privacy policy (caroline)
 -new website: super basic, with above 2 links

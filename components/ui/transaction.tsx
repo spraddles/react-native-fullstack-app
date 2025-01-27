@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 import { formatCurrency, formatCPF, formatPhone } from '@/composables/inputFormatter'
+import { Pill } from '@/components/ui/pill'
 
 type TransactionProps = {
 	amount: number
@@ -25,6 +26,25 @@ export function Transaction({
 	})
 	const time = new Date(created_at).toLocaleTimeString()
 
+	const words = {
+		cpf: {
+			lower: 'cpf',
+			normal: 'CPF'
+		},
+		phone: {
+			lower: 'phone',
+			normal: 'Phone'
+		},
+		email: {
+			lower: 'email',
+			normal: 'Email'
+		},
+		key: {
+			lower: 'key',
+			normal: 'Key'
+		}
+	}
+
 	const formatPixMethodValue = (method: string, value: any) => {
 		if (method === 'cpf') {
 			return formatCPF(value)
@@ -43,10 +63,13 @@ export function Transaction({
 			</View>
 
 			<View style={styles.pixInfo}>
-				<Text style={styles.method}>Pix key:</Text>
+				<Text style={styles.method}>Pix key: </Text>
 				<Text style={styles.value}>
 					{formatPixMethodValue(pix_method, pix_method_value)}
 				</Text>
+				<View>
+					<Pill text={words[pix_method].lower} />
+				</View>
 			</View>
 
 			<Text style={styles.date}>{date}</Text>
@@ -61,7 +84,6 @@ const styles = StyleSheet.create({
 		paddingTop: 15,
 		paddingBottom: 15,
 		backgroundColor: '#fff',
-
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc'
 	},
@@ -82,7 +104,7 @@ const styles = StyleSheet.create({
 	},
 	pixInfo: {
 		flexDirection: 'row',
-		gap: 5
+		gap: 0
 	},
 	method: {
 		color: '#666'
