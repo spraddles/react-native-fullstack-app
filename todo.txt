@@ -3,13 +3,6 @@ To do
 
 
 
--terms of service (caroline)
--privacy policy (caroline)
--new website: super basic, with above 2 links
--add text in app "when you sign up you agree to our TOS + PP"
-
-
-
 Mobile:
 -sign up to expo & test build on testflight
 > setup apple developer account

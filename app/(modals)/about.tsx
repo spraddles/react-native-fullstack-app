@@ -53,7 +53,9 @@ export default function ModalScreen() {
 			</Text>
 			<Text style={styles.versionText}>Version 1.02.367B </Text>
 			<Button text="Contact support" fill={false} onPress={handleClick} />
-			<Text style={styles.buttonSubText}>or email: support@gringopay.app</Text>
+			<Text style={styles.buttonSubText}>
+				or email: {process.env.EXPO_PUBLIC_SUPPORT_EMAIL}
+			</Text>
 			{/* Use a light status bar on iOS to account for the black space above the modal */}
 			<StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 		</View>
@@ -83,8 +85,8 @@ const styles = StyleSheet.create({
 		color: '#777',
 		marginBottom: 70
 	},
-    buttonSubText: {
-        marginTop: 20,
-        color: '#888'
-    }
+	buttonSubText: {
+		marginTop: 20,
+		color: '#888'
+	}
 })
