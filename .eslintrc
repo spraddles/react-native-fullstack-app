@@ -9,6 +9,8 @@
         "@typescript-eslint/func-call-spacing": "off",
         "comma-dangle": "off",
         "semi": "off",
+        "no-redeclare": "error",
+        "no-var": "error",
         "prettier/prettier": [
             "warn",
             {
