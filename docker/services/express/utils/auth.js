@@ -11,15 +11,18 @@ export const validateToken = async (req, res, next) => {
 			} = await supabase.auth.getUser(accessToken)
 			// invalid token
 			if (error || !user) {
-				console.log('token invalid')
-				res.status(401).json({ error: 'Invalid or expired token' })
-				return false
+				//vconsole.log('token invalid')
+				return res.status(401).json({
+					status: false,
+					error: 'Invalid or expired token'
+				})
 			}
 			// valid token
 			if (!error || user) {
-				console.log('token valid')
-				res.status(200)
-				return true
+				// console.log('token valid')
+				req.token = accessToken
+				// don't return a server status here
+				next()
 			}
 		}
 		// no token
@@ -27,7 +30,6 @@ export const validateToken = async (req, res, next) => {
 			console.log('no token found')
 			return res.status(401).json({ error: 'No token found' })
 		}
-		next()
 	} catch (error) {
 		res.status(401).json({ error: 'Token validation error' })
 		console.log('Token validation error: ', error)

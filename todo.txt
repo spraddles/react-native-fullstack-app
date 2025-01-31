@@ -1,14 +1,26 @@
 To do
 
--merge branches
+-(done) merge branches
 
--mock out fake payment flow (incl. check token)
+-perform transaction
+> (done) use new fetchApi query on frontend
+> (done) move transactionMethods to backend
+> (done) test both valid token & transaction (no error)
+> (done) supabase session not valid on server, need to: supabase.auth.getUser([ADD_TOKEN]) here
+
+> restructure confirmTransaction > handleConfirm() to cater: createPendingTransaction, deletePendingTransaction, markTransactionComplete, etc
+
 > trigger a "session cleanup" (composable?) flow on bad token: error message ('your session has expired'), logout, back to login
 
-> dummy transaction request
-> move transactionMethods to backend
-> (done) custom fetch query
-> remove serverAuth()
+-bug: reals input currency if comma shows error
+-bug: pix key can be alphanumeric
+
+
+Design:
+-black intro screen / white logo
+-change icon
+-update about text
+
 
 
 Mobile:

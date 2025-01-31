@@ -25,23 +25,24 @@ export default function ConfirmPage() {
 
 	const handleConfirm = async () => {
 		const { processPayment } = ApplePay()
-
 		try {
 			const paymentDetails = await processPayment(setError, setResponse)
 			// payment error
 			if (paymentDetails.error === true) {
 				console.log('payment error')
-				await new Promise((resolve) => setTimeout(resolve, 1000))
-				useBaseStore
-					.getState()
-					.setToast({ visible: true, message: 'Sorry, but your payment failed' })
+				throw new Error('There is a problem creating your transaction, please start again')
 			}
 			// payment success
 			else {
 				// save details to server
 				useBaseStore.getState().setLoading(true)
 				// upload to database
-				await createTransaction(transaction)
+				const createTransactionResponse = await createTransaction(transaction)
+				if (!createTransactionResponse.status) {
+					throw new Error(
+						'There is a problem creating your transaction, please start again'
+					)
+				}
 				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 				useBaseStore.getState().setLoading(false)
 				router.push('/(pages)/success')
@@ -49,6 +50,13 @@ export default function ConfirmPage() {
 		} catch (error) {
 			// payment fail
 			console.log('Payment failed:', error)
+			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+			useBaseStore.getState().setLoading(false)
+			router.push('/(tabs)')
+			useBaseStore.getState().setToast({
+				visible: true,
+				message: 'Sorry but your payment failed. Please try again'
+			})
 		}
 	}
 

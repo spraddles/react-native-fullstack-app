@@ -2,7 +2,7 @@ import createError from 'http-errors'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
-import exampleRoute from './routes/example.js'
+import createTransaction from './routes/transactions/create.js'
 import { validateToken } from './utils/auth.js'
 
 const app = express()
@@ -14,10 +14,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 // middleware
-app.use('/api', validateToken)
+app.use('/api/*', validateToken)
 
 // routes
-app.use('/api', exampleRoute())
+app.use('/api/transactions', createTransaction())
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

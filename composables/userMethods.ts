@@ -1,7 +1,6 @@
 import { supabase } from '@/supabase/connect'
 import { stripFormat } from '@/composables/inputFormatter'
 import countries from '@/assets/data/countries.json'
-import { apiFetch } from '@/composables/api'
 
 export const updateUserMeta = async (id: string, data: object) => {
 	try {
@@ -32,7 +31,6 @@ export const updateUserMeta = async (id: string, data: object) => {
 
 			// error
 			if (insertCommand.data === null && insertCommand.error.code) {
-				console.log('insertCommand error: ', insertCommand.error)
 				return { status: false, error: 'There is an error creating your profile' }
 			}
 			// success
@@ -52,7 +50,6 @@ export const updateUserMeta = async (id: string, data: object) => {
 
 			// error
 			if (updateCommand.data === null && updateCommand.error.code) {
-				console.log('updateCommand error: ', updateCommand.error)
 				return { status: false, error: 'There is an error updating your profile' }
 			}
 			// success
@@ -60,7 +57,6 @@ export const updateUserMeta = async (id: string, data: object) => {
 				return { status: true }
 			}
 		} else {
-			console.log('updateUserMeta: error')
 			return { status: false }
 		}
 	} catch (error) {
@@ -103,7 +99,6 @@ export const hasOnboarded = async (email) => {
 		if (onboardCheck.data === null || onboardCheck?.data?.has_onboarded === false) {
 			return false
 		} else {
-			console.log('hasOnboarded error: cant run check')
 			return false
 		}
 	} catch (error) {
@@ -120,17 +115,4 @@ export const getCountry = (code: string) => {
 		return {}
 	}
 	return countries.find((c) => c.code === code.toUpperCase()) || null
-}
-
-export const serverAuth = async () => {
-	try {
-		const url = process.env.EXPO_PUBLIC_SERVER_URL + '/api/example'
-		const apiFetchResponse = await apiFetch(url, {
-			method: 'POST',
-			body: JSON.stringify(data)
-		})
-		console.log('apiFetchResponse: ', apiFetchResponse)
-	} catch (error) {
-		console.log('error: ', error)
-	}
 }
