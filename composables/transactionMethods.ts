@@ -1,10 +1,9 @@
 import { supabase } from '@/supabase/connect'
-import { cleanDataByKey } from '@/composables/inputFormatter'
+import { stripFormat } from '@/composables/inputFormatter'
 
 export const fetchTransactions = async () => {
 	const supabaseUser = await supabase.auth.getUser()
 	const supabaseUserID = supabaseUser?.data?.user?.id
-
 	const transactions = await supabase
 		.from('transactions')
 		.select()
@@ -18,7 +17,13 @@ export const createTransaction = async (data: object) => {
 		const supabaseUser = await supabase.auth.getUser()
 		const supabaseUserID = supabaseUser?.data?.user?.id
 		// clean data first
-		const cleanData = cleanDataByKey(data, ['amount', 'pix_method_value'])
+		const cleanData = {
+			amount: stripFormat(data.amount),
+			digital_wallet: data.digital_wallet,
+			pix_method: data.pix_method,
+			pix_method_value: stripFormat(data.pix_method_value),
+			receiver: data.receiver
+		}
 		// append id
 		const object = {
 			sender_id: supabaseUserID,

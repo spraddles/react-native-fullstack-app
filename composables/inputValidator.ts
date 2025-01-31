@@ -70,11 +70,16 @@ export const validateInput = (type: string, value: string | number, length?: num
 
 	// month check
 	if (type === 'month') {
-		let newValue = String(value)
-		if (newValue.length !== 2) {
-			return { isValid: false, message: 'Invalid month' }
+		const newValue = String(value)
+		// no leading zeros
+		if (newValue.startsWith('0')) {
+			return { isValid: false, message: "Can't start with 0" }
 		}
-		newValue = Number(value)
+		// 1-2 chars length
+		if (newValue.length < 1 || newValue.length > 2) {
+			return { isValid: false, message: 'Must be 1-2 digits' }
+		}
+		// month range
 		if (newValue < 1 || newValue > 12) {
 			return { isValid: false, message: 'Invalid month' }
 		}
@@ -82,14 +87,21 @@ export const validateInput = (type: string, value: string | number, length?: num
 
 	// day check
 	if (type === 'day') {
-		let newValue = String(value)
-		if (newValue.length !== 2) {
-			return { isValid: false, message: 'Invalid day' }
+		const newValue = String(value)
+		// no leading zeros
+		if (newValue.startsWith('0')) {
+			return { isValid: false, message: "Can't start with 0" }
 		}
-		newValue = Number(value)
+		// 1-2 chars length
+		if (newValue.length < 1 || newValue.length > 2) {
+			return { isValid: false, message: 'Must be 1-2 digits' }
+		}
+		// day range
 		if (newValue < 1 || newValue > 31) {
-			return { isValid: false, message: 'Invalid day' }
+			return { isValid: false, message: 'Must be between 1-31' }
 		}
+
+		return { isValid: true }
 	}
 
 	return { isValid: true }

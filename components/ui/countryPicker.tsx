@@ -42,7 +42,7 @@ export const CountryPicker = ({ onSelect, selectedCountry, error = false, errorT
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.label}>Country</Text>
+			<Text style={styles.label}>Nationality</Text>
 			<TouchableOpacity
 				style={[styles.pickerButton, error && styles.errorInput]}
 				onPress={() => setModalVisible(true)}
@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#eee'
 	},
 	searchInput: {
-		height: 40,
+		fontSize: 17,
+		height: 45,
 		backgroundColor: '#f1f1f1',
 		paddingHorizontal: 12,
 		borderRadius: 8

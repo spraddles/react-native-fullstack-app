@@ -63,7 +63,7 @@ export default function ProfileScreen() {
 						source={require('../../assets/images/profile.png')}
 					/>
 					<Text style={styles.title}>
-						{user.name} {user.surname}
+						{user?.name} {user?.surname}
 					</Text>
 				</View>
 				<View style={styles.bottom}>
@@ -74,21 +74,21 @@ export default function ProfileScreen() {
 						<View>
 							<Text style={styles.text}>
 								<Text style={styles.label}>Name:</Text>{' '}
-								<Text style={styles.value}>{user.name}</Text>
+								<Text style={styles.value}>{user?.name}</Text>
 							</Text>
 							<Text style={styles.text}>
 								<Text style={styles.label}>Surname:</Text>{' '}
-								<Text style={styles.value}>{user.surname}</Text>
+								<Text style={styles.value}>{user?.surname}</Text>
 							</Text>
 							<Text style={styles.text}>
 								<Text style={styles.label}>Date of Birth:</Text>{' '}
 								<Text style={styles.value}>
-									{user.dob.year}/{user.dob.month}/{user.dob.day}
+									{user?.dob?.year}/{user?.dob?.month}/{user?.dob?.day}
 								</Text>
 							</Text>
 							<Text style={styles.text}>
 								<Text style={styles.label}>Nationality:</Text>{' '}
-								<Text style={styles.value}>{user.country.demonym}</Text>
+								<Text style={styles.value}>{user?.country?.demonym}</Text>
 							</Text>
 						</View>
 					</Accordion>
@@ -99,11 +99,11 @@ export default function ProfileScreen() {
 						<View>
 							<Text style={styles.text}>
 								<Text style={styles.label}>Email:</Text>{' '}
-								<Text style={styles.value}>{user.email}</Text>
+								<Text style={styles.value}>{user?.email}</Text>
 							</Text>
 							<Text style={styles.text}>
 								<Text style={styles.label}>Phone:</Text>{' '}
-								<Text style={styles.value}>{user.phone}</Text>
+								<Text style={styles.value}>{user?.phone}</Text>
 							</Text>
 						</View>
 					</Accordion>
@@ -115,12 +115,12 @@ export default function ProfileScreen() {
 							<Text style={styles.text}>
 								<Text style={styles.label}>CPF:</Text>{' '}
 								<Text style={styles.value}>
-									{user.cpf ? formatCPF(user.cpf) : user.cpf}
+									{user?.cpf ? formatCPF(user?.cpf) : '(none)'}
 								</Text>
 							</Text>
 							<Text style={styles.text}>
 								<Text style={styles.label}>Passport:</Text>{' '}
-								<Text style={styles.value}>{user.passport}</Text>
+								<Text style={styles.value}>{user?.passport}</Text>
 							</Text>
 						</View>
 					</Accordion>

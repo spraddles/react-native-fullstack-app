@@ -1,8 +1,10 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { Platform, StyleSheet, Image } from 'react-native'
+import { Platform, StyleSheet, Image, Linking } from 'react-native'
 import { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
+
+import { Button } from '@/components/ui/button'
 
 import { ExternalLink } from '@/components/ExternalLink'
 import { Text, View } from '@/components/Themed'
@@ -17,6 +19,19 @@ export default function ModalScreen() {
 			title: 'About'
 		})
 	}, [navigation])
+
+	const handleClick = async () => {
+		const email = 'example@email.com'
+		try {
+			if (Platform.OS === 'ios') {
+				await Linking.openURL(`message:${email}`)
+			} else {
+				await Linking.openURL(`mailto:${email}`)
+			}
+		} catch (error) {
+			console.error('Error opening email:', error)
+		}
+	}
 
 	return (
 		<View style={styles.container}>
@@ -37,6 +52,10 @@ export default function ModalScreen() {
 				Copyright © 2000–2024 GlobalPay Inc. All rights reserved.
 			</Text>
 			<Text style={styles.versionText}>Version 1.02.367B </Text>
+			<Button text="Contact support" fill={false} onPress={handleClick} />
+			<Text style={styles.buttonSubText}>
+				or email: {process.env.EXPO_PUBLIC_SUPPORT_EMAIL}
+			</Text>
 			{/* Use a light status bar on iOS to account for the black space above the modal */}
 			<StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 		</View>
@@ -46,9 +65,10 @@ export default function ModalScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		padding: 50,
 		alignItems: 'center',
 		justifyContent: 'center',
-		padding: 35
+		backgroundColor: '#fff'
 	},
 	body: {
 		fontSize: 20,
@@ -61,7 +81,12 @@ const styles = StyleSheet.create({
 		marginBottom: 20
 	},
 	versionText: {
-		fontSize: 15,
-		color: '#777'
+		fontSize: 17,
+		color: '#777',
+		marginBottom: 70
+	},
+	buttonSubText: {
+		marginTop: 20,
+		color: '#888'
 	}
 })

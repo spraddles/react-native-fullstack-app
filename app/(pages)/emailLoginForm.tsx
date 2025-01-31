@@ -1,23 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { StyleSheet, View, AppState } from 'react-native'
 import { supabase } from '@/supabase/connect'
 
-import { router } from 'expo-router'
-
-import { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-
-import { useBaseStore } from '@/store/base'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+import { validateInput } from '@/composables/inputValidator'
+import { validatePassword } from '@/composables/passwordValidator'
 import { hasOnboarded } from '@/composables/userMethods'
 
-// Tells Supabase Auth to continuously refresh the session automatically if
-// the app is in the foreground. When this is added, you will continue to receive
-// `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
-// if the user's session is terminated. This should only be registered once.
+import { useBaseStore } from '@/store/base'
+
+import { router } from 'expo-router'
+
 AppState.addEventListener('change', (state) => {
 	if (state === 'active') {
 		supabase.auth.startAutoRefresh()
@@ -35,45 +32,91 @@ export default function EmailLoginForm() {
 		})
 	}, [navigation])
 
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
+	const initialState = (value: string) => ({
+		value: value,
+		error: false,
+		errorMessage: ''
+	})
 
-	const handleEmailLogin = async () => {
-		useBaseStore.getState().setLoading(true)
-		try {
-			const response = await supabase.auth.signInWithPassword({
-				email: email,
-				password: password
-			})
-			// authenticated
-			if (response.data?.user?.aud === 'authenticated') {
-				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
-				useBaseStore.getState().setLoading(false)
-				const has_been_onboarded = await hasOnboarded(email)
-				// user needs onboarding
-				if (!has_been_onboarded) {
+	const [inputEmail, setInputEmail] = useState(initialState(''))
+	const [inputPassword, setInputPassword] = useState(initialState(''))
+
+	const hasError = (type: string, value: string | number, length: number) => {
+		const error = validateInput(type, value, length)
+		return !error.isValid
+	}
+
+	const hasPasswordError = (type: string, minLength: number) => {
+		const error = validatePassword(type, minLength)
+		return !error.isValid
+	}
+
+	const getPasswordErrorMessage = (type: string, minLength: number) => {
+		const error = validatePassword(type, minLength)
+		return error.message
+	}
+
+	const getErrorMessage = (type: string, value: string | number, length: number) => {
+		const error = validateInput(type, value, length)
+		return error.message
+	}
+
+	const checkForErrors = () => {
+		const emailError = hasError('email', inputEmail.value)
+		const passwordError = hasPasswordError(inputPassword.value, 6)
+		setInputEmail((prev) => ({
+			...prev,
+			error: emailError,
+			errorMessage: getErrorMessage('email', inputEmail.value)
+		}))
+		setInputPassword((prev) => ({
+			...prev,
+			error: passwordError,
+			errorMessage: getPasswordErrorMessage(inputPassword.value, 6)
+		}))
+		return !emailError && !passwordError
+	}
+
+	const handleSubmit = async () => {
+		if (checkForErrors()) {
+			useBaseStore.getState().setLoading(true)
+			try {
+				const response = await supabase.auth.signInWithPassword({
+					email: inputEmail.value,
+					password: inputPassword.value
+				})
+				// authenticated
+				if (response.data?.user?.aud === 'authenticated') {
+					await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 					useBaseStore.getState().setLoading(false)
-					router.push('/(pages)/completeProfile')
+					const has_been_onboarded = await hasOnboarded(inputEmail.value)
+					// user needs onboarding
+					if (!has_been_onboarded) {
+						useBaseStore.getState().setLoading(false)
+						router.push('/(pages)/completeProfile')
+					}
+					// user already onboarded
+					else {
+						useBaseStore.getState().setLoading(false)
+						router.push('/(tabs)')
+					}
 				}
-				// user already onboarded
+				// not authenticated
 				else {
+					await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 					useBaseStore.getState().setLoading(false)
-					router.push('/(tabs)')
+					useBaseStore
+						.getState()
+						.setToast({ visible: true, message: response.error.message })
 				}
-			}
-			// not authenticated
-			else {
-				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+			} catch (error) {
+				// other error
 				useBaseStore.getState().setLoading(false)
-				useBaseStore.getState().setToast({ visible: true, message: response.error.message })
+				useBaseStore.getState().setToast({ visible: true, message: error })
+			} finally {
+				// in case spinner isn't already stopped
+				useBaseStore.getState().setLoading(false)
 			}
-		} catch (error) {
-			// other error
-			useBaseStore.getState().setLoading(false)
-			useBaseStore.getState().setToast({ visible: true, message: error })
-		} finally {
-			// in case spinner isn't already stopped
-			useBaseStore.getState().setLoading(false)
 		}
 	}
 
@@ -83,24 +126,55 @@ export default function EmailLoginForm() {
 				<Input
 					label={'Email'}
 					placeholder={'email@address.com'}
-					value={email}
-					onChangeText={(text) => setEmail(text)}
+					value={inputEmail.value}
 					autoCorrect={false}
 					autoComplete="off"
 					autoCapitalize={'none'}
-					keyboardType={'default'}
+					keyboardType={'email-address'}
 					returnKeyType="done"
+					error={inputEmail.error}
+					errorText={inputEmail.errorMessage}
+					onChangeText={(text) => {
+						setInputEmail({
+							value: text,
+							error: false,
+							errorMessage: ''
+						})
+					}}
+					onSubmitEditing={() => {
+						setInputEmail((prev) => ({
+							...prev,
+							error: hasError('email', inputEmail.value),
+							errorMessage: getErrorMessage('email', inputEmail.value)
+						}))
+					}}
 				/>
 				<Input
 					label={'Password'}
 					placeholder={'Password'}
-					value={password}
-					onChangeText={(text) => setPassword(text)}
+					value={inputPassword.value}
 					autoCorrect={false}
 					autoComplete="off"
 					autoCapitalize={'none'}
 					keyboardType={'default'}
 					returnKeyType="done"
+					error={inputPassword.error}
+					errorText={inputPassword.errorMessage}
+					secureTextEntry={true}
+					onChangeText={(text) => {
+						setInputPassword({
+							value: text,
+							error: false,
+							errorMessage: ''
+						})
+					}}
+					onSubmitEditing={() => {
+						setInputPassword((prev) => ({
+							...prev,
+							error: hasPasswordError(inputPassword.value, 6),
+							errorMessage: getPasswordErrorMessage(inputPassword.value, 6)
+						}))
+					}}
 				/>
 			</View>
 			<View style={styles.footer}>
@@ -108,7 +182,7 @@ export default function EmailLoginForm() {
 					text="Login"
 					fill={true}
 					onPress={async () => {
-						await handleEmailLogin()
+						await handleSubmit()
 					}}
 				/>
 			</View>
