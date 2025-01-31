@@ -19,7 +19,12 @@ import { useBaseStore } from '@/store/base'
 
 import { validateInput } from '@/composables/inputValidator'
 
+import { serverAuth } from '@/composables/userMethods'
+
 export default function TabOneScreen() {
+
+    serverAuth()
+    
 	const [currentTab, setCurrentTab] = useState('cpf')
 
 	const blankErrorText = 'Please enter a value'

@@ -29,9 +29,14 @@ else
   exit 1
 fi
 
-docker run --rm -d \
+# remove existing container
+docker stop node-express 2>/dev/null
+docker rm node-express 2>/dev/null
+
+# start new container
+docker run -d \
     --name node-express \
-    -v ${DOCKER_PROJECT_ROOT}/docker/services/express/:/app/ \
+    -v ${DOCKER_PROJECT_ROOT}/docker/services/express:/app \
     -v express_node_modules:/app/node_modules \
     --env-file "$ENV_FILE" \
     -p 0:${EXPRESS_PORT} \

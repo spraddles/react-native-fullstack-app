@@ -1,6 +1,7 @@
 import { supabase } from '@/supabase/connect'
 import { stripFormat } from '@/composables/inputFormatter'
 import countries from '@/assets/data/countries.json'
+import { apiFetch } from '@/composables/api'
 
 export const updateUserMeta = async (id: string, data: object) => {
 	try {
@@ -119,4 +120,17 @@ export const getCountry = (code: string) => {
 		return {}
 	}
 	return countries.find((c) => c.code === code.toUpperCase()) || null
+}
+
+export const serverAuth = async () => {
+	try {
+		const url = process.env.EXPO_PUBLIC_SERVER_URL + '/api/example'
+		const apiFetchResponse = await apiFetch(url, {
+			method: 'POST',
+			body: JSON.stringify(data)
+		})
+		console.log('apiFetchResponse: ', apiFetchResponse)
+	} catch (error) {
+		console.log('error: ', error)
+	}
 }

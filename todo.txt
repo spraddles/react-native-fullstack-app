@@ -1,8 +1,14 @@
 To do
 
+-merge branches
 
--setup docker
--auth for app & server
+-mock out fake payment flow (incl. check token)
+> trigger a "session cleanup" (composable?) flow on bad token: error message ('your session has expired'), logout, back to login
+
+> dummy transaction request
+> move transactionMethods to backend
+> (done) custom fetch query
+> remove serverAuth()
 
 
 Pipeline:
@@ -42,11 +48,6 @@ Wishlist:
 -home screen should be transactions + add a button for new payment
 -add logout button (clear all state)
 -user_meta add device meta like phone type + os version
-
-
-Feedback:
--there is also a random code to transfer pix (chavealeatoria)
--extra fields on confirm page: institution, agency (branch), conte corrente (acct. no.)
 
 
 ApplePay libraries:

@@ -4,4 +4,7 @@ COPY ./docker/services/express/package*.json .
 RUN npm install
 COPY . .
 EXPOSE 4001
+
 CMD ["npm", "run", "express:debug"]
+
+# CMD ["sh", "-c", "tail -F keep_alive"] // for diagnosing container
