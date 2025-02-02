@@ -2,6 +2,7 @@ import createError from 'http-errors'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import getTransactions from './routes/transactions/all.js'
 import createTransaction from './routes/transactions/create.js'
 import { validateToken } from './utils/auth.js'
 
@@ -17,6 +18,7 @@ app.use(cookieParser())
 app.use('/api/*', validateToken)
 
 // routes
+app.use('/api/transactions', getTransactions())
 app.use('/api/transactions', createTransaction())
 
 // catch 404 and forward to error handler

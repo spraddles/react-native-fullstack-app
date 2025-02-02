@@ -1,16 +1,11 @@
-import { supabase } from '@/supabase/connect'
+/*
+ ** Note: user profile database transactions are ok to be
+ ** managed directly from the frontend, as Supabase has
+ ** RLS (row level security) but more sensitive transactions
+ ** like financial transactions, will be managed on the backend
+ */
+
 import { apiFetch } from '@/composables/api'
-
-export const fetchTransactions = async () => {
-	const supabaseUser = await supabase.auth.getUser()
-	const supabaseUserID = supabaseUser?.data?.user?.id
-	const transactions = await supabase
-		.from('transactions')
-		.select()
-		.eq('sender_id', supabaseUserID)
-
-	return transactions
-}
 
 export const createTransaction = async (data: object) => {
 	try {

@@ -10,7 +10,7 @@ export const apiFetch = async (url, options = {}) => {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`
 			}
-            const fetchUrlResponse = fetch(url, {
+			const fetchUrlResponse = fetch(url, {
 				...options,
 				headers: {
 					...defaultHeaders,
@@ -19,7 +19,6 @@ export const apiFetch = async (url, options = {}) => {
 			})
 			return fetchUrlResponse
 		}
-
 		// no token
 		else {
 			return {

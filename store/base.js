@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { apiFetch } from '@/composables/api'
 
 export const useBaseStore = create((set, get) => ({
 	user: {
@@ -86,5 +87,21 @@ export const useBaseStore = create((set, get) => ({
 	setTransactions: (value) =>
 		set(() => ({
 			transactions: value
-		}))
+		})),
+
+	// fetchers
+	fetchTransactions: async () => {
+		try {
+			set({ loading: true })
+			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/api/transactions/all'
+			const apiFetchResponse = await apiFetch(url, { method: 'GET' })
+			const data = await apiFetchResponse.json()
+			set({ transactions: data.data, loading: false, error: null })
+			set({ loading: false })
+		} catch (error) {
+			console.log('fetchTransactions error: ', error)
+			set({ error: error.message, loading: false })
+		}
+	}
 }))

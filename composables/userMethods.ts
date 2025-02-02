@@ -1,3 +1,10 @@
+/*
+ ** Note: user profile database transactions are ok to be
+ ** managed directly from the frontend, as Supabase has
+ ** RLS (row level security) but more sensitive transactions
+ ** like financial transactions, will be managed on the backend
+ */
+
 import { supabase } from '@/supabase/connect'
 import { stripFormat } from '@/composables/inputFormatter'
 import countries from '@/assets/data/countries.json'
