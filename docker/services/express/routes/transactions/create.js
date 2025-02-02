@@ -3,7 +3,6 @@ import { stripFormat } from './../../utils/inputFormatter.js'
 import { supabase } from './../../utils/supabase.js'
 
 export default function () {
-
 	const router = express.Router()
 
 	router.post('/create', async (req, res, next) => {
@@ -16,21 +15,28 @@ export default function () {
 				digital_wallet: req.body.digital_wallet,
 				pix_method: req.body.pix_method,
 				pix_method_value: stripFormat(req.body.pix_method_value),
-				receiver: req.body.receiver
+				receiver: req.body.receiver,
+				status: 'pending',
+				message: null
 			}
 			// append id
 			const object = {
 				sender_id: supabaseUserID,
 				...cleanData
 			}
-			const supabaseResponse = await supabase
+			const { data, error } = await supabase
 				.from('transactions')
 				.insert(object)
 				.eq('user_id', supabaseUserID)
 				.select()
 				.single()
+			if (error) {
+				console.log('Supabase error:', error)
+				throw new Error(error.message)
+			}
 			return res.status(200).json({
-				status: true
+				status: true,
+                data: data
 			})
 		} catch (error) {
 			console.log('Create transaction error: ', error)

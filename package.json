@@ -20,7 +20,8 @@
         "docker:prune": "docker system prune",
         "docker:purge": "sh ./scripts/docker-purge.sh && docker system prune -f",
         "supabase:reset:dev": "sh ./scripts/reset-dev-database.sh",
-        "supabase:migrate:new": "supabase migration new my_migration_name"
+        "supabase:migrate:new": "supabase migration new my_migration_name",
+        "supabase:migrate:push": "sh ./scripts/run-migrations.sh"
     },
     "jest": {
         "preset": "jest-expo"

@@ -12,7 +12,6 @@ export default function HistoryScreen() {
 
 	useEffect(() => {
 		;(async () => {
-			console.log('HistoryScreen')
 			await fetchTransactions()
 		})()
 	}, [])

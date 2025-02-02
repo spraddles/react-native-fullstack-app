@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import getTransactions from './routes/transactions/all.js'
 import createTransaction from './routes/transactions/create.js'
+import setTransactionStatus from './routes/transactions/setStatus.js'
 import { validateToken } from './utils/auth.js'
 
 const app = express()
@@ -20,6 +21,7 @@ app.use('/api/*', validateToken)
 // routes
 app.use('/api/transactions', getTransactions())
 app.use('/api/transactions', createTransaction())
+app.use('/api/transactions', setTransactionStatus())
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

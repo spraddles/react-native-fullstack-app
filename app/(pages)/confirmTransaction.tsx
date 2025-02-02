@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 
 import { ApplePay } from '@/composables/applePay/index'
-import { createTransaction } from '@/composables/transactionMethods'
 
 import { View } from '@/components/Themed'
 import { Input } from '@/components/ui/input'
@@ -15,41 +14,40 @@ export default function ConfirmPage() {
 	const params = useLocalSearchParams()
 	const transaction = JSON.parse(params.transaction as string)
 
+	const createTransaction = useBaseStore((state) => state.createTransaction)
+	const setTransactionStatus = useBaseStore((state) => state.setTransactionStatus)
+
 	const [error, setError] = useState('')
 	const [response, setResponse] = useState<PaymentResponse['details']>()
 
-	useEffect(() => {
-		setError('')
-		setResponse(undefined)
-	}, [setError, setResponse])
-
 	const handleConfirm = async () => {
-		const { processPayment } = ApplePay()
+		let dbTransactionID = ''
 		try {
-			const paymentDetails = await processPayment(setError, setResponse)
-			// payment error
-			if (paymentDetails.error === true) {
-				console.log('payment error')
-				throw new Error('There is a problem creating your transaction, please start again')
-			}
-			// payment success
-			else {
-				// save details to server
-				useBaseStore.getState().setLoading(true)
-				// upload to database
-				const createTransactionResponse = await createTransaction(transaction)
-				if (!createTransactionResponse.status) {
-					throw new Error(
-						'There is a problem creating your transaction, please start again'
-					)
+			useBaseStore.getState().setLoading(true)
+			const dbTransaction = await createTransaction(transaction)
+			dbTransactionID = dbTransaction.data.data.id
+
+			if (dbTransaction.status) {
+				const { processPayment } = ApplePay()
+				const paymentResult = await processPayment(setError, setResponse)
+
+				// error
+				if (paymentResult.error) {
+					throw new Error('Payment failed: [unknown reason]')
 				}
-				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
-				useBaseStore.getState().setLoading(false)
-				router.push('/(pages)/success')
+				// success
+				else {
+					await setTransactionStatus(dbTransactionID, 'success', null)
+					useBaseStore.getState().setLoading(false)
+					router.push('/(tabs)')
+				}
 			}
-		} catch (error) {
+		} catch (err) {
 			// payment fail
-			console.log('Payment failed:', error)
+			console.log('Payment failed:', err)
+			if (dbTransactionID) {
+				await setTransactionStatus(dbTransactionID, 'fail', err)
+			}
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 			useBaseStore.getState().setLoading(false)
 			router.push('/(tabs)')

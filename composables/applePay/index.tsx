@@ -10,7 +10,10 @@ export const ApplePay = () => {
 	const processPayment = async (
 		setError: (error: string) => void,
 		setResponse: (response: PaymentResponse['details'] | undefined) => void
-	): Promise<PaymentResponse['details']> => {
+	): Promise<{
+		error?: string | boolean
+		response?: PaymentResponse['details']
+	}> => {
 		setError('')
 		setResponse(undefined)
 
@@ -26,19 +29,29 @@ export const ApplePay = () => {
 			// fail payment for testing
 			if (process.env.EXPO_PUBLIC_FORCE_FAIL_PAYMENT === 'true') {
 				await paymentResponse.complete(PaymentComplete.FAIL)
-				setError(getErrorMessage())
+				const errorMsg = getErrorMessage()
+				setError(errorMsg)
 				return {
-					error: true
+					error: true,
+					response: errorMsg
 				}
 			}
 			// normal flow
 			else {
 				await paymentResponse.complete(PaymentComplete.SUCCESS)
-				return paymentResponse.details
+				return {
+					error: false,
+					response: paymentResponse
+				}
 			}
 		} catch (e) {
 			console.log('Payment error: ', e)
-			setError(getErrorMessage())
+			const errorMsg = getErrorMessage()
+			setError(errorMsg)
+			return {
+				error: true,
+				response: errorMsg
+			}
 		}
 	}
 

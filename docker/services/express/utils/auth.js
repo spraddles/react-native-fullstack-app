@@ -11,7 +11,6 @@ export const validateToken = async (req, res, next) => {
 			} = await supabase.auth.getUser(accessToken)
 			// invalid token
 			if (error || !user) {
-				// console.log('token invalid')
 				return res.status(401).json({
 					status: false,
 					error: 'Invalid or expired token'
@@ -19,7 +18,6 @@ export const validateToken = async (req, res, next) => {
 			}
 			// valid token
 			if (!error || user) {
-				// console.log('token valid')
 				req.token = accessToken
 				// don't return a server status here
 				next()
