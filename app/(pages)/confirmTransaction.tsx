@@ -25,7 +25,7 @@ export default function ConfirmPage() {
 		try {
 			useBaseStore.getState().setLoading(true)
 			const dbTransaction = await createTransaction(transaction)
-			dbTransactionID = dbTransaction.data.data.id
+			dbTransactionID = dbTransaction.id
 
 			if (dbTransaction.status) {
 				const { processPayment } = ApplePay()
@@ -50,7 +50,6 @@ export default function ConfirmPage() {
 			}
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 			useBaseStore.getState().setLoading(false)
-			router.push('/(tabs)')
 			useBaseStore.getState().setToast({
 				visible: true,
 				message: 'Sorry but your payment failed. Please try again'

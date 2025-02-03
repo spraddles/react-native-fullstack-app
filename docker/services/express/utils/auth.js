@@ -1,6 +1,7 @@
 import { supabase } from './supabase.js'
 
 export const validateToken = async (req, res, next) => {
+
 	try {
 		const accessToken = req.headers.authorization?.split(' ')[1]
 		// check token
@@ -26,10 +27,16 @@ export const validateToken = async (req, res, next) => {
 		// no token
 		else {
 			console.log('no token found')
-			return res.status(401).json({ error: 'No token found' })
+			return res.status(401).json({
+				status: false,
+				error: 'No token found'
+			})
 		}
 	} catch (error) {
-		res.status(401).json({ error: 'Token validation error' })
+		res.status(401).json({
+			status: false,
+			error: 'Token validation error'
+		})
 		console.log('Token validation error: ', error)
 	}
 }

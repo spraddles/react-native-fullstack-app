@@ -1,19 +1,5 @@
 To do
 
--(done) merge branches
-
--perform transaction
-> (done) use new fetchApi query on frontend
-> (done) move transactionMethods to backend
-> (done) test both valid token & transaction (no error)
-> (done) supabase session not valid on server, need to: supabase.auth.getUser([ADD_TOKEN]) here
-> (done) fetchTransactions move to server
-> (done) restructure createTransaction: restructure confirmTransaction > handleConfirm() to cater: createPendingTransaction, deletePendingTransaction, markTransactionComplete, etc
-
-> rename receiver to receiver_name
-
-> trigger a "session cleanup" (composable?) flow on bad token: error message ('your session has expired'), logout, back to login. For both frontend (maybe on route change?) & backend.
-
 -bug: reals input currency if comma shows error
 -bug: pix key can be alphanumeric
 

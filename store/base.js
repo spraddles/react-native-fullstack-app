@@ -96,8 +96,7 @@ export const useBaseStore = create((set, get) => ({
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/api/transactions/all'
 			const response = await apiFetch(url, { method: 'GET' })
-			const data = await response.json()
-			set({ transactions: data.data, loading: false, error: null })
+			set({ transactions: response.data, loading: false, error: null })
 			set({ loading: false })
 		} catch (error) {
 			console.log('fetchTransactions error: ', error)
@@ -109,12 +108,7 @@ export const useBaseStore = create((set, get) => ({
 		try {
 			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/api/transactions/create'
             const response = await apiFetch(url, { method: 'POST', body: JSON.stringify(transaction) })
-			const data = await response.json()
-            const isSuccess = response.ok && response.status === 200 && data.status
-            return {
-                status: isSuccess,
-                ...(isSuccess && { data })
-            }
+            return (response.status) ? response.data : { status: false }
 		} catch (error) {
 			console.log('createTransaction error: ', error)
 		}
