@@ -1,8 +1,6 @@
 To do
 
--(done) bug: reals input currency if comma shows error
--(done) bug: pix key can be alphanumeric
--add ability for users to give feedback
+
 -start build pipeline
 
 
