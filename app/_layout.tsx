@@ -68,7 +68,13 @@ function RootLayoutNav() {
 			/>
 			<Stack>
 				<Stack.Screen name="(pages)/index" options={{ headerShown: false }} />
-				<Stack.Screen name="(modals)/about" options={{ presentation: 'modal' }} />
+				<Stack.Screen
+					name="(modals)/about"
+					options={{
+						presentation: 'modal',
+						title: 'About'
+					}}
+				/>
 				<Stack.Screen
 					name="(pages)/confirmTransaction"
 					options={{

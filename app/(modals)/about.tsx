@@ -1,8 +1,6 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Platform, StyleSheet, Image, Linking } from 'react-native'
-import { useLayoutEffect } from 'react'
-import { useNavigation } from '@react-navigation/native'
 
 import { Button } from '@/components/ui/button'
 
@@ -12,14 +10,6 @@ import { Text, View } from '@/components/Themed'
 import Colors from '@/constants/Colors'
 
 export default function ModalScreen() {
-	const navigation = useNavigation()
-
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			title: 'About'
-		})
-	}, [navigation])
-
 	const handleClick = async () => {
 		const email = 'example@email.com'
 		try {
