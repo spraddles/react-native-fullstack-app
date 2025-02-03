@@ -13,7 +13,7 @@ import { validateInput } from '@/composables/inputValidator'
 import {
 	stripSpaces,
 	formatPhoneInternational,
-	formatPassport,
+	formatAlphaNumeric,
 	formatCPF,
 	formatDOB
 } from '@/composables/inputFormatter'
@@ -408,7 +408,7 @@ export default function NewUserEditProfileScreen() {
 					errorText={inputPassport.errorMessage}
 					onChangeText={(text) => {
 						setInputPassport({
-							value: formatPassport(text),
+							value: formatAlphaNumeric(text),
 							error: false,
 							errorMessage: ''
 						})

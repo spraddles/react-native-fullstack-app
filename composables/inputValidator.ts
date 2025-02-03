@@ -59,6 +59,15 @@ export const validateInput = (type: string, value: string | number, length?: num
 		}
 	}
 
+	// alpha numeric check
+	if (type === 'alpha-numeric') {
+		const newValue = String(value)
+		const pattern = /^[a-zA-Z0-9]+$/
+		if (pattern.test(newValue) === false) {
+			return { isValid: false, message: 'Invalid key' }
+		}
+	}
+
 	// year check
 	if (type === 'year') {
 		let newValue = String(value)

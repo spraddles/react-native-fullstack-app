@@ -41,8 +41,7 @@ export const formatPhoneInternational = (value) => {
 	return `+${cleaned}`
 }
 
-// @TODO: rename to allowAlphaNumeric
-export const formatPassport = (value) => {
+export const formatAlphaNumeric = (value) => {
 	if (!value) {
 		return ''
 	}

@@ -12,7 +12,8 @@ import {
 	formatCurrency,
 	formatCPF,
 	removeNonNumbers,
-	formatPhone
+	formatPhone,
+	formatAlphaNumeric
 } from '@/composables/inputFormatter'
 
 import { useBaseStore } from '@/store/base'
@@ -20,7 +21,6 @@ import { useBaseStore } from '@/store/base'
 import { validateInput } from '@/composables/inputValidator'
 
 export default function TabOneScreen() {
-
 	const blankErrorText = 'Please enter a value'
 
 	const initialState = (value: string) => ({
@@ -78,7 +78,7 @@ export default function TabOneScreen() {
 		const cpfError = hasError('number', removeNonNumbers(inputCPF.value), 11)
 		const phoneError = hasError('number', removeNonNumbers(inputPhone.value), 11)
 		const emailError = hasError('email', inputEmail.value)
-		const keyError = hasError('number', inputKey.value)
+		const keyError = hasError('alpha-numeric', inputKey.value)
 		setInputCurrency((prev) => ({
 			...prev,
 			error: currencyError,
@@ -102,7 +102,7 @@ export default function TabOneScreen() {
 		setInputKey((prev) => ({
 			...prev,
 			error: keyError,
-			errorMessage: getErrorMessage('number', inputKey.value)
+			errorMessage: getErrorMessage('alpha-numeric', inputKey.value)
 		}))
 		const errorsObject = {
 			cpf: cpfError,
@@ -170,7 +170,10 @@ export default function TabOneScreen() {
 							setInputCurrency((prev) => ({
 								...prev,
 								error: hasError('number', removeNonNumbers(inputCurrency.value)),
-								errorMessage: getErrorMessage('number', removeNonNumbers(inputCurrency.value))
+								errorMessage: getErrorMessage(
+									'number',
+									removeNonNumbers(inputCurrency.value)
+								)
 							}))
 						}}
 					/>
@@ -297,7 +300,7 @@ export default function TabOneScreen() {
 							errorText={inputKey.errorMessage}
 							onChangeText={(text) => {
 								setInputKey({
-									value: text,
+									value: formatAlphaNumeric(text),
 									error: false,
 									errorMessage: ''
 								})
@@ -305,8 +308,8 @@ export default function TabOneScreen() {
 							onSubmitEditing={() => {
 								setInputKey((prev) => ({
 									...prev,
-									error: hasError('number', inputKey.value),
-									errorMessage: getErrorMessage('number', inputKey.value)
+									error: hasError('alpha-numeric', inputKey.value),
+									errorMessage: getErrorMessage('alpha-numeric', inputKey.value)
 								}))
 							}}
 						/>
