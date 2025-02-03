@@ -69,12 +69,12 @@ export default function TabOneScreen() {
 		setInputKey({ value: '', error: true, errorMessage: blankErrorText })
 	}
 
-	const checkTabsForErrors = (tabErrors) => {
-		return tabErrors[currentTab]
+	const tabErrors = (tabErrorsObject) => {
+		return tabErrorsObject[currentTab]
 	}
 
 	const checkForErrors = () => {
-		const currencyError = hasError('number', Number(inputCurrency.value))
+		const currencyError = hasError('number', Number(removeNonNumbers(inputCurrency.value)))
 		const cpfError = hasError('number', removeNonNumbers(inputCPF.value), 11)
 		const phoneError = hasError('number', removeNonNumbers(inputPhone.value), 11)
 		const emailError = hasError('email', inputEmail.value)
@@ -82,17 +82,17 @@ export default function TabOneScreen() {
 		setInputCurrency((prev) => ({
 			...prev,
 			error: currencyError,
-			errorMessage: getErrorMessage('number', Number(inputCurrency.value))
+			errorMessage: getErrorMessage('number', Number(removeNonNumbers(inputCurrency.value)))
 		}))
 		setInputCPF((prev) => ({
 			...prev,
 			error: cpfError,
-			errorMessage: getErrorMessage('number', Number(removeNonNumbers(inputCPF.value)), 11)
+			errorMessage: getErrorMessage('number', removeNonNumbers(inputCPF.value), 11)
 		}))
 		setInputPhone((prev) => ({
 			...prev,
 			error: phoneError,
-			errorMessage: getErrorMessage('number', Number(removeNonNumbers(inputPhone.value)), 11)
+			errorMessage: getErrorMessage('number', removeNonNumbers(inputPhone.value), 11)
 		}))
 		setInputEmail((prev) => ({
 			...prev,
@@ -104,13 +104,13 @@ export default function TabOneScreen() {
 			error: keyError,
 			errorMessage: getErrorMessage('number', inputKey.value)
 		}))
-		const tabErrors = {
+		const errorsObject = {
 			cpf: cpfError,
 			phone: phoneError,
 			email: emailError,
 			key: keyError
 		}
-		return !currencyError && !checkTabsForErrors(tabErrors)
+		return !currencyError && !tabErrors(errorsObject)
 	}
 
 	const handleNext = async () => {
@@ -169,8 +169,8 @@ export default function TabOneScreen() {
 						onEndEditing={() => {
 							setInputCurrency((prev) => ({
 								...prev,
-								error: hasError('number', Number(inputCurrency.value)),
-								errorMessage: getErrorMessage('number', Number(inputCurrency.value))
+								error: hasError('number', removeNonNumbers(inputCurrency.value)),
+								errorMessage: getErrorMessage('number', removeNonNumbers(inputCurrency.value))
 							}))
 						}}
 					/>

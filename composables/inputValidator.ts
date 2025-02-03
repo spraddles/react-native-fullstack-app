@@ -15,8 +15,10 @@ export const validateInput = (type: string, value: string | number, length?: num
 	if (
 		!value ||
 		value === '0.00' ||
+		value === '00' ||
 		value === '0' ||
 		value === 0 ||
+		value === 0.0 ||
 		value === '' ||
 		value === '+' ||
 		value === null ||
@@ -48,10 +50,11 @@ export const validateInput = (type: string, value: string | number, length?: num
 
 	// number check
 	if (type === 'number') {
-		if (isNaN(value as number)) {
+		const numValue = Number(value)
+		if (isNaN(numValue)) {
 			return { isValid: false, message: 'Field only accepts numbers' }
 		}
-		if (value === 0) {
+		if (numValue === 0) {
 			return { isValid: false, message: 'Amount must be greater than zero' }
 		}
 	}
