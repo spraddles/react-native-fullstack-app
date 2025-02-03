@@ -100,7 +100,6 @@ function RootLayoutNav() {
 					name="(pages)/loginSignup"
 					options={{
 						headerShown: true,
-						headerTitle: 'Login',
 						headerBackVisible: true,
 						headerBackTitle: 'Home',
 						headerTitleStyle: { fontSize: 25 }

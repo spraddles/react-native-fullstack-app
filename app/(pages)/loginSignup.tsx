@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { StyleSheet } from 'react-native'
+
+import { useNavigation } from '@react-navigation/native'
 
 import { View, Text } from '@/components/Themed'
 import { router, useLocalSearchParams } from 'expo-router'
@@ -17,6 +19,14 @@ import { hasOnboarded } from '@/composables/userMethods'
 
 export default function LoginPage() {
 	const { loginType } = useLocalSearchParams()
+
+    const navigation = useNavigation()
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			title: loginType === 'login' ? 'Login' : 'Signup'
+		})
+	}, [navigation, loginType])
 
 	const handleSocialAccess = async (method: string) => {
 		useBaseStore.getState().setLoading(true)
