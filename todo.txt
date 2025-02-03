@@ -2,6 +2,7 @@ To do
 
 
 -start build pipeline
+-fix broken google oath social login (create new oath in google)
 
 
 Design:
