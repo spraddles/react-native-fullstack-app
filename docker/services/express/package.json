@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "express": "node ./index.js",
-        "express:debug": "set DEBUG=new-app:* && node ./index.js"
+        "express:debug": "DEBUG=new-app:* npm run express"
     },
     "dependencies": {
         "@supabase/supabase-js": "^2.48.0",

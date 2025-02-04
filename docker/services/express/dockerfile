@@ -8,11 +8,9 @@ RUN npm install
 
 COPY . .
 
-ENV DEBUG=new-app:*
-
 EXPOSE 3000
 
-# CMD ["npm", "run", "express:debug"]
+CMD ["npm", "run", "express"]
 
 # for diagnosing container
-CMD ["sh", "-c", "tail -F keep_alive"]
+# CMD ["sh", "-c", "tail -F keep_alive"]
