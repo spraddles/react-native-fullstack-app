@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+ENV DEBUG=new-app:*
+
 EXPOSE 3000
 
 CMD ["npm", "run", "express:debug"]
