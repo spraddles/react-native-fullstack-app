@@ -12,6 +12,7 @@ ENV DEBUG=new-app:*
 
 EXPOSE 3000
 
-CMD ["npm", "run", "express:debug"]
+# CMD ["npm", "run", "express:debug"]
 
-# CMD ["sh", "-c", "tail -F keep_alive"] // for diagnosing container
+# for diagnosing container
+CMD ["sh", "-c", "tail -F keep_alive"]
