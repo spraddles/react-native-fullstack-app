@@ -7,8 +7,11 @@ To do
 > (done) create PAT token
 > (done) change upload-secrets script, not gcloud but github now
 > (done) add upload secrets for gcp, for supabase ENV vars
-- add back --allow-unauthenticated flag to container so api is public
 
+- diagose container issue
+- add back --allow-unauthenticated flag to container so api is public
+- all secrets: not outputting anything, fix this
+- remove output stuff task
 
 -fix broken google oath social login (create new oath in google, via gcloud command? add to gcloud commands)
 
