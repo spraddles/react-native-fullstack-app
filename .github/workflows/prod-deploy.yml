@@ -16,7 +16,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Get GCP secrets
+      # gcp auth
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          token_format: 'access_token'
+          project_id: ${{ env.GCP_PROJECT_ID }}
+          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: 'projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ env.GCP_WORKLOAD_IDENTITY_POOL }}/providers/${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+
+      # gcp secrets
+      - name: Get Google secrets
         id: secrets
         run: |
           SECRETS=(
@@ -32,16 +43,6 @@ jobs:
             value=$(gcloud secrets versions access latest --secret=$secret)
             echo "$secret=$value" >> $GITHUB_ENV
           done
-
-      # gcp auth
-      - name: Google Auth
-        id: auth
-        uses: 'google-github-actions/auth@v2'
-        with:
-          token_format: 'access_token'
-          project_id: ${{ env.GCP_PROJECT_ID }}
-          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
-          workload_identity_provider: 'projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ env.GCP_WORKLOAD_IDENTITY_POOL }}/providers/${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
 
       # docker auth
       - name: Docker Auth
