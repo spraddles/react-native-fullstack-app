@@ -1,0 +1,49 @@
+name: Deploy to Prod environment
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # gcp auth
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          token_format: 'access_token'
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+
+      # docker auth
+      - name: Docker Auth
+        id: docker-auth
+        uses: 'docker/login-action@v1'
+        with:
+          username: 'oauth2accesstoken'
+          password: '${{ steps.auth.outputs.access_token }}'
+          registry: '${{ secrets.GCP_REGION }}-docker.pkg.dev'
+
+      # build app image
+      - name: Build Docker image
+        run: |
+          docker build -t express -f ./docker/services/express/dockerfile .
+
+          projects/sound-observer-449814-s6/locations/southamerica-east1/repositories/gringopay-artifact-repo
+
+      # tag app image
+      - name: Tag Docker image
+        run: |
+          IMAGE_ID=$(docker images -q express)
+          docker tag $IMAGE_ID ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/${{ env.NUXT_NAME }}:${{ github.sha }}

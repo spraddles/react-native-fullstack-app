@@ -1,5 +1,9 @@
-# This is a just list of gcloud commands for GCP and
-# so this file is not meant to be executed anywhere
+#  Note:
+#  This is a just list of gcloud commands for GCP so
+#  this file is not meant to be executed anywhere.
+#  Instead run each command one by one to setup the 
+#  GCP resources. This file could be converted to an 
+#  IaC (like Terraform) with some more effort.
 
 ##############################  INITIAL SETUP  ##############################
 
