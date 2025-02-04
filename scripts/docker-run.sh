@@ -39,5 +39,5 @@ docker run -d \
     -v ${PWD}/docker/services/express:/app \
     -v express_node_modules:/app/node_modules \
     --env-file "$ENV_FILE" \
-    -p 0:${EXPRESS_PORT} \
+    -p 0:${PORT} \
     node-express:latest

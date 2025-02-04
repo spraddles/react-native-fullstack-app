@@ -19,7 +19,7 @@ const normalizePort = (value) => {
 }
 
 // Get port from environment and store in Express
-const port = normalizePort(process.env.EXPRESS_PORT || 3000)
+const port = normalizePort(process.env.PORT || 3000)
 app.set('port', port)
 
 // Create HTTP server

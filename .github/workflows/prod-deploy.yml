@@ -60,14 +60,14 @@ jobs:
       # cloud run deploy app
       - name: Cloud run deploy app service
         run: |
-          PORT=${{ secrets.EXPRESS_PORT }}
+          PORT=${{ secrets.PORT }}
           gcloud run deploy ${{ secrets.EXPRESS_SERVICE_NAME }} \
             --image=${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/${{ secrets.EXPRESS_SERVICE_NAME }}:${{ github.sha }} \
             --set-secrets=${{ env.ALL_SECRETS_STRING }} \
             --set-env-vars=DB_HOST=${{ env.CLOUD_SQL_PRIVATE_IP }} \
             --platform=managed \
             --region=${{ secrets.GCP_REGION }} \
-            --port=${{ secrets.EXPRESS_PORT }} \
+            --port=${{ secrets.PORT }} \
             --min-instances=1 \
             --max-instances=3 \
             --cpu=1 \
