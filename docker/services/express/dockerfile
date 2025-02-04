@@ -6,7 +6,7 @@ COPY docker/services/express/package*.json .
 
 RUN npm install
 
-COPY docker/services/express/* .
+COPY docker/services/express .
 
 EXPOSE 3000
 
