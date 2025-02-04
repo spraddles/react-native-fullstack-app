@@ -57,6 +57,13 @@ jobs:
           ALL_SECRETS_STRING=$(gcloud secrets list --format="value(name)" | while read -r secret; do printf "%s=%s:latest," "$secret" "$secret"; done | sed 's/,$//')
           echo "ALL_SECRETS_STRING=$ALL_SECRETS_STRING" >> $GITHUB_ENV
 
+      - name: Output stuff
+        run: |
+          pwd
+          ls -la
+          ls -la docker/services/express/
+          echo all secrets: $ALL_SECRETS_STRING
+
       # cloud run deploy app
       - name: Cloud run deploy app service
         run: |
