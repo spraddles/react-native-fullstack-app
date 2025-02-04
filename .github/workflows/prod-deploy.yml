@@ -37,8 +37,6 @@ jobs:
         run: |
           docker build -t express -f ./docker/services/express/dockerfile .
 
-          projects/sound-observer-449814-s6/locations/southamerica-east1/repositories/gringopay-artifact-repo
-
       # tag app image
       - name: Tag Docker image
         run: |
