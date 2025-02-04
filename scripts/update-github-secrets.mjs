@@ -3,6 +3,17 @@ import dotenv from 'dotenv'
 import fetch from 'node-fetch'
 import _sodium from 'libsodium-wrappers'
 
+const secrets = [
+	'GCP_PROJECT_ID',
+	'GCP_REGION',
+	'GCP_PROJECT_NUMBER',
+	'GCP_SERVICE_ACCOUNT',
+	'GCP_WORKLOAD_IDENTITY_PROVIDER',
+	'GCP_WORKLOAD_IDENTITY_POOL_PROVIDER',
+	'GCP_WORKLOAD_IDENTITY_POOL',
+	'GCP_ARTIFACT_REPO_NAME'
+]
+
 async function encryptSecret(secret, key) {
 	await _sodium.ready
 	const sodium = _sodium
@@ -31,17 +42,6 @@ async function run() {
 		console.error('Missing required GitHub configuration')
 		process.exit(1)
 	}
-
-	const secrets = [
-		'GCP_PROJECT_ID',
-		'GCP_REGION',
-		'GCP_PROJECT_NUMBER',
-		'GCP_SERVICE_ACCOUNT',
-		'GCP_WORKLOAD_IDENTITY_PROVIDER',
-		'GCP_WORKLOAD_IDENTITY_POOL_PROVIDER',
-		'GCP_WORKLOAD_IDENTITY_POOL',
-		'GCP_ARTIFACT_REPO_NAME'
-	]
 
 	// Get public key
 	const keyResponse = await fetch(

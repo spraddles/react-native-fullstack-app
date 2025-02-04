@@ -38,18 +38,43 @@ jobs:
       # build app image
       - name: Build Docker image
         run: |
-          docker build -t express -f ./docker/services/express/dockerfile .
+          docker build -t ${{ secrets.EXPRESS_SERVICE_NAME }} -f ./docker/services/express/dockerfile .
 
       # tag app image
       - name: Tag Docker image
         run: |
-          IMAGE_ID=$(docker images -q express)
-          docker tag $IMAGE_ID ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/express:${{ github.sha }}
+          IMAGE_ID=$(docker images -q ${{ secrets.EXPRESS_SERVICE_NAME }})
+          docker tag $IMAGE_ID ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/${{ secrets.EXPRESS_SERVICE_NAME }}:${{ github.sha }}
 
       # push app image
       - name: Push Docker app image
         run: |
-          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/express:${{ github.sha }}
+          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/${{ secrets.EXPRESS_SERVICE_NAME }}:${{ github.sha }}
 
+      # get all secrets
+      - name: Get secrets from GCP
+        run: |
+          ALL_SECRETS_STRING=$(gcloud secrets list --format="value(name)" | while read -r secret; do printf "%s=%s:latest," "$secret" "$secret"; done | sed 's/,$//')
+          echo "ALL_SECRETS_STRING=$ALL_SECRETS_STRING" >> $GITHUB_ENV
+
+      # cloud run deploy app
+      - name: Cloud run deploy app service
+        run: |
+          PORT=3000
+          gcloud run deploy ${{ secrets.EXPRESS_SERVICE_NAME }} \
+            --image=${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/${{ secrets.EXPRESS_SERVICE_NAME }}:${{ github.sha }} \
+            --set-secrets=${{ env.ALL_SECRETS_STRING }} \
+            --set-env-vars=DB_HOST=${{ env.CLOUD_SQL_PRIVATE_IP }} \
+            --platform=managed \
+            --region=${{ secrets.GCP_REGION }} \
+            --port=${{ secrets.EXPRESS_PORT_NUMBER }} \
+            --min-instances=1 \
+            --max-instances=3 \
+            --cpu=1 \
+            --memory=512Mi \
+            --cpu-boost \
+            --ingress=internal-and-cloud-load-balancing \
+            --allow-unauthenticated \
+            --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }} \
 
 

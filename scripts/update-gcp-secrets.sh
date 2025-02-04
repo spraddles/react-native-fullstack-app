@@ -1,5 +1,15 @@
 #!/bin/bash
 
+SECRETS=(
+    # expo
+   "EXPO_PUBLIC_SUPABASE_ID"
+   "EXPO_PUBLIC_SUPABASE_URL"
+   "EXPO_PUBLIC_SUPABASE_ANON_KEY"
+   # express
+   "EXPRESS_SERVICE_NAME"
+   "EXPRESS_PORT_NUMBER"
+)
+
 ENV_FILE=""
 ENV_NAME=""
 
@@ -16,12 +26,6 @@ else
 fi
 
 echo "Using $ENV_NAME environment file: $ENV_FILE"
-
-SECRETS=(
-   "EXPO_PUBLIC_SUPABASE_ID"
-   "EXPO_PUBLIC_SUPABASE_URL"
-   "EXPO_PUBLIC_SUPABASE_ANON_KEY"
-)
 
 # Get list of all existing secrets
 EXISTING_SECRETS=$(gcloud secrets list --format="value(name)")
