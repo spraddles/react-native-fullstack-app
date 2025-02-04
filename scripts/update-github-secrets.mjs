@@ -15,7 +15,7 @@ const secrets = [
 	'GCP_ARTIFACT_REPO_NAME',
 	// express
 	'EXPRESS_SERVICE_NAME',
-	'EXPRESS_PORT_NUMBER'
+	'EXPRESS_PORT'
 ]
 
 async function encryptSecret(secret, key) {
