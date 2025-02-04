@@ -56,6 +56,6 @@ const onListening = async () => {
 }
 
 // Listen on provided port, on all network interfaces
-server.listen(port)
+server.listen(port, '0.0.0.0')
 server.on('error', (error) => onError(error))
 server.on('listening', async () => await onListening())
