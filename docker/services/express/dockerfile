@@ -8,7 +8,8 @@ RUN npm install
 
 COPY . .
 
-# CMD ["npm", "run", "express:debug"]
+EXPOSE 3000
 
-# // for diagnosing container
-CMD ["sh", "-c", "tail -F keep_alive"]
+CMD ["npm", "run", "express:debug"]
+
+# CMD ["sh", "-c", "tail -F keep_alive"] // for diagnosing container

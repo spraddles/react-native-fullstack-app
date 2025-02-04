@@ -60,6 +60,7 @@ jobs:
       # cloud run deploy app
       - name: Cloud run deploy app service
         run: |
+          PORT=${{ secrets.PORT }}
           gcloud run deploy ${{ secrets.EXPRESS_SERVICE_NAME }} \
             --image=${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/${{ secrets.EXPRESS_SERVICE_NAME }}:${{ github.sha }} \
             --set-secrets=${{ env.ALL_SECRETS_STRING }} \
@@ -73,7 +74,6 @@ jobs:
             --memory=512Mi \
             --cpu-boost \
             --ingress=internal-and-cloud-load-balancing \
-            --allow-unauthenticated \
             --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }} \
 
 
