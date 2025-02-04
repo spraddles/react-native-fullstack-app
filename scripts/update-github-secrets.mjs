@@ -4,6 +4,7 @@ import fetch from 'node-fetch'
 import _sodium from 'libsodium-wrappers'
 
 const secrets = [
+	// gcp
 	'GCP_PROJECT_ID',
 	'GCP_REGION',
 	'GCP_PROJECT_NUMBER',
@@ -11,7 +12,10 @@ const secrets = [
 	'GCP_WORKLOAD_IDENTITY_PROVIDER',
 	'GCP_WORKLOAD_IDENTITY_POOL_PROVIDER',
 	'GCP_WORKLOAD_IDENTITY_POOL',
-	'GCP_ARTIFACT_REPO_NAME'
+	'GCP_ARTIFACT_REPO_NAME',
+	// express
+	'EXPRESS_SERVICE_NAME',
+	'EXPRESS_PORT_NUMBER'
 ]
 
 async function encryptSecret(secret, key) {
