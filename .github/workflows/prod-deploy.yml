@@ -23,24 +23,6 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_POOL_PROVIDER }}
 
-      # gcp secrets
-      - name: Get Google secrets
-        id: secrets
-        run: |
-          SECRETS=(
-            "GCP_PROJECT_ID" 
-            "GCP_REGION" 
-            "GCP_PROJECT_NUMBER" 
-            "GCP_SERVICE_ACCOUNT" 
-            "GCP_WORKLOAD_IDENTITY_PROVIDER" 
-            "GCP_WORKLOAD_IDENTITY_POOL"
-            "GCP_ARTIFACT_REPO_NAME"
-          )
-          for secret in "${SECRETS[@]}"; do
-            value=$(gcloud secrets versions access latest --secret=$secret)
-            echo "$secret=$value" >> $GITHUB_ENV
-          done
-
       # docker auth
       - name: Docker Auth
         id: docker-auth
@@ -48,7 +30,7 @@ jobs:
         with:
           username: 'oauth2accesstoken'
           password: '${{ steps.auth.outputs.access_token }}'
-          registry: '${{ env.GCP_REGION }}-docker.pkg.dev'
+          registry: '${{ secrets.GCP_REGION }}-docker.pkg.dev'
 
       # build app image
       - name: Build Docker image
@@ -59,4 +41,4 @@ jobs:
       - name: Tag Docker image
         run: |
           IMAGE_ID=$(docker images -q express)
-          docker tag $IMAGE_ID ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.GCP_ARTIFACT_REPO_NAME }}/express:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/express:${{ github.sha }}

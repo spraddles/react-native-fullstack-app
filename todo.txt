@@ -1,14 +1,16 @@
 To do
 
 
+
 -start build pipeline
+> change to use github secrets
+> create PAT token
+> change upload-secrets script, not gcloud but github now
+
+
 -fix broken google oath social login (create new oath in google)
 
 
-Design:
--black intro screen / white logo
--change icon
--update about text
 
 
 
@@ -20,8 +22,8 @@ Mobile:
 
 
 Bugs:
--random [AuthApiError: Invalid Refresh Token: Refresh Token Not Found], solve with AsyncStorage.clear()
 -security: only only users to read/write their own data, not others (RLS / row level security)
+-random [AuthApiError: Invalid Refresh Token: Refresh Token Not Found], solve with AsyncStorage.clear()
 -display error toast message when not connected to the internet
 -handle transaction errors (in transactionMethods) so users cant continue if db field write/update is incorrect (see editProfile + newUserEditProfile)
 -add profile loading status (like transaction history)
