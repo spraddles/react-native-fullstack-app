@@ -3,12 +3,13 @@ To do
 
 
 -start build pipeline
-> change to use github secrets
-> create PAT token
-> change upload-secrets script, not gcloud but github now
+> (done) change to use github secrets
+> (done) create PAT token
+> (done) change upload-secrets script, not gcloud but github now
+> (done) add upload secrets for gcp, for supabase ENV vars
 
 
--fix broken google oath social login (create new oath in google)
+-fix broken google oath social login (create new oath in google, via gcloud command? add to gcloud commands)
 
 
 
