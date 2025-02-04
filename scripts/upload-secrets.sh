@@ -19,7 +19,7 @@ else
   exit 1
 fi
 
-SECRETS=("GCP_PROJECT_ID" "GCP_REGION" "GCP_PROJECT_NUMBER")
+SECRETS=("GCP_PROJECT_ID" "GCP_REGION" "GCP_PROJECT_NUMBER" "GCP_SERVICE_ACCOUNT" "GCP_WORKLOAD_IDENTITY_PROVIDER" "GCP_ARTIFACT_REPO_NAME")
 
 while IFS='=' read -r key value; do
     if [[ -z "$key" ]] || [[ $key == \#* ]]; then
