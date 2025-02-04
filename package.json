@@ -19,7 +19,7 @@
         "docker:build": "docker build -t node-express -f ./docker/services/express/dockerfile .",
         "docker:prune": "docker system prune",
         "docker:purge": "sh ./scripts/docker-purge.sh && docker system prune -f",
-        "gcp:prod:secrets:upload": "sh ./scripts/upload-secrets.sh production",
+        "gcp:prod:secrets:update": "sh ./scripts/upload-secrets.sh production",
         "supabase:reset:dev": "sh ./scripts/reset-dev-database.sh",
         "supabase:migrate:new": "supabase migration new my_migration_name",
         "supabase:migrate:push": "sh ./scripts/run-migrations.sh"
