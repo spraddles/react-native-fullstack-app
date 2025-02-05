@@ -40,4 +40,9 @@ app.use((err, req, res, next) => {
 	})
 })
 
+// for debugging
+app.get('/hello', (req, res) => {
+	res.send('Hello World!')
+})
+
 export default app
