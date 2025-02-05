@@ -24,15 +24,15 @@ app.use((req, res, next) => {
 // middleware
 app.use('/api/*', validateToken)
 
-// routes
-app.use('/api/transactions', getTransactions())
-app.use('/api/transactions', createTransaction())
-app.use('/api/transactions', setTransactionStatus())
-
 // for debugging
 app.get('/hello', (req, res) => {
 	res.send('Hello World!')
 })
+
+// routes
+app.use('/api/transactions', getTransactions())
+app.use('/api/transactions', createTransaction())
+app.use('/api/transactions', setTransactionStatus())
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

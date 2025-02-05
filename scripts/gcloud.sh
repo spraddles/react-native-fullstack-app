@@ -8,8 +8,6 @@
 ##############################  INITIAL SETUP  ##############################
 
 PROJECT_ID='your-project-id'
-REGION='northamerica-northeast1'
-SERVICE_NAME='your-service-name'
 
 # login
 gcloud auth login
@@ -28,6 +26,14 @@ gcloud services enable \
     containerregistry.googleapis.com
 
 ##############################  LOAD BALANCER  ##############################
+
+REGION='northamerica-northeast1'
+SERVICE_NAME='your-service-name'
+
+# ** Note: **
+# the SERVICE_NAME needs to match the name of the
+# service that you define in your deploy YAML file:
+# e.g. gcloud run deploy SERVICE_NAME
 
 # create network endpoint group (NEG)
 gcloud compute network-endpoint-groups create lb-neg \
