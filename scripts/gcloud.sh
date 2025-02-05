@@ -76,9 +76,9 @@ GITHUB_REPO="your-org/your-repo"
 
 # create Workload Identity Pool
 gcloud iam workload-identity-pools create $POOL_NAME \
-  --project=$PROJECT_ID \
-  --location="global" \
-  --display-name=$POOL_DISPLAY_NAME
+    --project=$PROJECT_ID \
+    --location="global" \
+    --display-name=$POOL_DISPLAY_NAME
 
 # create Workload Identity Provider
 gcloud iam workload-identity-pools providers create-oidc github-provider \
@@ -94,20 +94,20 @@ gcloud iam workload-identity-pools providers create-oidc github-provider \
 
 # create Service Account
 gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME \
-  --project=$PROJECT_ID \
-  --display-name=$SERVICE_ACCOUNT_DISPLAY_NAME
+    --project=$PROJECT_ID \
+    --display-name=$SERVICE_ACCOUNT_DISPLAY_NAME
 
 # get pool name
 WORKLOAD_IDENTITY_POOL_ID=$(gcloud iam workload-identity-pools describe $POOL_NAME \
-  --project=$PROJECT_ID \
-  --location="global" \
-  --format="value(name)")
+    --project=$PROJECT_ID \
+    --location="global" \
+    --format="value(name)")
 
 # add IAM Policy Binding
 gcloud iam service-accounts add-iam-policy-binding "$SERVICE_ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com" \
-  --project=$PROJECT_ID \
-  --role="roles/iam.workloadIdentityUser" \
-  --member="principalSet://iam.googleapis.com/$WORKLOAD_IDENTITY_POOL_ID/attribute.repository/$GITHUB_REPO"
+    --project=$PROJECT_ID \
+    --role="roles/iam.workloadIdentityUser" \
+    --member="principalSet://iam.googleapis.com/$WORKLOAD_IDENTITY_POOL_ID/attribute.repository/$GITHUB_REPO"
 
 # ** Note: **
 # Be aware of how you set the repo value:
@@ -144,20 +144,20 @@ gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
 
 # add IAM policies
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
-  --role="roles/artifactregistry.writer" \
+    --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
+    --role="roles/artifactregistry.writer" \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
-  --role="roles/iam.serviceAccountUser"
+    --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
+    --role="roles/iam.serviceAccountUser"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
-  --role="roles/secretmanager.secretAccessor"
+    --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
+    --role="roles/secretmanager.secretAccessor"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
-  --role="roles/secretmanager.viewer"
+    --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
+    --role="roles/secretmanager.viewer"
 
 # configure Docker auth
 gcloud auth configure-docker $REGION-docker.pkg.dev
