@@ -151,6 +151,14 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
   --role="roles/iam.serviceAccountUser"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
+  --role="roles/secretmanager.secretAccessor"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
+  --role="roles/secretmanager.viewer"
+
 # configure Docker auth
 gcloud auth configure-docker $REGION-docker.pkg.dev
 
