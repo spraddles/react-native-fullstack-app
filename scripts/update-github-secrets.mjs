@@ -15,7 +15,10 @@ const secrets = [
 	'GCP_ARTIFACT_REPO_NAME',
 	// express
 	'EXPRESS_SERVICE_NAME',
-	'PORT'
+	'PORT',
+	// netlify
+	'NETLIFY_PAT',
+	'NETLIFY_SITE_ID'
 ]
 
 async function encryptSecret(secret, key) {
