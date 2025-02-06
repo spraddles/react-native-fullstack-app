@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 })
 
 // middleware
-app.use('/api/*', validateToken)
+// app.use('/api/*', validateToken)
 
 // for debugging
 app.get('/hello', (req, res) => {
