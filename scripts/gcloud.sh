@@ -65,10 +65,10 @@ gcloud compute target-http-proxies create lb-http-proxy \
 
 # create forwarding rule
 gcloud compute forwarding-rules create lb-forwarding-rule \
-    --load-balancing-scheme=EXTERNAL_MANAGED \
-    --target-http-proxy=lb-http-proxy \
-    --global \
-    --ports=80
+   --target-http-proxy=lb-http-proxy \
+   --global \
+   --ports=80 \
+   --address=lb-static-ip
 
 ##############################  WORKLOAD IDENTITY  ##############################
 
@@ -142,6 +142,8 @@ gcloud artifacts repositories set-cleanup-policies $ARTIFACT_REPO_NAME \
 }}]
 EOF
 
+##############################  PERMISSIONS  ##############################
+
 # grant permissions to service account
 gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
     --location=$REGION \
@@ -164,6 +166,13 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
     --role="roles/secretmanager.viewer"
+
+gcloud run services add-iam-policy-binding $SERVICE_NAME \
+    --member="serviceAccount:$SERVICE_ACCOUNT_NAME" \
+    --role="roles/run.invoker" \
+    --region=$REGION
+
+##############################  DOCKER  ##############################
 
 # configure Docker auth
 gcloud auth configure-docker $REGION-docker.pkg.dev
