@@ -71,8 +71,7 @@ jobs:
             --memory=512Mi \
             --cpu-boost \
             --ingress=internal-and-cloud-load-balancing \
-            --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }} \
-            --allow-unauthenticated
+            --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       # remove old services / only keep 3 previous
       - name: Remove old cloud run services

@@ -41,7 +41,9 @@ gcloud compute network-endpoint-groups create lb-neg \
     --network-endpoint-type=serverless \
     --cloud-run-service=$SERVICE_NAME
 
-# create backend service
+# create backend service:
+# use HTTP if load balancer + service is within the
+# same provider. If not use HTTPS
 gcloud compute backend-services create lb-backend \
     --global \
     --load-balancing-scheme=EXTERNAL_MANAGED \
