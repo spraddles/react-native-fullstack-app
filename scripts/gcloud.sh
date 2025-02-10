@@ -60,7 +60,7 @@ gcloud compute network-endpoint-groups create lb-neg \
 gcloud compute backend-services create lb-backend \
     --global \
     --load-balancing-scheme=EXTERNAL_MANAGED \
-    --protocol=HTTPS \
+    --protocol=HTTP \
     --project=$PROJECT_ID
 
 # add NEG to backend
@@ -88,8 +88,8 @@ gcloud compute ssl-certificates create lb-cert \
     --global \
     --project=$PROJECT_ID
 
-# create HTTPS proxy
-gcloud compute target-https-proxies create lb-https-proxy \
+# create HTTP proxy
+gcloud compute target-http-proxies create lb-http-proxy \
     --url-map=lb-url-map \
     --ssl-certificates=lb-cert \
     --global \
@@ -97,7 +97,7 @@ gcloud compute target-https-proxies create lb-https-proxy \
 
 # create forwarding rule
 gcloud compute forwarding-rules create lb-forwarding-rule \
-   --target-https-proxy=lb-https-proxy \
+   --target-http-proxy=lb-http-proxy \
    --global \
    --ports=443 \
    --address=lb-static-ip \
@@ -199,6 +199,11 @@ gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/artifactregistry.writer"
 
+# service account: add IAM policies
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
+    --role=roles/run.invoker
+
 ##############################  DOCKER  ##############################
 
 # configure Docker auth
@@ -206,34 +211,23 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 
 ##############################  FIREWALL RULES  ##############################
 
-# allow load balancer traffic
-gcloud compute firewall-rules create allow-gcp-load-balancer \
-    --direction=INGRESS \
-    --priority=500 \
-    --network=default \
-    --action=ALLOW \
-    --rules=tcp:80,tcp:443 \
-    --source-ranges=130.211.0.0/22,35.191.0.0/16
-
 # allow cloudflare IP ranges
 gcloud compute firewall-rules create allow-cloudflare-only \
     --direction=INGRESS \
-    --priority=1000 \
+    --priority=100 \
     --network=default \
     --action=ALLOW \
     --rules=tcp:80,tcp:443 \
     --source-ranges=173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141.101.64.0/18,108.162.192.0/18,190.93.240.0/20,188.114.96.0/20,197.234.240.0/22,198.41.128.0/17,162.158.0.0/15,104.16.0.0/13,104.24.0.0/14,172.64.0.0/13,131.0.72.0/22
 
-# deny all other ingress
-gcloud compute firewall-rules create deny-all-ingress \
+# allow load balancer traffic
+gcloud compute firewall-rules create allow-gcp-load-balancer \
     --direction=INGRESS \
-    --priority=2000 \
+    --priority=200 \
     --network=default \
-    --action=DENY \
-    --rules=all \
-    --source-ranges=0.0.0.0/0
-
-
+    --action=ALLOW \
+    --rules=tcp:80,tcp:443 \
+    --source-ranges=130.211.0.0/22,35.191.0.0/16
 
 # delete default rules we don't need
 gcloud compute firewall-rules delete default-allow-icmp --quiet
