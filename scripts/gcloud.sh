@@ -103,6 +103,9 @@ gcloud compute forwarding-rules create lb-forwarding-rule \
    --address=lb-static-ip \
    --project=$PROJECT_ID
 
+# get IP address & add to cloudflare config
+LB_IP_ADDRESS=gcloud compute addresses describe lb-static-ip --global --project=$PROJECT_ID --format="value(address)"
+
 ##############################  WORKLOAD IDENTITY  ##############################
 
 POOL_NAME="github-pool"
@@ -186,6 +189,10 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/secretmanager.viewer"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
+    --role="roles/run.admin"
+
 # artifact: add IAM policies
 gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
     --location=$REGION \
@@ -198,6 +205,15 @@ gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
 gcloud auth configure-docker $REGION-docker.pkg.dev
 
 ##############################  FIREWALL RULES  ##############################
+
+# allow load balancer traffic
+gcloud compute firewall-rules create allow-gcp-load-balancer \
+    --direction=INGRESS \
+    --priority=500 \
+    --network=default \
+    --action=ALLOW \
+    --rules=tcp:80,tcp:443 \
+    --source-ranges=130.211.0.0/22,35.191.0.0/16
 
 # allow cloudflare IP ranges
 gcloud compute firewall-rules create allow-cloudflare-only \
@@ -216,6 +232,8 @@ gcloud compute firewall-rules create deny-all-ingress \
     --action=DENY \
     --rules=all \
     --source-ranges=0.0.0.0/0
+
+
 
 # delete default rules we don't need
 gcloud compute firewall-rules delete default-allow-icmp --quiet
