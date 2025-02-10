@@ -73,14 +73,23 @@ jobs:
             --ingress=internal-and-cloud-load-balancing \
             --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }}
 
+      # let service account invoke service
+      - name: Add service account permissions
+        run: |
+          gcloud run services add-iam-policy-binding ${{ secrets.EXPRESS_SERVICE_NAME }} \
+            --member="serviceAccount:${{ secrets.GCP_SERVICE_ACCOUNT }}" \
+            --role="roles/run.invoker" \
+            --region=${{ secrets.GCP_REGION }} \
+            --project=${{ secrets.GCP_PROJECT_ID }}
+
       # remove old services / only keep 3 previous
       - name: Remove old cloud run services
         run: |
           REVISIONS=$(gcloud run revisions list \
-          --service=${{ secrets.EXPRESS_SERVICE_NAME }} \
-          --region=${{ secrets.GCP_REGION }} \
-          --format="value(metadata.name)" \
-          --sort-by=~metadata.creationTimestamp)
+            --service=${{ secrets.EXPRESS_SERVICE_NAME }} \
+            --region=${{ secrets.GCP_REGION }} \
+            --format="value(metadata.name)" \
+            --sort-by=~metadata.creationTimestamp)
           COUNT=0
           for REVISION in $REVISIONS; do
           COUNT=$((COUNT + 1))
