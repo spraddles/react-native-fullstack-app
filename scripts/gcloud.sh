@@ -212,9 +212,9 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 ##############################  FIREWALL RULES  ##############################
 
 # allow cloudflare IP ranges
-gcloud compute firewall-rules create allow-cloudflare-only \
+gcloud compute firewall-rules create allow-cloudflare \
     --direction=INGRESS \
-    --priority=100 \
+    --priority=1000 \
     --network=default \
     --action=ALLOW \
     --rules=tcp:80,tcp:443 \
@@ -223,17 +223,26 @@ gcloud compute firewall-rules create allow-cloudflare-only \
 # allow load balancer traffic
 gcloud compute firewall-rules create allow-gcp-load-balancer \
     --direction=INGRESS \
-    --priority=200 \
+    --priority=2000 \
     --network=default \
     --action=ALLOW \
     --rules=tcp:80,tcp:443 \
     --source-ranges=130.211.0.0/22,35.191.0.0/16
 
+# update the internal rule to have a lower priority than our deny rule
+gcloud compute firewall-rules update default-allow-internal \
+    --priority=3000
+
+# Add deny-all rule with higher priority than internal
+gcloud compute firewall-rules create deny-all-external \
+    --direction=INGRESS \
+    --priority=4000 \
+    --network=default \
+    --action=DENY \
+    --rules=all \
+    --source-ranges=0.0.0.0/0
+
 # delete default rules we don't need
 gcloud compute firewall-rules delete default-allow-icmp --quiet
 gcloud compute firewall-rules delete default-allow-rdp --quiet
 gcloud compute firewall-rules delete default-allow-ssh --quiet
-
-# update the internal rule to have a lower priority than our deny rule
-gcloud compute firewall-rules update default-allow-internal \
-    --priority=3000
