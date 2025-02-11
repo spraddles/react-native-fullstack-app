@@ -71,6 +71,7 @@ jobs:
             --memory=512Mi \
             --cpu-boost \
             --ingress=internal-and-cloud-load-balancing \
+            --no-default-url \
             --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       # let service account invoke service
