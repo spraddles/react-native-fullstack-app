@@ -190,6 +190,18 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/run.admin"
 
+# service: add IAM policy
+gcloud run services add-iam-policy-binding express \
+    --member="serviceAccount:github-actions-service-account@gringopay-2025.iam.gserviceaccount.com" \
+    --role="roles/run.invoker" \
+    --region=southamerica-east1 \
+    --project=gringopay-2025
+
+# service account: add IAM policy
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
+    --role=roles/run.invoker
+
 # artifact: add IAM policy
 gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
     --location=$REGION \
@@ -201,11 +213,6 @@ gcloud iam service-accounts add-iam-policy-binding $SERVICE_ACCOUNT_FULL \
     --project=$PROJECT_ID \
     --role="roles/iam.workloadIdentityUser" \
     --member="principalSet://iam.googleapis.com/$WORKLOAD_IDENTITY_POOL_ID/attribute.repository/$GITHUB_REPO"
-
-# service account: add IAM policy
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-    --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
-    --role=roles/run.invoker
 
 ##############################  DOCKER  ##############################
 

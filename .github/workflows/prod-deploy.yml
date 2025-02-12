@@ -70,7 +70,8 @@ jobs:
             --cpu=1 \
             --memory=512Mi \
             --cpu-boost \
-            --ingress=internal-and-cloud-load-balancing \
+            --ingress=all \
+            --allow-unauthenticated \
             --no-default-url \
             --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }}
 
