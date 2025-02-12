@@ -55,12 +55,9 @@ gcloud compute network-endpoint-groups create lb-neg \
     --project=$PROJECT_ID
 
 # create backend service:
-# use HTTP if load balancer + service is within the
-# same provider. If not use HTTPS
 gcloud compute backend-services create lb-backend \
     --global \
     --load-balancing-scheme=EXTERNAL_MANAGED \
-    --protocol=HTTP \
     --project=$PROJECT_ID
 
 # add NEG to backend
@@ -89,8 +86,8 @@ gcloud compute ssl-certificates create lb-cert \
     --global \
     --project=$PROJECT_ID
 
-# create HTTP proxy
-gcloud compute target-http-proxies create lb-http-proxy \
+# create HTTPS proxy
+gcloud compute target-https-proxies create lb-https-proxy \
     --url-map=lb-url-map \
     --ssl-certificates=lb-cert \
     --global \
@@ -98,7 +95,7 @@ gcloud compute target-http-proxies create lb-http-proxy \
 
 # create forwarding rule
 gcloud compute forwarding-rules create lb-forwarding-rule \
-   --target-http-proxy=lb-http-proxy \
+   --target-https-proxy=lb-https-proxy \
    --global \
    --ports=443 \
    --address=lb-static-ip \
@@ -107,7 +104,7 @@ gcloud compute forwarding-rules create lb-forwarding-rule \
    --project=$PROJECT_ID
 
 # get IP address & add to cloudflare config
-LB_IP_ADDRESS=gcloud compute addresses describe lb-static-ip --global --project=$PROJECT_ID --format="value(address)"
+LB_IP_ADDRESS=$(gcloud compute addresses describe lb-static-ip --global --project=$PROJECT_ID --format="value(address)")
 
 ##############################  WORKLOAD IDENTITY  ##############################
 
@@ -189,13 +186,6 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/run.admin"
-
-# service: add IAM policy
-gcloud run services add-iam-policy-binding express \
-    --member="serviceAccount:github-actions-service-account@gringopay-2025.iam.gserviceaccount.com" \
-    --role="roles/run.invoker" \
-    --region=southamerica-east1 \
-    --project=gringopay-2025
 
 # service account: add IAM policy
 gcloud projects add-iam-policy-binding $PROJECT_ID \
