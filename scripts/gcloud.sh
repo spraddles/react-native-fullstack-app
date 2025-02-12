@@ -78,6 +78,7 @@ gcloud compute url-maps create lb-url-map \
 
 # create static IP
 gcloud compute addresses create lb-static-ip \
+    --network-tier=PREMIUM \
     --global \
     --ip-version=IPV4 \
     --project=$PROJECT_ID
@@ -101,6 +102,8 @@ gcloud compute forwarding-rules create lb-forwarding-rule \
    --global \
    --ports=443 \
    --address=lb-static-ip \
+   --load-balancing-scheme=EXTERNAL_MANAGED \
+   --network-tier=PREMIUM \
    --project=$PROJECT_ID
 
 # get IP address & add to cloudflare config
@@ -136,12 +139,6 @@ WORKLOAD_IDENTITY_POOL_ID=$(gcloud iam workload-identity-pools describe $POOL_NA
     --location="global" \
     --format="value(name)")
 
-# add IAM Policy Binding
-gcloud iam service-accounts add-iam-policy-binding $SERVICE_ACCOUNT_FULL \
-    --project=$PROJECT_ID \
-    --role="roles/iam.workloadIdentityUser" \
-    --member="principalSet://iam.googleapis.com/$WORKLOAD_IDENTITY_POOL_ID/attribute.repository/$GITHUB_REPO"
-
 # ** Note: **
 # Be aware of how you set the repo value:
 # WRONG:   principalSet://iam.googleapis.com/projects/123456/locations/global/workloadIdentityPools/github-pool/attribute.repository/https://github.com/repo-owner/repo-name
@@ -172,7 +169,7 @@ EOF
 
 ##############################  PERMISSIONS  ##############################
 
-# project: add IAM policies
+# project: add IAM policy
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/artifactregistry.writer"
@@ -193,13 +190,19 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/run.admin"
 
-# artifact: add IAM policies
+# artifact: add IAM policy
 gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
     --location=$REGION \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/artifactregistry.writer"
 
-# service account: add IAM policies
+# workload identity: add IAM policy
+gcloud iam service-accounts add-iam-policy-binding $SERVICE_ACCOUNT_FULL \
+    --project=$PROJECT_ID \
+    --role="roles/iam.workloadIdentityUser" \
+    --member="principalSet://iam.googleapis.com/$WORKLOAD_IDENTITY_POOL_ID/attribute.repository/$GITHUB_REPO"
+
+# service account: add IAM policy
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role=roles/run.invoker
@@ -208,41 +211,3 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 # configure Docker auth
 gcloud auth configure-docker $REGION-docker.pkg.dev
-
-##############################  FIREWALL RULES  ##############################
-
-# allow cloudflare IP ranges
-gcloud compute firewall-rules create allow-cloudflare \
-    --direction=INGRESS \
-    --priority=1000 \
-    --network=default \
-    --action=ALLOW \
-    --rules=tcp:80,tcp:443 \
-    --source-ranges=173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141.101.64.0/18,108.162.192.0/18,190.93.240.0/20,188.114.96.0/20,197.234.240.0/22,198.41.128.0/17,162.158.0.0/15,104.16.0.0/13,104.24.0.0/14,172.64.0.0/13,131.0.72.0/22
-
-# allow load balancer traffic
-gcloud compute firewall-rules create allow-gcp-load-balancer \
-    --direction=INGRESS \
-    --priority=2000 \
-    --network=default \
-    --action=ALLOW \
-    --rules=tcp:80,tcp:443 \
-    --source-ranges=130.211.0.0/22,35.191.0.0/16
-
-# update the internal rule to have a lower priority than our deny rule
-gcloud compute firewall-rules update default-allow-internal \
-    --priority=3000
-
-# Add deny-all rule with higher priority than internal
-gcloud compute firewall-rules create deny-all-external \
-    --direction=INGRESS \
-    --priority=4000 \
-    --network=default \
-    --action=DENY \
-    --rules=all \
-    --source-ranges=0.0.0.0/0
-
-# delete default rules we don't need
-gcloud compute firewall-rules delete default-allow-icmp --quiet
-gcloud compute firewall-rules delete default-allow-rdp --quiet
-gcloud compute firewall-rules delete default-allow-ssh --quiet
