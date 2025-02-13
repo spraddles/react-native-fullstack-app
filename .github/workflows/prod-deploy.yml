@@ -116,11 +116,12 @@ jobs:
           fi
           # Print response for debugging
           echo "Response received: $response"
-          # Use GitHub Actions built-in fromJson() method
-          success=$(jq -n --argjson res "$response" '$res | fromjson | .success')
+          # Extract success field directly
+          success=$(echo "$response" | jq -r '.success')
           if [[ "$success" == "true" ]]; then
             echo "Successfully purged Cloudflare cache"
           else
             echo "Error purging Cloudflare cache: $response"
             exit 1
           fi
+
