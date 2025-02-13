@@ -103,7 +103,7 @@ jobs:
           done
 
       # clear cloudflare cache
-      - name: Purge cloudflare cache
+      - name: Purge Cloudflare cache
         run: |
           if ! response=$(curl -s -X POST \
             "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
@@ -116,9 +116,11 @@ jobs:
           fi
           # Print response for debugging
           echo "Response received: $response"
-          if [[ "$response" == *'"success":true'* ]]; then
+          # Use GitHub Actions built-in fromJson() method
+          success=$(jq -n --argjson res "$response" '$res | fromjson | .success')
+          if [[ "$success" == "true" ]]; then
             echo "Successfully purged Cloudflare cache"
           else
-            echo "Error purging cloudflare cache: $response"
+            echo "Error purging Cloudflare cache: $response"
             exit 1
           fi
