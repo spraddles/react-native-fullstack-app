@@ -105,7 +105,17 @@ jobs:
       # clear cloudflare cache
       - name: Purge cloudflare cache
         run: |
-          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
-            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+          if ! response=$(curl -s -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
             -H "Content-Type: application/json" \
-            --data '{"purge_everything":true}'
+            -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_EMAIL }}" \
+            -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
+            --data '{"purge_everything":true}'); then
+            echo "Curl command failed"
+            exit 1
+          fi
+          if ! echo "$response" | grep -q '"success":true'; then
+            echo "Error purging cloudflare cache: $response"
+            exit 1
+          fi
+          echo "Successfully purged Cloudflare cache"
