@@ -72,7 +72,6 @@ jobs:
             --cpu-boost \
             --ingress=all \
             --allow-unauthenticated \
-            --no-default-url \
             --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       # let service account invoke service
