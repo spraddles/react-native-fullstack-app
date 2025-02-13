@@ -23,6 +23,7 @@ gcloud services enable \
     artifactregistry.googleapis.com \
     cloudresourcemanager.googleapis.com \
     iam.googleapis.com \
+    networksecurity.googleapis.com \
     containerregistry.googleapis.com
 
 ##############################  SERVICE ACCOUNT ##############################
@@ -50,34 +51,34 @@ DOMAIN='app.website.com'
 # create network endpoint group (NEG)
 gcloud compute network-endpoint-groups create lb-neg \
     --region=$REGION \
-    --network-endpoint-type=serverless \
+    --network-endpoint-type="serverless" \
     --cloud-run-service=$SERVICE_NAME \
     --project=$PROJECT_ID
 
 # create backend service:
 gcloud compute backend-services create lb-backend \
     --global \
-    --load-balancing-scheme=EXTERNAL_MANAGED \
+    --load-balancing-scheme="EXTERNAL_MANAGED" \
     --project=$PROJECT_ID
 
 # add NEG to backend
 gcloud compute backend-services add-backend lb-backend \
     --global \
-    --network-endpoint-group=lb-neg \
+    --network-endpoint-group="lb-neg" \
     --network-endpoint-group-region=$REGION \
     --project=$PROJECT_ID
 
 # create URL map
 gcloud compute url-maps create lb-url-map \
-    --default-service lb-backend \
+    --default-service="lb-backend" \
     --global \
     --project=$PROJECT_ID
 
 # create static IP
 gcloud compute addresses create lb-static-ip \
-    --network-tier=PREMIUM \
+    --network-tier="PREMIUM" \
     --global \
-    --ip-version=IPV4 \
+    --ip-version="IPV4" \
     --project=$PROJECT_ID
 
 # create SSL certificate
@@ -88,23 +89,67 @@ gcloud compute ssl-certificates create lb-cert \
 
 # create HTTPS proxy
 gcloud compute target-https-proxies create lb-https-proxy \
-    --url-map=lb-url-map \
-    --ssl-certificates=lb-cert \
+    --url-map="lb-url-map" \
+    --ssl-certificates="lb-cert" \
     --global \
     --project=$PROJECT_ID
 
 # create forwarding rule
 gcloud compute forwarding-rules create lb-forwarding-rule \
-   --target-https-proxy=lb-https-proxy \
+   --target-https-proxy="lb-https-proxy" \
    --global \
-   --ports=443 \
-   --address=lb-static-ip \
-   --load-balancing-scheme=EXTERNAL_MANAGED \
-   --network-tier=PREMIUM \
+   --ports="443" \
+   --address="lb-static-ip" \
+   --load-balancing-scheme="EXTERNAL_MANAGED" \
+   --network-tier="PREMIUM" \
    --project=$PROJECT_ID
 
 # get IP address & add to cloudflare config
 LB_IP_ADDRESS=$(gcloud compute addresses describe lb-static-ip --global --project=$PROJECT_ID --format="value(address)")
+
+##############################  CLOUD ARMOUR RULES  ##############################
+
+# Cloudflare get IPv4 ranges 
+URL="https://www.cloudflare.com/ips-v4" \
+IP_LIST=$(curl -s "$URL") \
+IP_ARRAY=(${(f)IP_LIST}) \
+IP_V4_LIST_FORMATTED_1=$(IFS=,; echo "$IP_ARRAY[1,10]") \
+IP_V4_LIST_FORMATTED_2=$(IFS=,; echo "$IP_ARRAY[11,-1]")
+
+# Cloudflare get IPv6 ranges 
+URL_IPV6="https://www.cloudflare.com/ips-v6" \
+IP_V6_LIST=$(curl -s "$URL_IPV6") \
+IP_V6_LIST_FORMATTED=$(echo "$IP_V6_LIST" | tr '\n' ',') \
+IP_V6_LIST_FORMATTED=${IP_V6_LIST_FORMATTED%,}
+
+gcloud compute security-policies create allow-cloudflare-ranges \
+    --description "Allow Cloudflare IP ranges"
+
+gcloud compute security-policies rules create 1000 \
+    --security-policy="allow-cloudflare-ranges" \
+    --description="Allow Cloudflare IPv4 ranges" \
+    --src-ip-ranges="$IP_V4_LIST_FORMATTED_1" \
+    --action="allow"
+
+gcloud compute security-policies rules create 2000 \
+    --security-policy="allow-cloudflare-ranges" \
+    --description="Allow Cloudflare IPv4 ranges" \
+    --src-ip-ranges="$IP_V4_LIST_FORMATTED_2" \
+    --action="allow"
+
+gcloud compute security-policies rules create 3000 \
+    --security-policy="allow-cloudflare-ranges" \
+    --description="Allow Cloudflare IPv6 ranges" \
+    --src-ip-ranges="$IP_V6_LIST_FORMATTED" \
+    --action="allow"
+
+gcloud compute security-policies rules update 2147483647 \
+    --security-policy="allow-cloudflare-ranges" \
+    --action="deny-404"
+
+gcloud compute backend-services update lb-backend \
+    --security-policy="allow-cloudflare-ranges" \
+    --global
 
 ##############################  WORKLOAD IDENTITY  ##############################
 
@@ -147,7 +192,7 @@ ARTIFACT_REPO_NAME="my-docker-repo"
 
 # create Docker repository
 gcloud artifacts repositories create $ARTIFACT_REPO_NAME \
-    --repository-format=docker \
+    --repository-format="docker" \
     --location=$REGION \
     --description="Docker repository" \
     --project=$PROJECT_ID
@@ -187,10 +232,15 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/run.admin"
 
-# service account: add IAM policy
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
-    --role=roles/run.invoker
+    --role="roles/run.invoker"
+
+# service: add IAM policy
+gcloud run services add-iam-policy-binding $SERVICE_NAME \
+  --member="allUsers" \
+  --role="roles/run.invoker" \
+  --region=$REGION
 
 # artifact: add IAM policy
 gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
