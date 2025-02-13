@@ -72,7 +72,8 @@ jobs:
             --cpu-boost \
             --ingress=all \
             --allow-unauthenticated \
-            --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }}
+            --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }} \
+            --project=${{ secrets.GCP_PROJECT_ID }}
 
       # let service account invoke service
       - name: Add service account permissions
