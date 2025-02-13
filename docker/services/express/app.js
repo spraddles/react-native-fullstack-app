@@ -15,19 +15,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-// Add this before any other middleware: for debugging
-app.use((req, res, next) => {
-	console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`)
-	next()
-})
-
 // middleware
-// app.use('/api/*', validateToken)
-
-// for debugging
-app.get('/hello', (req, res) => {
-	res.send('Hello World!')
-})
+app.use('/api/*', validateToken)
 
 // routes
 app.use('/api/transactions', getTransactions())

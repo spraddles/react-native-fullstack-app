@@ -114,9 +114,6 @@ jobs:
             echo "Curl command failed"
             exit 1
           fi
-          # Print response for debugging
-          echo "Response received: $response"
-          # Extract success field directly
           success=$(echo "$response" | jq -r '.success')
           if [[ "$success" == "true" ]]; then
             echo "Successfully purged Cloudflare cache"
