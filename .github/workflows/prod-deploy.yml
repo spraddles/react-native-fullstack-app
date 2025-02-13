@@ -71,7 +71,6 @@ jobs:
             --memory=512Mi \
             --cpu-boost \
             --ingress=internal-and-cloud-load-balancing \
-            --no-allow-unauthenticated \
             --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }} \
             --project=${{ secrets.GCP_PROJECT_ID }}
 
