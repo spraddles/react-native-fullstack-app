@@ -114,8 +114,9 @@ jobs:
             echo "Curl command failed"
             exit 1
           fi
-          if ! echo "$response" | grep -q '"success":true'; then
+          if echo "$response" | grep -q '"success":true'; then
+            echo "Successfully purged Cloudflare cache"
+          else
             echo "Error purging cloudflare cache: $response"
             exit 1
           fi
-          echo "Successfully purged Cloudflare cache"
