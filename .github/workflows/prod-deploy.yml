@@ -84,6 +84,12 @@ jobs:
             --region=${{ secrets.GCP_REGION }} \
             --project=${{ secrets.GCP_PROJECT_ID }}
 
+          gcloud run services add-iam-policy-binding ${{ secrets.EXPRESS_SERVICE_NAME }} \
+            --member="allUsers" \
+            --role="roles/run.invoker" \
+            --region=${{ secrets.GCP_REGION }} \
+            --project=${{ secrets.GCP_PROJECT_ID }}
+
       # remove old services / only keep 3 previous
       - name: Remove old cloud run services
         run: |

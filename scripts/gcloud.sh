@@ -245,12 +245,6 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/run.invoker"
 
-# service: add IAM policy
-gcloud run services add-iam-policy-binding $SERVICE_NAME \
-  --member="allUsers" \
-  --role="roles/run.invoker" \
-  --region=$REGION
-
 # artifact: add IAM policy
 gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
     --location=$REGION \
