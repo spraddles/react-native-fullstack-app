@@ -27,9 +27,9 @@ export default function ModalScreen() {
 		<View style={styles.container}>
 			<Image style={styles.image} source={require('../../assets/images/logo.png')} />
 			<Text style={styles.body}>
-				GlobalPay ® is a simple but powerful app that allows instant funds transfers to
-				more than 200 countries around the world. Visit our website for more information
-				about
+				{process.env.EXPO_PUBLIC_APP_NAME} ® is a simple but powerful app that allows
+				instant funds transfers to more than 200 countries around the world. Visit our
+				website for more information about
 				<ExternalLink style={styles.helpLink} href="https://policies.google.com/privacy">
 					<Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
 						{' '}
@@ -39,7 +39,7 @@ export default function ModalScreen() {
 				policies.
 			</Text>
 			<Text style={styles.body}>
-				Copyright © 2000–2024 GlobalPay Inc. All rights reserved.
+				Copyright © 2000–2024 {process.env.EXPO_PUBLIC_APP_NAME} Inc. All rights reserved.
 			</Text>
 			<Text style={styles.versionText}>Version 1.02.367B </Text>
 			<Button text="Contact support" fill={false} onPress={handleClick} />

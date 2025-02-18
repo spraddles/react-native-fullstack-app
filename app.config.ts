@@ -10,27 +10,31 @@ if (process.env.NODE_ENV === 'development') {
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
 	...config,
-	name: 'GlobalPay',
+	name: process.env.EXPO_PUBLIC_APP_NAME,
 	slug: process.env.EXPO_PROJECT_SLUG,
 	version: '1.0.0',
 	orientation: 'portrait',
 	icon: './assets/images/icon.png',
-	scheme: 'myapp',
 	userInterfaceStyle: 'automatic',
 	newArchEnabled: true,
 	ios: {
 		usesAppleSignIn: true,
 		supportsTablet: true,
-		bundleIdentifier: 'com.anonymous.GlobalPay',
+		bundleIdentifier: process.env.EXPO_BUNDLE_ID,
 		infoPlist: {
-			merchant_id: process.env.MERCHANT_ID
+			merchant_id: process.env.MERCHANT_ID,
+			CFBundleURLTypes: [
+				{
+					CFBundleURLSchemes: [process.env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_URL_SCHEME]
+				}
+			]
 		},
 		entitlements: {
 			'com.apple.developer.payment-pass-provisioning': true
 		},
 		config: {
 			googleSignIn: {
-				reservedClientId: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_CLIENT_ID_REVERSE
+				reservedClientId: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_URL_SCHEME
 			}
 		}
 	},
@@ -39,7 +43,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 			foregroundImage: './assets/images/adaptive-icon.png',
 			backgroundColor: '#ffffff'
 		},
-		package: 'com.anonymous.GlobalPay'
+		package: process.env.EXPO_BUNDLE_ID
 	},
 	web: {
 		bundler: 'metro',
@@ -65,7 +69,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		[
 			'@react-native-google-signin/google-signin',
 			{
-				iosUrlScheme: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_CLIENT_ID_REVERSE
+				iosUrlScheme: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_URL_SCHEME
 			}
 		]
 	],

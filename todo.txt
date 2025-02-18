@@ -2,29 +2,30 @@ To do
 
 
 
--start build pipeline
-> (done) change to use github secrets
-> (done) create PAT token
-> (done) change upload-secrets script, not gcloud but github now
-> (done) add upload secrets for gcp, for supabase ENV vars
-
-- add back --allow-unauthenticated flag to container so api is public
 
 -fix broken google oath social login (create new oath in google, via gcloud command? add to gcloud commands)
 
+-remove applePay
+-add CF WAF (check it uses CF credits)
+-UI for add card
+-api for transaction
 
 
 
 
-Mobile:
--sign up to expo & test build on testflight
-> setup apple developer account
-> configure expo to build apple app
-> deploy app to testflight
 
 
 Bugs:
--security: only only users to read/write their own data, not others (RLS / row level security)
+-security: run docker local & check for env files etc.
+-security: remove debug logs in prod (just run express not debug)
+-security: supabase: only users to read/write their own data, not others (RLS / row level security)
+-security: supabase: OTP expiry exceeds recommended threshold
+-security: docker: USER appuser - into dockerfile (no root access)
+-security: docker: add dockerignore: .env,.env.*,*.log,.git,.gitignore,node_modules, npm-debug.log, config,*.yml, secrets.yml
+-security: add custom headers, validation check on server side so can block non-matching headers
+-security: add security headers, helmet npm helmetjs.github.io
+-security: rate limiting
+-security: storing sensitive fields should be encrypted or hashed (cpf, passport, etc)
 -random [AuthApiError: Invalid Refresh Token: Refresh Token Not Found], solve with AsyncStorage.clear()
 -display error toast message when not connected to the internet
 -handle transaction errors (in transactionMethods) so users cant continue if db field write/update is incorrect (see editProfile + newUserEditProfile)
@@ -36,6 +37,7 @@ Bugs:
 -add canLoginVia (google, apple, etc.) function to catch potential device login issues
 -collect errors & log them online
 -applepay: return real errors from payment errors (for setTransactionStatus)
+-circular dependency issue: store/base.js -> composables/api.ts -> composables/auth.ts -> store/base.js
 
 
 Wishlist:

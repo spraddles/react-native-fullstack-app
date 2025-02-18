@@ -24,7 +24,7 @@ export default function LoginPage() {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: loginType === 'login' ? 'Login' : 'Signup'
+			title: loginType === 'login' ? 'Login' : 'Sign up'
 		})
 	}, [navigation, loginType])
 

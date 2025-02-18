@@ -7,13 +7,20 @@ import { Transaction } from '@/components/ui/transaction'
 import { useBaseStore } from '@/store/base'
 
 export default function HistoryScreen() {
-	const transactions = useBaseStore((state) => state.transactions)
+	const setTransactions = useBaseStore((state) => state.setTransactions)
 	const fetchTransactions = useBaseStore((state) => state.fetchTransactions)
+	const transactions = useBaseStore((state) => state.transactions)
 
 	useEffect(() => {
-		;(async () => {
-			await fetchTransactions()
-		})()
+		const getTransactionData = async () => {
+			try {
+				const transactionData = await fetchTransactions()
+				setTransactions(transactionData)
+			} catch (error) {
+				console.log('getTransactionData error: ', error)
+			}
+		}
+		getTransactionData()
 	}, [])
 
 	if (!transactions || transactions.length === 0) {

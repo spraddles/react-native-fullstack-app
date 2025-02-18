@@ -186,6 +186,15 @@ WORKLOAD_IDENTITY_POOL_ID=$(gcloud iam workload-identity-pools describe $POOL_NA
 # WRONG:   principalSet://iam.googleapis.com/projects/123456/locations/global/workloadIdentityPools/github-pool/attribute.repository/https://github.com/repo-owner/repo-name
 # CORRECT: principalSet://iam.googleapis.com/projects/123456/locations/global/workloadIdentityPools/github-pool/attribute.repository/repo-owner/repo-name
 
+##############################  OAUTH CLIENT  ##############################
+
+# Steps:
+# 1) go to GCP console > API + Services > Credentials > Create > Oauth
+# 2) enter in the details from the expo app.config.ts file
+# 3) copy client ID from google & add to ENV file
+# 4) copy client ID from google & add to Supabase > Auth > Google
+# 5) go to GCP Auth platform > Setup: audience, brand, testing/prod, internal/external users etc.
+
 ##############################  ARTIFACTS  ##############################
 
 ARTIFACT_REPO_NAME="my-docker-repo"

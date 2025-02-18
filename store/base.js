@@ -94,10 +94,11 @@ export const useBaseStore = create((set, get) => ({
 		try {
 			set({ loading: true })
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
-			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/api/transactions/all'
+			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/all'
 			const response = await apiFetch(url, { method: 'GET' })
 			set({ transactions: response.data, loading: false, error: null })
 			set({ loading: false })
+            return response.data
 		} catch (error) {
 			console.log('fetchTransactions error: ', error)
 			set({ error: error.message, loading: false })
@@ -106,7 +107,7 @@ export const useBaseStore = create((set, get) => ({
 
 	createTransaction: async (transaction: object) => {
 		try {
-			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/api/transactions/create'
+			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/create'
             const response = await apiFetch(url, { method: 'POST', body: JSON.stringify(transaction) })
             return (response.status) ? response.data : { status: false }
 		} catch (error) {
@@ -116,7 +117,7 @@ export const useBaseStore = create((set, get) => ({
 
     setTransactionStatus: async (id: string, status: string, message: string) => {
         try {
-            const url = process.env.EXPO_PUBLIC_SERVER_URL + '/api/transactions/set-status'
+            const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/set-status'
             const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ id, status, message })})
             return (response.ok && response.status === 200) ? { status: true } : { status: false }
         } catch (error) {

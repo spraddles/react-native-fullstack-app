@@ -16,12 +16,12 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 // middleware
-app.use('/api/*', validateToken)
+app.use('/*', validateToken)
 
-// routes
-app.use('/api/transactions', getTransactions())
-app.use('/api/transactions', createTransaction())
-app.use('/api/transactions', setTransactionStatus())
+// route
+app.use('/transactions', getTransactions())
+app.use('/transactions', createTransaction())
+app.use('/transactions', setTransactionStatus())
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
