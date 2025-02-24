@@ -1,6 +1,7 @@
 import { stripFormat } from '@/composables/inputFormatter'
 
 export const validateInput = (type: string, value: string | number, length?: number) => {
+
 	// cpf check
 	if (type === 'cpf') {
 		const newValue = String(stripFormat(value))
@@ -59,6 +60,16 @@ export const validateInput = (type: string, value: string | number, length?: num
 		}
 	}
 
+	// credit card number check
+	if (type === 'credit-card-number') {
+		const newValue = String(stripFormat(value))
+		if (newValue.length === 16) {
+			return { isValid: true }
+		} else {
+			return { isValid: false, message: 'Invalid number length' }
+		}
+	}
+
 	// alpha numeric check
 	if (type === 'alpha-numeric') {
 		const newValue = String(value)
@@ -76,6 +87,18 @@ export const validateInput = (type: string, value: string | number, length?: num
 		}
 		newValue = Number(value)
 		if (newValue < 1950 || newValue > 2050) {
+			return { isValid: false, message: 'Invalid year' }
+		}
+	}
+
+	// year short check
+	if (type === 'year-short') {
+		let newValue = String(value)
+		if (newValue.length !== 2) {
+			return { isValid: false, message: 'Invalid year' }
+		}
+		newValue = Number(value)
+		if (newValue < 24 || newValue > 40) {
 			return { isValid: false, message: 'Invalid year' }
 		}
 	}
@@ -114,6 +137,15 @@ export const validateInput = (type: string, value: string | number, length?: num
 		}
 
 		return { isValid: true }
+	}
+
+	// CVV check
+	if (type === 'cvv') {
+		const newValue = String(value)
+		// 3 chars only
+		if (newValue.length !== 3) {
+			return { isValid: false, message: 'Invalid CVV' }
+		}
 	}
 
 	return { isValid: true }

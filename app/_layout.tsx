@@ -111,6 +111,15 @@ function RootLayoutNav() {
 						headerTitleStyle: { fontSize: 25 }
 					}}
 				/>
+				<Stack.Screen
+					name="(pages)/addCard"
+					options={{
+						headerShown: false,
+						headerTitle: 'Add card',
+						headerBackVisible: false,
+						headerTitleStyle: { fontSize: 25 }
+					}}
+				/>
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 			</Stack>
 		</ThemeProvider>

@@ -2,10 +2,13 @@ import createError from 'http-errors'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import { validateToken } from './utils/auth.js'
 import getTransactions from './routes/transactions/all.js'
 import createTransaction from './routes/transactions/create.js'
 import setTransactionStatus from './routes/transactions/setStatus.js'
-import { validateToken } from './utils/auth.js'
+import getCard from './routes/cards/card.js'
+import createCard from './routes/cards/create.js'
+import getPublicKey from './routes/auth/publicKey.js'
 
 const app = express()
 
@@ -15,13 +18,20 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-// middleware
-app.use('/*', validateToken)
+// handle favicon.ico before auth middleware
+app.get('/favicon.ico', (_, res) => res.status(204).end())
+app.head('/favicon.ico', (_, res) => res.status(204).end())
 
-// route
+// middleware
+app.use('/', validateToken)
+
+// routes
 app.use('/transactions', getTransactions())
 app.use('/transactions', createTransaction())
 app.use('/transactions', setTransactionStatus())
+app.use('/cards', getCard())
+app.use('/cards', createCard())
+app.use('/auth', getPublicKey())
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

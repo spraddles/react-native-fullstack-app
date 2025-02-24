@@ -14,7 +14,7 @@ import {
 	formatPhoneInternational,
 	formatAlphaNumeric,
 	formatCPF,
-	formatDOB
+	allowNumeric
 } from '@/composables/inputFormatter'
 
 import { useBaseStore } from '@/store/base'
@@ -259,7 +259,7 @@ export default function EditProfileScreen() {
 							errorText={inputDOByear.errorMessage}
 							onChangeText={(text) => {
 								setInputDOByear({
-									value: formatDOB(text),
+									value: allowNumeric(text),
 									error: false,
 									errorMessage: ''
 								})
@@ -286,7 +286,7 @@ export default function EditProfileScreen() {
 							errorText={inputDOBmonth.errorMessage}
 							onChangeText={(text) => {
 								setInputDOBmonth({
-									value: formatDOB(text),
+									value: allowNumeric(text),
 									error: false,
 									errorMessage: ''
 								})
@@ -313,7 +313,7 @@ export default function EditProfileScreen() {
 							errorText={inputDOBday.errorMessage}
 							onChangeText={(text) => {
 								setInputDOBday({
-									value: formatDOB(text),
+									value: allowNumeric(text),
 									error: false,
 									errorMessage: ''
 								})

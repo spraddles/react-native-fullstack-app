@@ -36,7 +36,7 @@ export default function () {
 			}
 			return res.status(200).json({
 				status: true,
-                data: data
+				data: data
 			})
 		} catch (error) {
 			console.log('Create transaction error: ', error)

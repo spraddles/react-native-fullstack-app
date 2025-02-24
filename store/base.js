@@ -17,6 +17,10 @@ export const useBaseStore = create((set, get) => ({
 			month: '',
 			day: ''
 		},
+        card: {
+            last4digits: '',
+            flag: ''
+        },
 		email: '',
 		phone: '',
 		passport: '',
@@ -89,6 +93,17 @@ export const useBaseStore = create((set, get) => ({
 			transactions: value
 		})),
 
+    setCard: (data) =>
+        set((state) => ({
+            user: {
+                ...state.user,
+                card: {
+                    ...state.user.card,
+                    ...data
+                }
+            }
+        })),
+
 	// api methods
 	fetchTransactions: async () => {
 		try {
@@ -96,12 +111,12 @@ export const useBaseStore = create((set, get) => ({
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/all'
 			const response = await apiFetch(url, { method: 'GET' })
-			set({ transactions: response.data, loading: false, error: null })
+			set({ transactions: response.data, loading: false })
 			set({ loading: false })
             return response.data
 		} catch (error) {
 			console.log('fetchTransactions error: ', error)
-			set({ error: error.message, loading: false })
+			set({ loading: false })
 		}
 	},
 
@@ -122,6 +137,42 @@ export const useBaseStore = create((set, get) => ({
             return (response.ok && response.status === 200) ? { status: true } : { status: false }
         } catch (error) {
             console.log('setTransactionStatus error: ', error)
+        }
+    },
+
+    fetchPublicKey: async () => {
+        try {
+            const url = process.env.EXPO_PUBLIC_SERVER_URL + '/auth/publickey'
+            const response = await apiFetch(url, { method: 'GET' })
+            return response.data
+        } catch (error) {
+            console.log('fetchPublicKey error: ', error)
+        }
+    },
+
+    fetchCard: async () => {
+		try {
+			set({ loading: true })
+			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/cards/card'
+			const response = await apiFetch(url, { method: 'GET' })
+			set({ card: response.data, loading: false })
+			set({ loading: false })
+            console.log('response: ', response) 
+            return response.data
+		} catch (error) {
+			console.log('fetchCards error: ', error)
+			set({ loading: false })
+		}
+	},
+
+    createCard: async (data) => {
+        try {
+            const url = process.env.EXPO_PUBLIC_SERVER_URL + '/cards/create'
+            const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ data})})
+            return response.status
+        } catch (error) {
+            console.log('createCard error: ', error)
         }
     }
 }))

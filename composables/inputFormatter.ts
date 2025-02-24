@@ -50,14 +50,24 @@ export const formatAlphaNumeric = (value) => {
 	return cleaned
 }
 
-// @TODO: rename to allowNumeric
-export const formatDOB = (value: string) => {
+export const allowNumeric = (value: string) => {
 	if (!value) {
 		return ''
 	}
 	value = String(value)
 	const cleaned = value.replace(/[^0-9]/g, '')
 	return cleaned
+}
+
+export const formatCreditCardNumber = (value: string) => {
+	if (!value) {
+		return ''
+	}
+	value = String(value)
+	const cleaned = value.replace(/\D/g, '')
+	const truncated = cleaned.slice(0, 16)
+	const formatted = truncated.replace(/(\d{4})/g, '$1 ').trim()
+	return formatted
 }
 
 export const stripSpaces = (value) => {

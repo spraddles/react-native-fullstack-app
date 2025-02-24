@@ -15,7 +15,7 @@ import {
 	formatPhoneInternational,
 	formatAlphaNumeric,
 	formatCPF,
-	formatDOB
+	allowNumeric
 } from '@/composables/inputFormatter'
 
 import { useBaseStore } from '@/store/base'
@@ -287,7 +287,7 @@ export default function NewUserEditProfileScreen() {
 							errorText={inputDOByear.errorMessage}
 							onChangeText={(text) => {
 								setInputDOByear({
-									value: formatDOB(text),
+									value: allowNumeric(text),
 									error: false,
 									errorMessage: ''
 								})
@@ -314,7 +314,7 @@ export default function NewUserEditProfileScreen() {
 							errorText={inputDOBmonth.errorMessage}
 							onChangeText={(text) => {
 								setInputDOBmonth({
-									value: formatDOB(text),
+									value: allowNumeric(text),
 									error: false,
 									errorMessage: ''
 								})
@@ -341,7 +341,7 @@ export default function NewUserEditProfileScreen() {
 							errorText={inputDOBday.errorMessage}
 							onChangeText={(text) => {
 								setInputDOBday({
-									value: formatDOB(text),
+									value: allowNumeric(text),
 									error: false,
 									errorMessage: ''
 								})
@@ -478,10 +478,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		paddingBottom: 170
 	},
-	footer: {
-		width: '100%',
-		paddingBottom: 10
-	},
 	row: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -489,5 +485,9 @@ const styles = StyleSheet.create({
 	},
 	item: {
 		width: '31%'
+	},
+	footer: {
+		width: '100%',
+		paddingBottom: 10
 	}
 })
