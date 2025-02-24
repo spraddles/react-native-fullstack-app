@@ -32,12 +32,12 @@ export const createCard = async (userID) => {
 			.single()
 		if (error) {
 			console.error('Error creating card:', error)
-			return null
+			return false
 		}
 		return data
 	} catch (error) {
 		console.error('Error in createCard:', error)
-		return null
+		return false
 	}
 }
 
@@ -59,6 +59,7 @@ export const deleteCard = async (userID) => {
 export const getCardFromMerchant = (cardID) => {
 	// returning temp details as a placeholder
 	const tempCardDetailsFromMerchant = {
+		id: cardID,
 		last4digits: '4298',
 		flag: 'Mastercard'
 	}
@@ -83,6 +84,17 @@ export const deleteCardFromMerchant = (cardID) => {
 		return true
 	} catch (error) {
 		console.error('Error deleting card with merchant:', error)
+		return false
+	}
+}
+
+export const chargeCard = (cardID, transaction) => {
+	try {
+		// returning true as a placeholder
+		console.log(`Charging card ${cardID} with merchant.`)
+		return true
+	} catch (error) {
+		console.error('Error charging card with merchant:', error)
 		return false
 	}
 }

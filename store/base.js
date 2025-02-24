@@ -34,6 +34,7 @@ export const useBaseStore = create((set, get) => ({
 	transactions: [],
 
     card: {
+        id: '',
         last4digits: '',
         flag: ''
     },
@@ -106,7 +107,6 @@ export const useBaseStore = create((set, get) => ({
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/all'
 			const response = await apiFetch(url, { method: 'GET' })
-			set({ transactions: response.data, loading: false })
 			set({ loading: false })
             return response.data
 		} catch (error) {
@@ -147,25 +147,32 @@ export const useBaseStore = create((set, get) => ({
 
     fetchCard: async () => {
 		try {
-			set({ loading: true })
-			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/cards/get'
 			const response = await apiFetch(url, { method: 'GET' })
-			set({ card: response.data, loading: false })
-			set({ loading: false })
-            return response.data
+            return response
 		} catch (error) {
 			console.log('fetchCards error: ', error)
-			set({ loading: false })
 		}
 	},
 
     createCard: async (data) => {
         try {
             const url = process.env.EXPO_PUBLIC_SERVER_URL + '/cards/create'
-            const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ data})})
+            const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ data })})
+            console.log('createCard: ', response)
             return response.status
         } catch (error) {
+            console.log('createCard error: ', error)
+        }
+    },
+
+    chargeCard: async (cardID, transaction) => {
+        try {
+            const url = process.env.EXPO_PUBLIC_SERVER_URL + '/cards/charge'
+            const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ cardID, transaction })})
+            return response.status
+        }
+        catch (error) {
             console.log('createCard error: ', error)
         }
     }

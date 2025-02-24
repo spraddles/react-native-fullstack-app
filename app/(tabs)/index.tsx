@@ -22,6 +22,7 @@ import { validateInput } from '@/composables/inputValidator'
 
 export default function TabOneScreen() {
 	const blankErrorText = 'Please enter a value'
+	const fetchCard = useBaseStore((state) => state.fetchCard)
 
 	const initialState = (value: string) => ({
 		value: value,
@@ -126,13 +127,30 @@ export default function TabOneScreen() {
 					amount: inputCurrency.value
 				}
 				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+				const card = await fetchCard()
+				// no card exists
+				if (!card.status) {
+					useBaseStore.getState().setToast({
+						visible: true,
+						message: 'Please enter in your credit card first'
+					})
+					router.push({
+						pathname: '/(pages)/addCard',
+						params: {
+							transaction: JSON.stringify(transaction)
+						}
+					})
+				}
+				// card exists
+				else {
+					router.push({
+						pathname: '/(pages)/confirmTransaction',
+						params: {
+							transaction: JSON.stringify(transaction)
+						}
+					})
+				}
 				useBaseStore.getState().setLoading(false)
-				router.push({
-					pathname: '/(pages)/confirmTransaction',
-					params: {
-						transaction: JSON.stringify(transaction)
-					}
-				})
 			} catch (error) {
 				// other error
 				useBaseStore.getState().setLoading(false)

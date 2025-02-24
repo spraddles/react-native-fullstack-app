@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
-
-import { ApplePay } from '@/composables/applePay/index'
 
 import { View } from '@/components/Themed'
 import { Input } from '@/components/ui/input'
@@ -16,21 +14,19 @@ export default function ConfirmPage() {
 
 	const createTransaction = useBaseStore((state) => state.createTransaction)
 	const setTransactionStatus = useBaseStore((state) => state.setTransactionStatus)
-
-	const [error, setError] = useState('')
-	const [response, setResponse] = useState<PaymentResponse['details']>()
+	const card = useBaseStore((state) => state.card)
+	const chargeCard = useBaseStore((state) => state.chargeCard)
 
 	const handleConfirm = async () => {
 		let dbTransactionID = ''
 		try {
+			// create DB entry first
 			useBaseStore.getState().setLoading(true)
 			const dbTransaction = await createTransaction(transaction)
 			dbTransactionID = dbTransaction.id
-
+			// now process payment
 			if (dbTransaction.status) {
-				const { processPayment } = ApplePay()
-				const paymentResult = await processPayment(setError, setResponse)
-
+				const paymentResult = await chargeCard(card.id, transaction)
 				// error
 				if (paymentResult.error) {
 					throw new Error('Payment failed: [unknown reason]')
@@ -38,8 +34,8 @@ export default function ConfirmPage() {
 				// success
 				else {
 					await setTransactionStatus(dbTransactionID, 'success', null)
+					router.push('/(pages)/success')
 					useBaseStore.getState().setLoading(false)
-					router.push('/(tabs)')
 				}
 			}
 		} catch (err) {

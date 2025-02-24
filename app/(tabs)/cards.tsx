@@ -20,10 +20,18 @@ export default function CardsScreen() {
 		useCallback(() => {
 			const getCard = async () => {
 				try {
+					useBaseStore.getState().setLoading(true)
+					await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 					const cardData = await fetchCard()
-					setCard(cardData)
+					// card found
+					if (cardData.data) {
+						setCard(cardData.data)
+					}
+					useBaseStore.getState().setLoading(false)
 				} catch (error) {
 					console.log('getCard error: ', error)
+				} finally {
+					useBaseStore.getState().setLoading(false)
 				}
 			}
 			getCard()
@@ -37,7 +45,7 @@ export default function CardsScreen() {
 		router.push('/(pages)/addCard')
 	}
 
-	if (!card) {
+	if (!card.last4digits) {
 		return (
 			<View style={styles.container}>
 				<View style={styles.emptyContainer}>
@@ -53,7 +61,7 @@ export default function CardsScreen() {
 			</View>
 		)
 	}
-	if (card) {
+	if (card.last4digits) {
 		return (
 			<View style={styles.container}>
 				<View style={styles.content}>

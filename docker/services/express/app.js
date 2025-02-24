@@ -3,11 +3,15 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import { validateToken } from './utils/auth.js'
+// transactions
 import getTransactions from './routes/transactions/all.js'
 import createTransaction from './routes/transactions/create.js'
 import setTransactionStatus from './routes/transactions/setStatus.js'
+// cards
 import getCard from './routes/cards/get.js'
 import createCard from './routes/cards/create.js'
+import chargeCard from './routes/cards/charge.js'
+// other
 import getPublicKey from './routes/auth/publicKey.js'
 
 const app = express()
@@ -31,6 +35,7 @@ app.use('/transactions', createTransaction())
 app.use('/transactions', setTransactionStatus())
 app.use('/cards', getCard())
 app.use('/cards', createCard())
+app.use('/cards', chargeCard())
 app.use('/auth', getPublicKey())
 
 // catch 404 and forward to error handler

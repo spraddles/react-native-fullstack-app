@@ -1,6 +1,7 @@
 import express from 'express'
 import { stripFormat } from './../../utils/inputFormatter.js'
 import { supabase } from './../../utils/supabase.js'
+import { createTransaction } from './../../functions/transactions.js'
 
 export default function () {
 	const router = express.Router()
@@ -24,20 +25,14 @@ export default function () {
 				sender_id: supabaseUserID,
 				...cleanData
 			}
-			const { data, error } = await supabase
-				.from('transactions')
-				.insert(object)
-				.eq('user_id', supabaseUserID)
-				.select()
-				.single()
-			if (error) {
-				console.log('Supabase error:', error)
-				throw new Error(error.message)
+			// start transaction process
+			const dbTransaction = await createTransaction(supabaseUserID, object)
+			if (dbTransaction) {
+				return res.status(200).json({
+					status: true,
+					data: dbTransaction
+				})
 			}
-			return res.status(200).json({
-				status: true,
-				data: data
-			})
 		} catch (error) {
 			console.log('Create transaction error: ', error)
 			return res
