@@ -95,7 +95,7 @@ export default function AddCardScreen() {
 				}
 				const newCardResponse = await createCard(encryptDataResponse)
 				if (newCardResponse) {
-					router.back()
+					await router.back()
 					useBaseStore.getState().setToast({
 						visible: true,
 						message: 'Card has been added'
