@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
 import { StyleSheet } from 'react-native'
 
 import { router } from 'expo-router'
@@ -14,19 +15,20 @@ export default function CardsScreen() {
 	const setCard = useBaseStore((state) => state.setCard)
 	const fetchCard = useBaseStore((state) => state.fetchCard)
 	const card = useBaseStore((state) => state.card)
-	const user = useBaseStore((state) => state.user)
 
-	useEffect(() => {
-		const getCard = async () => {
-			try {
-				const cardData = await fetchCard()
-				setCard(cardData)
-			} catch (error) {
-				console.log('getCard error: ', error)
+	useFocusEffect(
+		useCallback(() => {
+			const getCard = async () => {
+				try {
+					const cardData = await fetchCard()
+					setCard(cardData)
+				} catch (error) {
+					console.log('getCard error: ', error)
+				}
 			}
-		}
-		getCard()
-	}, [])
+			getCard()
+		}, [])
+	)
 
 	const handleAddCard = async () => {
 		useBaseStore.getState().setLoading(true)
@@ -55,11 +57,7 @@ export default function CardsScreen() {
 		return (
 			<View style={styles.container}>
 				<View style={styles.content}>
-					<Card
-						fullName={user.name + ' ' + user.surname}
-						cardType={'Visa'}
-						lastFourDigits={'5678'}
-					/>
+					<Card cardType={card.flag} lastFourDigits={card.last4digits} />
 				</View>
 				<View style={styles.footer}>
 					<Button

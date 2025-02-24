@@ -6,7 +6,7 @@ import { validateToken } from './utils/auth.js'
 import getTransactions from './routes/transactions/all.js'
 import createTransaction from './routes/transactions/create.js'
 import setTransactionStatus from './routes/transactions/setStatus.js'
-import getCard from './routes/cards/card.js'
+import getCard from './routes/cards/get.js'
 import createCard from './routes/cards/create.js'
 import getPublicKey from './routes/auth/publicKey.js'
 

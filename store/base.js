@@ -17,10 +17,6 @@ export const useBaseStore = create((set, get) => ({
 			month: '',
 			day: ''
 		},
-        card: {
-            last4digits: '',
-            flag: ''
-        },
 		email: '',
 		phone: '',
 		passport: '',
@@ -36,6 +32,11 @@ export const useBaseStore = create((set, get) => ({
 	},
 
 	transactions: [],
+
+    card: {
+        last4digits: '',
+        flag: ''
+    },
 
 	// getters
 	isToastVisible: () => get().toast.visible,
@@ -62,13 +63,13 @@ export const useBaseStore = create((set, get) => ({
 			}
 		})),
 
-	setDOB: (data) =>
+	setDOB: (value) =>
 		set((state) => ({
 			user: {
 				...state.user,
 				dob: {
 					...state.user.dob,
-					...data
+					...value
 				}
 			}
 		})),
@@ -93,16 +94,10 @@ export const useBaseStore = create((set, get) => ({
 			transactions: value
 		})),
 
-    setCard: (data) =>
-        set((state) => ({
-            user: {
-                ...state.user,
-                card: {
-                    ...state.user.card,
-                    ...data
-                }
-            }
-        })),
+    setCard: (value) =>
+		set(() => ({
+			card: value
+		})),
 
 	// api methods
 	fetchTransactions: async () => {
@@ -154,11 +149,10 @@ export const useBaseStore = create((set, get) => ({
 		try {
 			set({ loading: true })
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
-			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/cards/card'
+			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/cards/get'
 			const response = await apiFetch(url, { method: 'GET' })
 			set({ card: response.data, loading: false })
 			set({ loading: false })
-            console.log('response: ', response) 
             return response.data
 		} catch (error) {
 			console.log('fetchCards error: ', error)

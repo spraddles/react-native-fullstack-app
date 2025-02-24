@@ -1,14 +1,13 @@
 import React from 'react'
-import { Image, StyleSheet, Dimensions } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 import { View, Text } from '@/components/Themed'
 
 type CardProps = {
-	fullName: string
 	cardType: string
 	lastFourDigits: string
 }
 
-export function Card({ fullName, cardType, lastFourDigits }: CardProps) {
+export function Card({ cardType, lastFourDigits }: CardProps) {
 	return (
 		<View style={styles.card}>
 			<View style={styles.contentContainer}>
@@ -19,7 +18,7 @@ export function Card({ fullName, cardType, lastFourDigits }: CardProps) {
 			</View>
 
 			<View style={styles.bottomContainer}>
-				<Text style={styles.name}>{fullName.toUpperCase()}</Text>
+				<Text />
 				{(cardType === 'mastercard' || cardType === 'Mastercard') && (
 					<Image
 						style={styles.image}
