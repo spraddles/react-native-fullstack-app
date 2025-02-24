@@ -106,11 +106,6 @@ export default function AddCardScreen() {
 			} catch (error) {
 				console.log('error: ', error)
 			}
-
-			// upload card to DB (with redacted card info)
-			// return to previous screen (view cards)
-			// view cards screen has fetchCards() to get cards from DB
-			// set 'hasCard' to true so card shows & 'add card' button is removed
 			useBaseStore.getState().setLoading(false)
 		}
 	}
