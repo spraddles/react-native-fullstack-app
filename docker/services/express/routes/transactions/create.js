@@ -1,5 +1,5 @@
 import express from 'express'
-import { stripFormat } from './../../utils/inputFormatter.js'
+import { stripFormatForNumbers } from './../../utils/inputFormatter.js'
 import { supabase } from './../../utils/supabase.js'
 import { createTransaction } from './../../functions/transactions.js'
 
@@ -12,10 +12,10 @@ export default function () {
 			const supabaseUserID = supabaseUser?.data?.user?.id
 			// clean data first
 			const cleanData = {
-				amount: stripFormat(req.body.amount),
+				amount: stripFormatForNumbers(req.body.amount),
 				digital_wallet: req.body.digital_wallet,
 				pix_method: req.body.pix_method,
-				pix_method_value: stripFormat(req.body.pix_method_value),
+				pix_method_value: stripFormatForNumbers(req.body.pix_method_value),
 				receiver: req.body.receiver,
 				status: 'pending',
 				message: null
