@@ -100,6 +100,11 @@ export const useBaseStore = create((set, get) => ({
 			card: value
 		})),
 
+    resetCard: () =>
+        set(() => ({
+            card: {}
+        })),
+
 	// api methods
 	fetchTransactions: async () => {
 		try {

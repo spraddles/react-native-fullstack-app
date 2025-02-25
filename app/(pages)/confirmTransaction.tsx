@@ -34,6 +34,7 @@ export default function ConfirmPage() {
 				// success
 				else {
 					await setTransactionStatus(dbTransactionID, 'success', null)
+					await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 					router.push('/(pages)/success')
 					useBaseStore.getState().setLoading(false)
 				}
@@ -53,6 +54,10 @@ export default function ConfirmPage() {
 		}
 	}
 
+	const handleCancel = () => {
+		router.push('/(tabs)')
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
@@ -68,7 +73,7 @@ export default function ConfirmPage() {
 			</View>
 			<View style={styles.footer}>
 				<Button text="Confirm" onPress={async () => await handleConfirm()} />
-				<Button text="Back" fill={false} onPress={() => router.back()} />
+				<Button text="Cancel" fill={false} onPress={() => handleCancel()} />
 			</View>
 		</View>
 	)

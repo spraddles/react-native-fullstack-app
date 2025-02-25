@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, ScrollView, View } from 'react-native'
 
-import { router } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 
 import { useBaseStore } from '@/store/base'
 
@@ -13,6 +13,9 @@ import { validateInput } from '@/composables/inputValidator'
 import { encryptData } from '@/composables/encrypt'
 
 export default function AddCardScreen() {
+	const params = useLocalSearchParams()
+	const transaction = JSON.parse(params.transaction as string)
+
 	const createCard = useBaseStore((state) => state.createCard)
 
 	const initialState = (value: string) => ({
@@ -95,7 +98,12 @@ export default function AddCardScreen() {
 				}
 				const newCardResponse = await createCard(encryptDataResponse)
 				if (newCardResponse) {
-					await router.back()
+					router.push({
+						pathname: '/(pages)/confirmTransaction',
+						params: {
+							transaction: JSON.stringify(transaction)
+						}
+					})
 					useBaseStore.getState().setToast({
 						visible: true,
 						message: 'Card has been added'

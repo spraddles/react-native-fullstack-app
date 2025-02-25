@@ -13,6 +13,7 @@ import { Card } from '@/components/ui/card'
 
 export default function CardsScreen() {
 	const setCard = useBaseStore((state) => state.setCard)
+	const resetCard = useBaseStore((state) => state.resetCard)
 	const fetchCard = useBaseStore((state) => state.fetchCard)
 	const card = useBaseStore((state) => state.card)
 
@@ -26,6 +27,9 @@ export default function CardsScreen() {
 					// card found
 					if (cardData.data) {
 						setCard(cardData.data)
+						// reset state if existing card was removed
+					} else {
+						resetCard()
 					}
 					useBaseStore.getState().setLoading(false)
 				} catch (error) {
