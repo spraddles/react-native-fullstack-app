@@ -14,10 +14,14 @@ export default function HistoryScreen() {
 	useEffect(() => {
 		const getTransactionData = async () => {
 			try {
+				useBaseStore.getState().setLoading(true)
 				const transactionData = await fetchTransactions()
+				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 				setTransactions(transactionData)
+				useBaseStore.getState().setLoading(false)
 			} catch (error) {
 				console.log('getTransactionData error: ', error)
+				useBaseStore.getState().setLoading(false)
 			}
 		}
 		getTransactionData()

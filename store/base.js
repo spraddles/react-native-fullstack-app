@@ -108,15 +108,11 @@ export const useBaseStore = create((set, get) => ({
 	// api methods
 	fetchTransactions: async () => {
 		try {
-			set({ loading: true })
-			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/all'
 			const response = await apiFetch(url, { method: 'GET' })
-			set({ loading: false })
             return response.data
 		} catch (error) {
 			console.log('fetchTransactions error: ', error)
-			set({ loading: false })
 		}
 	},
 
