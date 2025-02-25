@@ -18,7 +18,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	userInterfaceStyle: 'automatic',
 	newArchEnabled: true,
 	ios: {
-		usesAppleSignIn: true,
+		// usesAppleSignIn: true,
 		supportsTablet: true,
 		bundleIdentifier: process.env.EXPO_BUNDLE_ID,
 		infoPlist: {
@@ -28,9 +28,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 					CFBundleURLSchemes: [process.env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_URL_SCHEME]
 				}
 			]
-		},
-		entitlements: {
-			'com.apple.developer.payment-pass-provisioning': true
 		},
 		config: {
 			googleSignIn: {
@@ -52,8 +49,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	},
 	plugins: [
 		'expo-router',
-		'expo-apple-authentication',
-		'./node_modules/@rnw-community/react-native-payments/plugins/with-payments.js',
+		// 'expo-apple-authentication',
 		[
 			'expo-splash-screen',
 			{
