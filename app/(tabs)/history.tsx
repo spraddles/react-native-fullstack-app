@@ -31,10 +31,13 @@ export default function HistoryScreen() {
 		)
 	}
 	if (transactions || transactions.length > 0) {
+		const sortTransactions = [...transactions].sort((a, b) => {
+			return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+		})
 		return (
 			<View style={styles.container}>
 				<ScrollView style={styles.list}>
-					{transactions.map((transaction) => (
+					{sortTransactions.map((transaction) => (
 						<Transaction key={transaction.id} {...transaction} />
 					))}
 				</ScrollView>
