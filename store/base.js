@@ -160,7 +160,6 @@ export const useBaseStore = create((set, get) => ({
         try {
             const url = process.env.EXPO_PUBLIC_SERVER_URL + '/cards/create'
             const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ data })})
-            console.log('createCard: ', response)
             return response.status
         } catch (error) {
             console.log('createCard error: ', error)

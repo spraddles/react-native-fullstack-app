@@ -14,7 +14,11 @@ import { encryptData } from '@/composables/encrypt'
 
 export default function AddCardScreen() {
 	const params = useLocalSearchParams()
-	const transaction = JSON.parse(params.transaction as string)
+	// based on navigation context (directly accessed or via initiate transaction)
+	let transaction = ''
+	if (params.transaction) {
+		transaction = JSON.parse(params.transaction as string)
+	}
 
 	const createCard = useBaseStore((state) => state.createCard)
 
@@ -82,38 +86,55 @@ export default function AddCardScreen() {
 	}
 
 	const handleSave = async () => {
-		if (checkForErrors()) {
-			useBaseStore.getState().setLoading(true)
+		if (!checkForErrors()) {
+			return
+		}
+
+		useBaseStore.getState().setLoading(true)
+
+		try {
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
-			try {
-				const data = {
-					number: inputNumber.value,
-					holder: inputHolder.value,
-					expiry: inputExpiryMonth.value + '/' + inputExpiryYear.value,
-					cvv: inputCVV.value
-				}
-				const encryptDataResponse = await encryptData(data)
-				if (!encryptDataResponse) {
-					throw new Error("Can't encrypt card details")
-				}
-				const newCardResponse = await createCard(encryptDataResponse)
-				if (newCardResponse) {
-					router.push({
-						pathname: '/(pages)/confirmTransaction',
-						params: {
-							transaction: JSON.stringify(transaction)
-						}
-					})
-					useBaseStore.getState().setToast({
-						visible: true,
-						message: 'Card has been added'
-					})
-				} else {
-					throw new Error("Can't create new card")
-				}
-			} catch (error) {
-				console.log('error: ', error)
+			const data = {
+				number: inputNumber.value,
+				holder: inputHolder.value,
+				expiry: `${inputExpiryMonth.value}/${inputExpiryYear.value}`,
+				cvv: inputCVV.value
 			}
+			// encrypt card data
+			const encryptedData = await encryptData(data)
+			if (!encryptedData) {
+				throw new Error('Failed to encrypt card details')
+			}
+			// create card
+			const newCardResponse = await createCard(encryptedData)
+			if (!newCardResponse) {
+				throw new Error('Failed to create new card')
+			}
+			// handle navigation context
+			if (!transaction) {
+				// accessed directly via cards tab
+				await router.back()
+			} else {
+				// accessed via home (initiate transaction)
+				router.push({
+					pathname: '/(pages)/confirmTransaction',
+					params: {
+						transaction: JSON.stringify(transaction)
+					}
+				})
+			}
+			useBaseStore.getState().setToast({
+				visible: true,
+				message: 'Card has been added'
+			})
+		} catch (error) {
+			console.error('Error saving card:', error)
+			useBaseStore.getState().setToast({
+				visible: true,
+				message: `Failed to add card: ${error.message}`,
+				type: 'error'
+			})
+		} finally {
 			useBaseStore.getState().setLoading(false)
 		}
 	}
