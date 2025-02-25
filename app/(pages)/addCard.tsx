@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, ScrollView, View } from 'react-native'
+import { useNavigationState } from '@react-navigation/native'
 
 import { router, useLocalSearchParams } from 'expo-router'
 
@@ -14,13 +15,36 @@ import { encryptData } from '@/composables/encrypt'
 
 export default function AddCardScreen() {
 	const params = useLocalSearchParams()
-	// based on navigation context (directly accessed or via initiate transaction)
-	let transaction = ''
-	if (params.transaction) {
-		transaction = JSON.parse(params.transaction as string)
+	const transaction = params.transaction ? JSON.parse(params.transaction as string) : ''
+
+	const navigationState = useNavigationState((state) => state)
+	const createCard = useBaseStore((state) => state.createCard)
+	const setLoading = useBaseStore((state) => state.setLoading)
+	const setToast = useBaseStore((state) => state.setToast)
+
+	const getPreviousRoute = () => {
+		if (!navigationState) {
+			return null
+		}
+		const routes = navigationState.routes
+		const currentIndex = navigationState.index
+		return currentIndex > 0 ? routes[currentIndex - 1].name : null
 	}
 
-	const createCard = useBaseStore((state) => state.createCard)
+	const whereDidIComeFrom = () => {
+		// we came from newUserAddCard
+		if (getPreviousRoute() === '(pages)/newUserAddCard') {
+			return 'newUserAddCard'
+		}
+		// we came from initiate transaction
+		else if (params.transaction) {
+			return 'index'
+		}
+		// we came directly here
+		else {
+			return 'direct'
+		}
+	}
 
 	const initialState = (value: string) => ({
 		value: value,
@@ -89,10 +113,8 @@ export default function AddCardScreen() {
 		if (!checkForErrors()) {
 			return
 		}
-
-		useBaseStore.getState().setLoading(true)
-
 		try {
+			setLoading(true)
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 			const data = {
 				number: inputNumber.value,
@@ -110,12 +132,12 @@ export default function AddCardScreen() {
 			if (!newCardResponse) {
 				throw new Error('Failed to create new card')
 			}
-			// handle navigation context
-			if (!transaction) {
-				// accessed directly via cards tab
+			const source = whereDidIComeFrom()
+			if (source === 'newUserAddCard') {
+				router.push('/(pages)/newUserProfileComplete')
+			} else if (source === 'direct') {
 				await router.back()
-			} else {
-				// accessed via home (initiate transaction)
+			} else if (source === 'index') {
 				router.push({
 					pathname: '/(pages)/confirmTransaction',
 					params: {
@@ -123,19 +145,19 @@ export default function AddCardScreen() {
 					}
 				})
 			}
-			useBaseStore.getState().setToast({
+			setToast({
 				visible: true,
 				message: 'Card has been added'
 			})
 		} catch (error) {
 			console.error('Error saving card:', error)
-			useBaseStore.getState().setToast({
+			setToast({
 				visible: true,
 				message: `Failed to add card: ${error.message}`,
 				type: 'error'
 			})
 		} finally {
-			useBaseStore.getState().setLoading(false)
+			setLoading(false)
 		}
 	}
 

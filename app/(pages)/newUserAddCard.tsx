@@ -9,7 +9,7 @@ import { Text, View } from '@/components/Themed'
 
 import { Button } from '@/components/ui/button'
 
-export default function NewUserProfileCompletePage() {
+export default function NewUserAddCard() {
 	const navigation = useNavigation()
 
 	useLayoutEffect(() => {
@@ -22,11 +22,21 @@ export default function NewUserProfileCompletePage() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
-				<Text style={styles.text}>Great!</Text>
-				<Text style={styles.text}>You're now ready to use the app...</Text>
+				<Text style={styles.text}>
+					Ok great, now lets add your credit card for payments...
+				</Text>
 			</View>
 			<View style={styles.footer}>
-				<Button text="Start" fill={true} onPress={() => router.push('/(tabs)/')} />
+				<Button
+					text="Add card"
+					fill={true}
+					onPress={() => router.push('/(pages)/addCard')}
+				/>
+				<Button
+					text="Setup later"
+					fill={false}
+					onPress={() => router.push('/(pages)/newUserProfileComplete')}
+				/>
 			</View>
 		</View>
 	)

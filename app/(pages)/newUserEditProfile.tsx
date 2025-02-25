@@ -196,7 +196,7 @@ export default function NewUserEditProfileScreen() {
 					})
 				} else {
 					useBaseStore.getState().setLoading(false)
-					router.push('/(pages)/newUserProfileComplete')
+					router.push('/(pages)/newUserAddCard')
 				}
 			} catch (error) {
 				console.log('NewUserEditProfileScreen unknown error: ', error)
