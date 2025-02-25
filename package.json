@@ -21,6 +21,7 @@
         "docker:purge": "sh ./scripts/docker-purge.sh && docker system prune -f",
         "github:prod:secrets:update": "node ./scripts/update-github-secrets.mjs production",
         "gcp:prod:secrets:update": "sh ./scripts/update-gcp-secrets.sh production",
+        "create-keys": "sh ./scripts/create-keys.sh",
         "supabase:dev:reset": "sh ./scripts/reset-dev-database.sh",
         "supabase:migrate:new": "supabase migration new my_migration_name",
         "supabase:migrate:push": "sh ./scripts/run-migrations.sh"
