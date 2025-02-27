@@ -4,6 +4,8 @@ import { useNavigationState } from '@react-navigation/native'
 
 import { router, useLocalSearchParams } from 'expo-router'
 
+import Fuse from 'fuse.js'
+
 import { useBaseStore } from '@/store/base'
 
 import { Button } from '@/components/ui/button'
@@ -21,6 +23,7 @@ export default function AddCardScreen() {
 	const createCard = useBaseStore((state) => state.createCard)
 	const setLoading = useBaseStore((state) => state.setLoading)
 	const setToast = useBaseStore((state) => state.setToast)
+	const user = useBaseStore((state) => state.user)
 
 	const getPreviousRoute = () => {
 		if (!navigationState) {
@@ -109,8 +112,30 @@ export default function AddCardScreen() {
 		)
 	}
 
+	const checkCardNameMatch = () => {
+		const cardName = inputHolder.value
+		const accountFullName = user.name + ' ' + user.surname
+		const options = {
+			includeScore: true,
+			isCaseSensitive: false,
+			threshold: 0.35
+		}
+		const fuse = new Fuse([accountFullName], options)
+		const result = fuse.search(cardName)
+		if (result.length > 0) {
+			if (result[0].score < options.threshold) {
+				return true
+			}
+		}
+		useBaseStore.getState().setToast({
+			visible: true,
+			message: "The credit card details don't match your account details"
+		})
+		return false
+	}
+
 	const handleSave = async () => {
-		if (!checkForErrors()) {
+		if (!checkForErrors() || !checkCardNameMatch()) {
 			return
 		}
 		try {

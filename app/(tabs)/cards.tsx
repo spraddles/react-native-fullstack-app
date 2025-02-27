@@ -6,8 +6,9 @@ import { router } from 'expo-router'
 
 import { useBaseStore } from '@/store/base'
 
-import { View, Text } from '@/components/Themed'
+import { fetchUserProfile, getCountry } from '@/composables/userMethods'
 
+import { View, Text } from '@/components/Themed'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
@@ -16,12 +17,41 @@ export default function CardsScreen() {
 	const resetCard = useBaseStore((state) => state.resetCard)
 	const fetchCard = useBaseStore((state) => state.fetchCard)
 	const card = useBaseStore((state) => state.card)
+	const setUser = useBaseStore((state) => state.setUser)
+
+	const getProfileData = async () => {
+		try {
+			const profileData = await fetchUserProfile()
+			if (profileData) {
+				const updatedUser = {
+					id: profileData.user_id,
+					name: profileData.name,
+					surname: profileData.surname,
+					country: getCountry(profileData.country),
+					email: profileData.email,
+					phone: profileData.phone,
+					passport: profileData.passport,
+					cpf: profileData.cpf,
+					has_onboarded: profileData.has_onboarded,
+					dob: {
+						year: profileData.dob_year,
+						month: profileData.dob_month,
+						day: profileData.dob_day
+					}
+				}
+				setUser(updatedUser)
+			}
+		} catch (error) {
+			console.error('getProfileData error:', error)
+		}
+	}
 
 	useFocusEffect(
 		useCallback(() => {
 			const getCard = async () => {
 				try {
 					useBaseStore.getState().setLoading(true)
+					await getProfileData()
 					await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 					const cardData = await fetchCard()
 					// card found
