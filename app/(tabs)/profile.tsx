@@ -12,6 +12,7 @@ import { Accordion } from '@/components/ui/accordion'
 
 import { formatCPF } from '@/composables/inputFormatter'
 import { fetchUserProfile, getCountry } from '@/composables/userMethods'
+import { logout } from '@/composables/auth'
 
 export default function ProfileScreen() {
 	const user = useBaseStore((state) => state.getUser())
@@ -22,6 +23,10 @@ export default function ProfileScreen() {
 		await new Promise((resolve) => setTimeout(resolve, 2000)) // for demo purposes
 		useBaseStore.getState().setLoading(false)
 		router.push('/(pages)/editProfile')
+	}
+
+	const handleLogout = async () => {
+		return await logout('You have now logged out')
 	}
 
 	useEffect(() => {
@@ -129,6 +134,7 @@ export default function ProfileScreen() {
 
 			<View style={styles.footer}>
 				<Button text="Edit" fill={true} onPress={async () => await handleClose()} />
+				<Button text="Logout" fill={false} onPress={async () => await handleLogout()} />
 			</View>
 		</View>
 	)
@@ -138,7 +144,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
-		padding: 50
+		paddingTop: 20,
+		paddingBottom: 50,
+		paddingLeft: 50,
+		paddingRight: 50
 	},
 	top: {
 		backgroundColor: '#fff',

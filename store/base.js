@@ -105,6 +105,21 @@ export const useBaseStore = create((set, get) => ({
             card: {}
         })),
 
+    resetState: () => {
+		set(() => ({
+			user: {}
+		}))
+		set(() => ({
+			loading: false
+		}))
+        set(() => ({
+			transactions: []
+		}))
+        set(() => ({
+			card: {}
+		}))
+    },
+
 	// api methods
 	fetchTransactions: async () => {
 		try {

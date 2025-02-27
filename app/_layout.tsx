@@ -7,6 +7,9 @@ import * as SplashScreen from 'expo-splash-screen'
 import 'react-native-reanimated'
 
 import { useBaseStore } from '@/store/base'
+import { supabase } from '@/supabase/connect'
+
+import { logout } from '@/composables/auth'
 
 import { Loader } from '@/components/ui/loader'
 import { Toast } from '@/components/ui/toast'
@@ -57,6 +60,28 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	const colorScheme = useColorScheme()
+	const timeout = 300000
+
+	useEffect(() => {
+		let logoutTimer: NodeJS.Timeout | null = null
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(event: string, session: any) => {
+				if (event === 'SIGNED_IN') {
+					logoutTimer = setTimeout(() => {
+						logout('Your session has expired. Please log in again to continue.')
+					}, timeout)
+				} else if (logoutTimer) {
+					clearTimeout(logoutTimer)
+				}
+			}
+		)
+		return () => {
+			authListener?.subscription.unsubscribe()
+			if (logoutTimer) {
+				clearTimeout(logoutTimer)
+			}
+		}
+	}, [])
 
 	return (
 		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

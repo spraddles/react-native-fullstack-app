@@ -5,13 +5,8 @@ import { router } from 'expo-router'
 export const logout = async (message: string) => {
 	try {
 		await supabase.auth.signOut()
-
-		useBaseStore.getState().resetUser()
-		useBaseStore.getState().setTransactions([])
-		useBaseStore.getState().setLoading(false)
-
+		useBaseStore.getState().resetState()
 		router.push('/(pages)')
-
 		if (message) {
 			useBaseStore.getState().setToast({
 				visible: true,
