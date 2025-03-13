@@ -84,3 +84,10 @@ export const stripFormat = (value: any): string => {
 	const stringValue = String(value)
 	return stringValue.replace(/[^a-zA-Z0-9]/g, '')
 }
+
+export const stripCommas = (string: any) => {
+	if (typeof string !== 'string') {
+		string = String(string)
+	}
+	return string.replace(/,/g, '')
+}

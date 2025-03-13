@@ -13,7 +13,8 @@ import {
 	formatCPF,
 	removeNonNumbers,
 	formatPhone,
-	formatAlphaNumeric
+	formatAlphaNumeric,
+	stripCommas
 } from '@/composables/inputFormatter'
 
 import { useBaseStore } from '@/store/base'
@@ -23,6 +24,7 @@ import { validateInput } from '@/composables/inputValidator'
 export default function TabOneScreen() {
 	const blankErrorText = 'Please enter a value'
 	const fetchCard = useBaseStore((state) => state.fetchCard)
+	const isEnoughFunds = useBaseStore((state) => state.isEnoughFunds)
 
 	const initialState = (value: string) => ({
 		value: value,
@@ -114,8 +116,21 @@ export default function TabOneScreen() {
 		return !currencyError && !tabErrors(errorsObject)
 	}
 
+	const isThereEnoughFundsInAccount = async () => {
+		const transactionValue = stripCommas(inputCurrency.value)
+		if (await isEnoughFunds(transactionValue)) {
+			return true
+		}
+		useBaseStore.getState().setToast({
+			visible: true,
+			message:
+				'As we have just launched this app, we are limiting the transactions at the moment. Please try again tomorrow!'
+		})
+		return false
+	}
+
 	const handleNext = async () => {
-		if (checkForErrors()) {
+		if (checkForErrors() && (await isThereEnoughFundsInAccount())) {
 			useBaseStore.getState().setLoading(true)
 			try {
 				const fakeReceiver = 'Frederico Jon da Silva' // update this for prod

@@ -190,5 +190,16 @@ export const useBaseStore = create((set, get) => ({
         catch (error) {
             console.log('createCard error: ', error)
         }
+    },
+
+    isEnoughFunds: async (transactionValue) => {
+        try {
+            const url = process.env.EXPO_PUBLIC_SERVER_URL + '/account/is-enough-funds'
+            const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ transactionValue })})
+            return response.status
+        }
+        catch (error) {
+            console.log('isEnoughFunds error: ', error)
+        }
     }
 }))

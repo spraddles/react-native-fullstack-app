@@ -12,6 +12,7 @@ import getCard from './routes/cards/get.js'
 import createCard from './routes/cards/create.js'
 import chargeCard from './routes/cards/charge.js'
 // other
+import isEnoughFunds from './routes/account/isEnoughFunds.js'
 import getPublicKey from './routes/auth/publicKey.js'
 
 const app = express()
@@ -37,6 +38,7 @@ app.use('/cards', getCard())
 app.use('/cards', createCard())
 app.use('/cards', chargeCard())
 app.use('/auth', getPublicKey())
+app.use('/account', isEnoughFunds())
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
