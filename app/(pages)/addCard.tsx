@@ -11,7 +11,7 @@ import { useBaseStore } from '@/store/base'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { formatCreditCardNumber, allowNumeric } from '@/composables/inputFormatter'
+import { formatCreditCardNumber, allowNumeric, getFirstDigits } from '@/composables/inputFormatter'
 import { validateInput } from '@/composables/inputValidator'
 import { encryptData } from '@/composables/encrypt'
 
@@ -21,6 +21,7 @@ export default function AddCardScreen() {
 
 	const navigationState = useNavigationState((state) => state)
 	const createCard = useBaseStore((state) => state.createCard)
+	const getCardCountry = useBaseStore((state) => state.getCardCountry)
 	const setLoading = useBaseStore((state) => state.setLoading)
 	const setToast = useBaseStore((state) => state.setToast)
 	const user = useBaseStore((state) => state.user)
@@ -134,8 +135,21 @@ export default function AddCardScreen() {
 		return false
 	}
 
+	const checkCardCountry = async () => {
+		const cardNumber = getFirstDigits(inputNumber.value, 6)
+		const cardBin = await getCardCountry(cardNumber)
+		if (cardBin.Country.Name !== 'Brazil') {
+			return true
+		}
+		useBaseStore.getState().setToast({
+			visible: true,
+			message: "We can't add this credit card now"
+		})
+		return false
+	}
+
 	const handleSave = async () => {
-		if (!checkForErrors() || !checkCardNameMatch()) {
+		if (!checkForErrors() || !checkCardNameMatch() || !(await checkCardCountry())) {
 			return
 		}
 		try {
@@ -251,7 +265,7 @@ export default function AddCardScreen() {
 						<Input
 							label={'Expiry month'}
 							value={inputExpiryMonth.value}
-							placeholder={'01'}
+							placeholder={'3'}
 							autoCorrect={false}
 							autoComplete="off"
 							keyboardType={'phone-pad'}

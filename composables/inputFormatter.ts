@@ -84,3 +84,8 @@ export const stripFormat = (value: any): string => {
 	const stringValue = String(value)
 	return stringValue.replace(/[^a-zA-Z0-9]/g, '')
 }
+
+export const getFirstDigits = (creditCardNumber: string, digits: number) => {
+	const numbersOnly = creditCardNumber.replace(/[^\d]/g, '')
+	return numbersOnly.substring(0, digits)
+}

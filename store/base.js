@@ -190,5 +190,20 @@ export const useBaseStore = create((set, get) => ({
         catch (error) {
             console.log('createCard error: ', error)
         }
+    },
+
+    // external API
+    getCardCountry: async (cardNumber) => {
+            try {
+                const url = `https://data.handyapi.com/bin/${cardNumber}`
+                const key =  process.env.EXPO_PUBLIC_CARD_BIN_LOOKUP
+                const response = await fetch(url, {
+                    headers: { 'x-api-key': key }
+                })
+                const data = await response.json()
+                return data
+            } catch (error) {
+                console.error('Error fetching data:', error)
+            }
     }
 }))

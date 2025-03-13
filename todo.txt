@@ -1,14 +1,34 @@
-To do
+To do:
 
 
 
 
--fix broken google oath social login (create new oath in google, via gcloud command? add to gcloud commands)
 
--remove applePay
--add CF WAF (check it uses CF credits)
--UI for add card
--api for transaction
+
+
+-api for transaction (pix)
+-api for transaction (charge card): partially complete, waiting for celcoin contract
+
+-setup prod environment & make a deployment
+> 3 environments: local, dev, prod
+
+
+
+Local:
+-ios simulator
+-docker
+-supabase (local)
+
+Dev:
+-testflight (limited users)
+-GCP (dev)
+-supabase (dev)
+
+Prod:
+-app store / play store (US/BR)
+-GCP (prod)
+-supabase (prod)
+
 
 
 
@@ -25,7 +45,7 @@ Bugs:
 -security: add custom headers, validation check on server side so can block non-matching headers
 -security: add security headers, helmet npm helmetjs.github.io
 -security: rate limiting
--security: storing sensitive fields should be encrypted or hashed (cpf, passport, etc)
+-security: storing sensitive fields should be encrypted or hashed (cpf, passport, etc), key management?
 -random [AuthApiError: Invalid Refresh Token: Refresh Token Not Found], solve with AsyncStorage.clear()
 -display error toast message when not connected to the internet
 -handle transaction errors (in transactionMethods) so users cant continue if db field write/update is incorrect (see editProfile + newUserEditProfile)
@@ -57,3 +77,15 @@ ApplePay libraries:
 -https://github.com/rnw-community/rnw-community/tree/master/packages/react-native-payments
 -https://dev.to/muhammad_harisbaig_1268d/custom-apple-pay-integration-in-react-native-with-nativ-3po8
 
+
+Create pub/priv keys:
+openssl genpkey -algorithm RSA -out private.pem -pkeyopt rsa_keygen_bits:4096 && openssl rsa -in private.pem -pubout -out public.pem
+cat public.pem | base64 > public_key_base64.txt
+cat private.pem | base64 > private_key_base64.txt
+
+
+Production launch:
+-create new public/private keys (as above)
+-update branding: logo, about modal
+-setup expo for deployment / apple dev account etc
+-
