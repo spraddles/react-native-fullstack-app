@@ -91,3 +91,8 @@ export const stripCommas = (string: any) => {
 	}
 	return string.replace(/,/g, '')
 }
+
+export const getFirstDigits = (creditCardNumber: string, digits: number) => {
+	const numbersOnly = creditCardNumber.replace(/[^\d]/g, '')
+	return numbersOnly.substring(0, digits)
+}

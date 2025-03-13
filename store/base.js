@@ -192,6 +192,21 @@ export const useBaseStore = create((set, get) => ({
         }
     },
 
+    // external API
+    getCardCountry: async (cardNumber) => {
+        try {
+            const url = `https://data.handyapi.com/bin/${cardNumber}`
+            const key =  process.env.EXPO_PUBLIC_CARD_BIN_LOOKUP
+            const response = await fetch(url, {
+                headers: { 'x-api-key': key }
+            })
+            const data = await response.json()
+            return data
+        } catch (error) {
+            console.error('Error fetching data:', error)
+        }
+    },
+
     isEnoughFunds: async (transactionValue) => {
         try {
             const url = process.env.EXPO_PUBLIC_SERVER_URL + '/account/is-enough-funds'
