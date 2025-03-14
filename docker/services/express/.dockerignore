@@ -1,0 +1,40 @@
+# node modules (will be installed fresh in the container)
+node_modules/
+
+# environment files
+.env
+.env.*
+*.local
+npm-debug.log*
+.DS_Store
+
+# version control
+.git
+.gitignore
+.github/
+
+# docker related
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# test files
+test/
+tests/
+__tests__/
+coverage/
+
+# documentation
+README.md
+*.md
+docs/
+
+# Logs
+logs/
+*.log
+
+# other unnecessary files
+.vscode/
+.idea/
+*.swp
+*.swo
