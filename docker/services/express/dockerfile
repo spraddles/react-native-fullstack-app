@@ -10,7 +10,7 @@ COPY docker/services/express .
 
 EXPOSE 3000
 
-CMD ["npm", "run", "express:debug"]
+CMD ["npm", "run", "express"]
 
 # for diagnosing container
 # CMD ["sh", "-c", "tail -F keep_alive"]

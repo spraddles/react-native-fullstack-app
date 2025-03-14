@@ -192,7 +192,7 @@ export default function NewUserEditProfileScreen() {
 					useBaseStore.getState().setToast({
 						visible: true,
 						message:
-							"We can't create your account now sorry, please check all the fields below"
+							"We're having problems creating your account now sorry, please check all the fields below"
 					})
 				} else {
 					useBaseStore.getState().setLoading(false)
