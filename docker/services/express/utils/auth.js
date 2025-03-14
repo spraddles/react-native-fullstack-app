@@ -18,7 +18,7 @@ export const validateToken = async (req, res, next) => {
 				})
 			}
 			// valid token
-			if (!error || user) {
+			if (!error && user) {
 				req.token = accessToken
 				// don't return a server status here
 				next()
