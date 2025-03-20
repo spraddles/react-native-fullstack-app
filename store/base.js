@@ -121,6 +121,26 @@ export const useBaseStore = create((set, get) => ({
     },
 
 	// api methods
+    getUserProfile: async () => {
+		try {
+			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/user/get'
+			const response = await apiFetch(url, { method: 'GET' })
+            return response.data
+		} catch (error) {
+			console.log('getUserProfile error: ', error)
+		}
+    },
+
+    updateUserMeta: async (id, data) => {
+		try {
+			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/user/update'
+            const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ id, data })})
+            return response
+		} catch (error) {
+			console.log('updateUserMeta error: ', error)
+		}
+	},
+
 	fetchTransactions: async () => {
 		try {
 			const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/all'

@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CountryPicker } from '@/components/ui/countryPicker'
 
-import { updateUserMeta } from '@/composables/userMethods'
 import { validateInput } from '@/composables/inputValidator'
 import {
 	stripSpaces,
@@ -35,6 +34,7 @@ export default function NewUserEditProfileScreen() {
 
 	const user = useBaseStore((state) => state.user)
 	const setUser = useBaseStore((state) => state.setUser)
+	const updateUserMeta = useBaseStore((state) => state.updateUserMeta)
 
 	const initialState = (value: string) => ({
 		value: value,

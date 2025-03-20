@@ -6,7 +6,7 @@ import { router } from 'expo-router'
 
 import { useBaseStore } from '@/store/base'
 
-import { fetchUserProfile, getCountry } from '@/composables/userMethods'
+import { getCountry } from '@/composables/userMethods'
 
 import { View, Text } from '@/components/Themed'
 import { Button } from '@/components/ui/button'
@@ -18,10 +18,11 @@ export default function CardsScreen() {
 	const fetchCard = useBaseStore((state) => state.fetchCard)
 	const card = useBaseStore((state) => state.card)
 	const setUser = useBaseStore((state) => state.setUser)
+	const getUser = useBaseStore((state) => state.getUserProfile)
 
 	const getProfileData = async () => {
 		try {
-			const profileData = await fetchUserProfile()
+			const profileData = await getUser()
 			if (profileData) {
 				const updatedUser = {
 					id: profileData.user_id,

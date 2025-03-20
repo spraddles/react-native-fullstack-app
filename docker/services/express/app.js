@@ -11,9 +11,12 @@ import setTransactionStatus from './routes/transactions/setStatus.js'
 import getCard from './routes/cards/get.js'
 import createCard from './routes/cards/create.js'
 import chargeCard from './routes/cards/charge.js'
+// user
+import getUser from './routes/user/get.js'
+import updateUser from './routes/user/update.js'
 // other
-import isEnoughFunds from './routes/account/isEnoughFunds.js'
 import getPublicKey from './routes/auth/publicKey.js'
+import isEnoughFunds from './routes/account/isEnoughFunds.js'
 
 const app = express()
 
@@ -37,6 +40,8 @@ app.use('/transactions', setTransactionStatus())
 app.use('/cards', getCard())
 app.use('/cards', createCard())
 app.use('/cards', chargeCard())
+app.use('/user', getUser())
+app.use('/user', updateUser())
 app.use('/auth', getPublicKey())
 app.use('/account', isEnoughFunds())
 

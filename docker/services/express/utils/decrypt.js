@@ -1,3 +1,8 @@
+/*
+ ** Note: this file is to encrypt data only for frontend to backend
+ ** transmission and not for any database storage
+ */
+
 import forge from 'node-forge'
 
 const base64ToPem = (base64Key, type) => {

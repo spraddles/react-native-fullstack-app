@@ -11,12 +11,13 @@ import { Button } from '@/components/ui/button'
 import { Accordion } from '@/components/ui/accordion'
 
 import { formatCPF } from '@/composables/inputFormatter'
-import { fetchUserProfile, getCountry } from '@/composables/userMethods'
+import { getCountry } from '@/composables/userMethods'
 import { logout } from '@/composables/auth'
 
 export default function ProfileScreen() {
 	const user = useBaseStore((state) => state.getUser())
 	const setUser = useBaseStore((state) => state.setUser)
+	const getUser = useBaseStore((state) => state.getUserProfile)
 
 	const handleClose = async () => {
 		useBaseStore.getState().setLoading(true)
@@ -32,7 +33,7 @@ export default function ProfileScreen() {
 	useEffect(() => {
 		const getProfileData = async () => {
 			try {
-				const profileData = await fetchUserProfile()
+				const profileData = await getUser()
 				if (profileData) {
 					const updatedUser = {
 						id: profileData.user_id,

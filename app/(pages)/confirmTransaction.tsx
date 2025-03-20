@@ -62,7 +62,7 @@ export default function ConfirmPage() {
 		<View style={styles.container}>
 			<View style={styles.content}>
 				<View style={styles.inputs}>
-					<Input label={'Reciever'} value={transaction.receiver} disabled={true} />
+					<Input label={'Receiver'} value={transaction.receiver} disabled={true} />
 				</View>
 				<View style={styles.inputs}>
 					<Input label={'Amount'} value={transaction.amount} disabled={true} />
