@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { StyleSheet, Image, ScrollView, View } from 'react-native'
 
 import { router } from 'expo-router'
@@ -11,13 +11,10 @@ import { Button } from '@/components/ui/button'
 import { Accordion } from '@/components/ui/accordion'
 
 import { formatCPF } from '@/composables/inputFormatter'
-import { getCountry } from '@/composables/userMethods'
 import { logout } from '@/composables/auth'
 
 export default function ProfileScreen() {
 	const user = useBaseStore((state) => state.getUser())
-	const setUser = useBaseStore((state) => state.setUser)
-	const getUser = useBaseStore((state) => state.getUserProfile)
 
 	const handleClose = async () => {
 		useBaseStore.getState().setLoading(true)
@@ -29,36 +26,6 @@ export default function ProfileScreen() {
 	const handleLogout = async () => {
 		return await logout('You have now logged out')
 	}
-
-	useEffect(() => {
-		const getProfileData = async () => {
-			try {
-				const profileData = await getUser()
-				if (profileData) {
-					const updatedUser = {
-						id: profileData.user_id,
-						name: profileData.name,
-						surname: profileData.surname,
-						country: getCountry(profileData.country),
-						email: profileData.email,
-						phone: profileData.phone,
-						passport: profileData.passport,
-						cpf: profileData.cpf,
-						has_onboarded: profileData.has_onboarded,
-						dob: {
-							year: profileData.dob_year,
-							month: profileData.dob_month,
-							day: profileData.dob_day
-						}
-					}
-					setUser(updatedUser)
-				}
-			} catch (error) {
-				console.error('getProfileData error:', error)
-			}
-		}
-		getProfileData()
-	}, [])
 
 	return (
 		<View style={styles.container}>

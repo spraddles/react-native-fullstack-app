@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Platform } from 'react-native'
 import { router } from 'expo-router'
 
@@ -17,6 +17,8 @@ import {
 	stripCommas
 } from '@/composables/inputFormatter'
 
+import { getCountry } from '@/composables/userMethods'
+
 import { useBaseStore } from '@/store/base'
 
 import { validateInput } from '@/composables/inputValidator'
@@ -25,6 +27,39 @@ export default function TabOneScreen() {
 	const blankErrorText = 'Please enter a value'
 	const fetchCard = useBaseStore((state) => state.fetchCard)
 	const isEnoughFunds = useBaseStore((state) => state.isEnoughFunds)
+	const user = useBaseStore((state) => state.getUser())
+	const setUser = useBaseStore((state) => state.setUser)
+	const getUser = useBaseStore((state) => state.getUserProfile)
+
+	useEffect(() => {
+		const getProfileData = async () => {
+			try {
+				const profileData = await getUser()
+				if (profileData) {
+					const updatedUser = {
+						id: profileData.user_id,
+						name: profileData.name,
+						surname: profileData.surname,
+						country: getCountry(profileData.country),
+						email: profileData.email,
+						phone: profileData.phone,
+						passport: profileData.passport,
+						cpf: profileData.cpf,
+						has_onboarded: profileData.has_onboarded,
+						dob: {
+							year: profileData.dob_year,
+							month: profileData.dob_month,
+							day: profileData.dob_day
+						}
+					}
+					setUser(updatedUser)
+				}
+			} catch (error) {
+				console.error('getProfileData error:', error)
+			}
+		}
+		getProfileData()
+	}, [])
 
 	const initialState = (value: string) => ({
 		value: value,
