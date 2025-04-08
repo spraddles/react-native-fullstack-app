@@ -11,9 +11,10 @@ import { useBaseStore } from '@/store/base'
 export default function ConfirmPage() {
 	const params = useLocalSearchParams()
 	const transaction = JSON.parse(params.transaction as string)
+	const fees = JSON.parse(params.fees as string)
 
 	const createTransaction = useBaseStore((state) => state.createTransaction)
-	const setTransactionStatus = useBaseStore((state) => state.setTransactionStatus)
+	const updateTransaction = useBaseStore((state) => state.updateTransaction)
 	const card = useBaseStore((state) => state.card)
 	const chargeCard = useBaseStore((state) => state.chargeCard)
 
@@ -27,23 +28,40 @@ export default function ConfirmPage() {
 			// now process payment
 			if (dbTransaction.status) {
 				const paymentResult = await chargeCard(card.id, transaction)
+
 				// error
-				if (paymentResult.error) {
+				if (!paymentResult.status) {
 					throw new Error('Payment failed: [unknown reason]')
 				}
 				// success
 				else {
-					await setTransactionStatus(dbTransactionID, 'success', null)
+					const updateTransactionObject = {
+						id: dbTransactionID,
+						status: 'success',
+						message: null,
+						card_transaction_id: paymentResult.data.card_transaction_id,
+						our_fee: fees.our_fee,
+						total_fees: fees.total_fee
+					}
+					await updateTransaction(updateTransactionObject)
 					await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 					router.push('/(pages)/success')
 					useBaseStore.getState().setLoading(false)
 				}
 			}
-		} catch (err) {
+		} catch (error) {
 			// payment fail
-			console.log('Payment failed:', err)
+			console.log('Payment failed:', error)
 			if (dbTransactionID) {
-				await setTransactionStatus(dbTransactionID, 'fail', err)
+				await updateTransaction(dbTransactionID, 'fail', error, null)
+				await updateTransaction({
+					id: dbTransactionID,
+					status: 'fail',
+					message: error,
+					card_transaction_id: null,
+					our_fee: null,
+					total_fees: null
+				})
 			}
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 			useBaseStore.getState().setLoading(false)
@@ -65,7 +83,14 @@ export default function ConfirmPage() {
 					<Input label={'Receiver'} value={transaction.receiver} disabled={true} />
 				</View>
 				<View style={styles.inputs}>
-					<Input label={'Amount'} value={transaction.amount} disabled={true} />
+					<Input label={'Transfer'} value={transaction.amount} disabled={true} />
+				</View>
+				<View style={styles.inputs}>
+					<Input
+						label={'Fees'}
+						value={Number(fees.total_fee).toFixed(2)}
+						disabled={true}
+					/>
 				</View>
 				<View style={styles.inputs}>
 					<Input label={'Currency'} value={'Brazilian reals'} disabled={true} />

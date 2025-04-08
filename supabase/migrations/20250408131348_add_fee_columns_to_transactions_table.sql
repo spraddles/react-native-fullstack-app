@@ -1,0 +1,3 @@
+ALTER TABLE transactions
+ADD COLUMN our_fee DECIMAL(10,2),
+ADD COLUMN total_fees DECIMAL(10,2);

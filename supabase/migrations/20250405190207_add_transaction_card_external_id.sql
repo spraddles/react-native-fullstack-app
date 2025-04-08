@@ -1,0 +1,2 @@
+ALTER TABLE transactions
+ADD COLUMN card_external_id VARCHAR(255) DEFAULT NULL;

@@ -1,0 +1,2 @@
+ALTER TABLE transactions 
+RENAME COLUMN card_external_id TO card_transaction_external_id;

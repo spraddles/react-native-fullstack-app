@@ -35,8 +35,8 @@ export const useBaseStore = create((set, get) => ({
 
     card: {
         id: '',
-        last4digits: '',
-        flag: ''
+        last_4_digits: '',
+        network: ''
     },
 
 	// getters
@@ -161,13 +161,13 @@ export const useBaseStore = create((set, get) => ({
 		}
 	},
 
-    setTransactionStatus: async (id: string, status: string, message: string) => {
+    updateTransaction: async (data: object) => {
         try {
-            const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/set-status'
-            const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ id, status, message })})
+            const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/update'
+            const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ data })})
             return (response.ok && response.status === 200) ? { status: true } : { status: false }
         } catch (error) {
-            console.log('setTransactionStatus error: ', error)
+            console.log('updateTransaction error: ', error)
         }
     },
 
@@ -178,6 +178,16 @@ export const useBaseStore = create((set, get) => ({
             return response.data
         } catch (error) {
             console.log('fetchPublicKey error: ', error)
+        }
+    },
+
+    calculateFees: async (data) => {
+        try {
+            const url = process.env.EXPO_PUBLIC_SERVER_URL + '/transactions/fees'
+            const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ data })})
+            return response.data.fees
+        } catch (error) {
+            console.log('calculateFees error: ', error)
         }
     },
 
@@ -205,7 +215,7 @@ export const useBaseStore = create((set, get) => ({
         try {
             const url = process.env.EXPO_PUBLIC_SERVER_URL + '/cards/charge'
             const response = await apiFetch(url, { method: 'POST', body: JSON.stringify({ cardID, transaction })})
-            return response.status
+            return response
         }
         catch (error) {
             console.log('createCard error: ', error)
@@ -213,7 +223,7 @@ export const useBaseStore = create((set, get) => ({
     },
 
     // external API
-    getCardCountry: async (cardNumber) => {
+    getCardBinData: async (cardNumber) => {
         try {
             const url = `https://data.handyapi.com/bin/${cardNumber}`
             const key =  process.env.EXPO_PUBLIC_CARD_BIN_LOOKUP

@@ -13,7 +13,6 @@ export default function () {
 			// clean data first
 			const cleanData = {
 				amount: stripFormatForNumbers(req.body.amount),
-				digital_wallet: req.body.digital_wallet,
 				pix_method: req.body.pix_method,
 				pix_method_value: stripFormatForNumbers(req.body.pix_method_value),
 				receiver: req.body.receiver,
@@ -26,7 +25,7 @@ export default function () {
 				...cleanData
 			}
 			// start transaction process
-			const dbTransaction = await createTransaction(supabaseUserID, object)
+			const dbTransaction = await createTransaction(object)
 			if (dbTransaction) {
 				return res.status(200).json({
 					status: true,

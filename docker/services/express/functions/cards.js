@@ -1,10 +1,12 @@
 import { supabase } from './../utils/supabase.js'
+import { chargeCard } from '../functions/external/starkbank/index.js'
+import { convertExpiryDateFormat } from './../utils/inputFormatter.js'
 
 export const getExistingCard = async (userID) => {
 	try {
 		const { data, error } = await supabase
 			.from('cards')
-			.select('id')
+			.select('*')
 			.eq('user_id', userID)
 			.single()
 		// supabase bug: returns PGRST116 error when no rows exist
@@ -16,18 +18,45 @@ export const getExistingCard = async (userID) => {
 			console.error('Error checking for existing card:', error)
 			return null
 		}
-		return getCardFromMerchant(data.id)
+		return data
 	} catch (error) {
 		console.error('Error in getExistingCard:', error)
 		return null
 	}
 }
 
-export const createCard = async (userID) => {
+export const createCard = async (cardData) => {
 	try {
+		// create fake charge 1st: to add card to StarkBank
+		const card = {
+			cardNumber: cardData.cardNumber,
+			cardExpiration: convertExpiryDateFormat(cardData.cardExpiration),
+			cardSecurityCode: cardData.cardSecurityCode,
+			fundingType: cardData.type,
+			holderName: cardData.holderName
+		}
+
+		// always set $0 dollar charge to save card
+		const charge = await chargeCard(card, 0)
+
+		if (!charge.success) {
+			console.error('Error creating card with acquirer:', charge.message)
+			return false
+		}
+
+		const insertObject = {
+			user_id: cardData.user,
+			external_id: charge.data.card_id,
+			type: cardData.type,
+			country: cardData.country,
+			bank_name: cardData.bank,
+			network: cardData.network,
+			last_4_digits: charge.data.last_4_digits
+		}
+
 		const { data, error } = await supabase
 			.from('cards')
-			.insert([{ user_id: userID }])
+			.insert([insertObject])
 			.select('id')
 			.single()
 		if (error) {
@@ -41,10 +70,15 @@ export const createCard = async (userID) => {
 	}
 }
 
-export const deleteCard = async (userID) => {
+/*
+ ** Note: the deleteCard() function only deletes cards locally
+ ** and not with the acquirer, e.g. StarkBank
+ */
+
+export const deleteCard = async (cardID) => {
 	try {
-		// deleteCardFromMerchant(cardID) first!
-		const { error } = await supabase.from('cards').delete().eq('user_id', userID)
+		// delete functions return NULL when successful
+		const { data, error } = await supabase.from('cards').delete().eq('id', cardID)
 		if (error) {
 			console.error('Error deleting card:', error)
 			return false
@@ -52,49 +86,6 @@ export const deleteCard = async (userID) => {
 		return true
 	} catch (error) {
 		console.error('Error in deleteCard:', error)
-		return false
-	}
-}
-
-export const getCardFromMerchant = (cardID) => {
-	// returning temp details as a placeholder
-	const tempCardDetailsFromMerchant = {
-		id: cardID,
-		last4digits: '4298',
-		flag: 'Mastercard'
-	}
-	return tempCardDetailsFromMerchant
-}
-
-export const sendCardToMerchant = async (cardID, cardData) => {
-	try {
-		// returning true as a placeholder
-		console.log(`Sending card ${cardID} to merchant with data:`, cardData)
-		return true
-	} catch (error) {
-		console.error('Error sending card to merchant:', error)
-		return false
-	}
-}
-
-export const deleteCardFromMerchant = (cardID) => {
-	try {
-		// returning true as a placeholder
-		console.log(`Deleting card ${cardID} with merchant.`)
-		return true
-	} catch (error) {
-		console.error('Error deleting card with merchant:', error)
-		return false
-	}
-}
-
-export const chargeCard = (cardID, transaction) => {
-	try {
-		// returning true as a placeholder
-		console.log(`Charging card ${cardID} with merchant.`)
-		return true
-	} catch (error) {
-		console.error('Error charging card with merchant:', error)
 		return false
 	}
 }

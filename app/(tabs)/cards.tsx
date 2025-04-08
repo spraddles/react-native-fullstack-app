@@ -48,7 +48,7 @@ export default function CardsScreen() {
 		router.push('/(pages)/addCard')
 	}
 
-	if (!card.last4digits) {
+	if (!card.last_4_digits) {
 		return (
 			<View style={styles.container}>
 				<View style={styles.emptyContainer}>
@@ -64,11 +64,11 @@ export default function CardsScreen() {
 			</View>
 		)
 	}
-	if (card.last4digits) {
+	if (card.last_4_digits) {
 		return (
 			<View style={styles.container}>
 				<View style={styles.content}>
-					<Card cardType={card.flag} lastFourDigits={card.last4digits} />
+					<Card cardType={card.network} lastFourDigits={card.last_4_digits} />
 				</View>
 				<View style={styles.footer}>
 					<Button

@@ -1,0 +1,25 @@
+Failed: 
+The purchase did not reach the card network.
+
+Denied: 
+The purchase reached the card network but was not approved due to insufficient balance, lack of credit limit, incorrect PAN or the card being blocked.
+
+Approved: 
+The purchase was successful, but the amount was not deducted from the buyer.
+
+Confirmed: 
+The purchase was settled.
+
+Reversed / Voided: 
+Fully refunded.
+
+Created: 
+Not sent to the card network (Ideally, the purchase should stay in this status for less than 1 second).
+
+Pending: 
+Purchase pending 3DS approval. If it stays in this status for more than 1 hour, it will be automatically denied.
+
+
+NOTES: 
+-Approved purchases can only be fully canceled.
+-Cancellation request deadlines: Debit: is 7 days, Credit: the standard is up to 90 days, but it may vary depending on the type of business.

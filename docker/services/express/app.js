@@ -6,7 +6,8 @@ import { validateToken } from './utils/auth.js'
 // transactions
 import getTransactions from './routes/transactions/all.js'
 import createTransaction from './routes/transactions/create.js'
-import setTransactionStatus from './routes/transactions/setStatus.js'
+import updateTransaction from './routes/transactions/update.js'
+import getFees from './routes/transactions/fees.js'
 // cards
 import getCard from './routes/cards/get.js'
 import createCard from './routes/cards/create.js'
@@ -36,7 +37,8 @@ app.use('/', validateToken)
 // routes
 app.use('/transactions', getTransactions())
 app.use('/transactions', createTransaction())
-app.use('/transactions', setTransactionStatus())
+app.use('/transactions', updateTransaction())
+app.use('/transactions', getFees())
 app.use('/cards', getCard())
 app.use('/cards', createCard())
 app.use('/cards', chargeCard())

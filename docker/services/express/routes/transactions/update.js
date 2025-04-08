@@ -1,26 +1,34 @@
 import express from 'express'
-import { supabase } from './../../utils/supabase.js'
+import { supabase } from '../../utils/supabase.js'
 
 export default function () {
 	const router = express.Router()
 
-	router.post('/set-status', async (req, res) => {
+	router.post('/update', async (req, res) => {
 		try {
-			const { id, status, message } = req.body
-			// message is optional
-			if (!id || !status) {
+			const data = req.body.data
+            const transactionID = data.id
+
+			// check inputs exist
+			if (!transactionID) {
 				return res.status(400).json({
 					status: false,
-					message: 'ID, status and message are required'
+					message: 'Transaction ID is required'
 				})
 			}
+
+			// Ensure data is not empty
+			if (Object.keys(data).length === 0) {
+				return res.status(400).json({
+					status: false,
+					message: 'No update data provided'
+				})
+			}
+
 			const { error } = await supabase
 				.from('transactions')
-				.update({
-					status,
-					message
-				})
-				.eq('id', id)
+				.update(data)
+				.eq('id', transactionID)
 				.select()
 				.single()
 

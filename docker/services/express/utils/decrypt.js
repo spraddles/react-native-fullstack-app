@@ -5,7 +5,7 @@
 
 import forge from 'node-forge'
 
-const base64ToPem = (base64Key, type) => {
+export const base64ToPem = (base64Key, type) => {
 	const pemContent = forge.util.decode64(base64Key)
 	if (!pemContent.includes('-----BEGIN')) {
 		return `-----BEGIN ${type} KEY-----\n${base64Key}\n-----END ${type} KEY-----`

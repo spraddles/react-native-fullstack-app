@@ -21,7 +21,7 @@ export default function AddCardScreen() {
 
 	const navigationState = useNavigationState((state) => state)
 	const createCard = useBaseStore((state) => state.createCard)
-	const getCardCountry = useBaseStore((state) => state.getCardCountry)
+	const cardBinData = useBaseStore((state) => state.getCardBinData)
 	const setLoading = useBaseStore((state) => state.setLoading)
 	const setToast = useBaseStore((state) => state.setToast)
 	const user = useBaseStore((state) => state.user)
@@ -135,10 +135,8 @@ export default function AddCardScreen() {
 		return false
 	}
 
-	const checkCardCountry = async () => {
-		const cardNumber = getFirstDigits(inputNumber.value, 6)
-		const cardBin = await getCardCountry(cardNumber)
-		if (cardBin.Country.Name !== 'Brazil') {
+	const checkCardCountry = (countryName: string) => {
+		if (countryName !== 'Brazil') {
 			return true
 		}
 		useBaseStore.getState().setToast({
@@ -148,19 +146,58 @@ export default function AddCardScreen() {
 		return false
 	}
 
-	const handleSave = async () => {
-		if (!checkForErrors() || !checkCardNameMatch() || !(await checkCardCountry())) {
-			return
+	const getCardBinData = async () => {
+		try {
+			const cardNumber = getFirstDigits(inputNumber.value, 6)
+			const cardBin = await cardBinData(cardNumber)
+
+			// create a clean object with proper null handling
+			return {
+				country:
+					cardBin?.Country && typeof cardBin.Country === 'object' && cardBin.Country.Name
+						? cardBin.Country.Name
+						: null,
+				bank: cardBin?.Issuer || null,
+				type:
+					cardBin?.Type && typeof cardBin.Type === 'string'
+						? cardBin.Type.toLowerCase()
+						: null,
+				network:
+					cardBin?.Scheme && typeof cardBin.Scheme === 'string'
+						? cardBin.Scheme.toLowerCase()
+						: null
+			}
+		} catch (error) {
+			console.error('Error fetching card BIN data:', error)
+			return {
+				country: null,
+				bank: null,
+				type: null,
+				network: null
+			}
 		}
+	}
+
+	const handleSave = async () => {
 		try {
 			setLoading(true)
 			await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
+
+			const cardBin = await getCardBinData()
+			if (!checkForErrors() || !checkCardNameMatch() || !checkCardCountry(cardBin.country)) {
+				return
+			}
 			const data = {
 				number: inputNumber.value,
 				holder: inputHolder.value,
 				expiry: `${inputExpiryMonth.value}/${inputExpiryYear.value}`,
-				cvv: inputCVV.value
+				cvv: inputCVV.value,
+				country: cardBin.country,
+				bank: cardBin.bank,
+				type: cardBin.type,
+				network: cardBin.network
 			}
+
 			// encrypt card data
 			const encryptedData = await encryptData(data)
 			if (!encryptedData) {
@@ -192,7 +229,7 @@ export default function AddCardScreen() {
 			console.error('Error saving card:', error)
 			setToast({
 				visible: true,
-				message: `Failed to add card: ${error.message}`,
+				message: 'Your card details are not correct, please check them & try again',
 				type: 'error'
 			})
 		} finally {

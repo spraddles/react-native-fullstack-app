@@ -1,0 +1,2 @@
+ALTER TABLE card_transactions 
+DROP CONSTRAINT card_transactions_status_check;

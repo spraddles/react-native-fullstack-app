@@ -27,7 +27,7 @@ export default function TabOneScreen() {
 	const blankErrorText = 'Please enter a value'
 	const fetchCard = useBaseStore((state) => state.fetchCard)
 	const isEnoughFunds = useBaseStore((state) => state.isEnoughFunds)
-	const user = useBaseStore((state) => state.getUser())
+	const calculateFees = useBaseStore((state) => state.calculateFees)
 	const setUser = useBaseStore((state) => state.setUser)
 	const getUser = useBaseStore((state) => state.getUserProfile)
 
@@ -173,7 +173,6 @@ export default function TabOneScreen() {
 					pix_method: currentTab,
 					pix_method_value: getCurrentTab().value,
 					receiver: fakeReceiver,
-					digital_wallet: Platform.OS === 'ios' ? 'apple' : 'google',
 					amount: inputCurrency.value
 				}
 				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
@@ -193,10 +192,15 @@ export default function TabOneScreen() {
 				}
 				// card exists
 				else {
+					const fees = await calculateFees({
+						type: card.data.type,
+						amount: stripCommas(transaction.amount)
+					})
 					router.push({
 						pathname: '/(pages)/confirmTransaction',
 						params: {
-							transaction: JSON.stringify(transaction)
+							transaction: JSON.stringify(transaction),
+							fees: JSON.stringify(fees)
 						}
 					})
 				}
