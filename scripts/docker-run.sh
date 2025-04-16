@@ -4,18 +4,23 @@ ENV_FILE=""
 ENV_NAME=""
 
 # set environment file based on argument
-if [ "$1" == "production" ]; then
-  ENV_FILE="./.env.production"
-  ENV_NAME="production"
-  echo "Using production environment file: $ENV_FILE"
+if [ "$1" == "prod" ]; then
+  ENV_FILE="./.env.prod"
+  ENV_NAME="prod"
+  echo "Using prod environment file: $ENV_FILE"
 
-elif [ "$1" == "development" ]; then
-  ENV_FILE="./.env.development"
-  ENV_NAME="development"
-  echo "Using development environment file: $ENV_FILE"
+elif [ "$1" == "dev" ]; then
+  ENV_FILE="./.env.dev"
+  ENV_NAME="dev"
+  echo "Using dev environment file: $ENV_FILE"
+
+elif [ "$1" == "test" ]; then
+  ENV_FILE="./.env.test"
+  ENV_NAME="test"
+  echo "Using test environment file: $ENV_FILE"
 
 else
-  echo "Unknown environment: $1. Please use 'development' or 'production'."
+  echo "Unknown environment: $1. Please use 'dev', 'test' or 'prod'."
   exit 1
 fi
 

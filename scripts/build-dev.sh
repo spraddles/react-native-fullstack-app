@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ -f .env.development ]; then
-    source .env.development
+if [ -f .env.dev ]; then
+    source .env.dev
 else
-    echo "Error: .env.development file not found"
+    echo "Error: .env.dev file not found"
     exit 1
 fi
 

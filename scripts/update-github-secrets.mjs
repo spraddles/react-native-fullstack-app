@@ -39,7 +39,7 @@ async function encryptSecret(secret, key) {
 
 async function run() {
 	const env = process.argv[2]
-	const validEnvironments = ['development', 'test', 'production']
+	const validEnvironments = ['dev', 'test', 'prod']
 
 	if (!validEnvironments.includes(env)) {
 		console.error(`Error: Environment must be one of: ${validEnvironments.join(', ')}`)
