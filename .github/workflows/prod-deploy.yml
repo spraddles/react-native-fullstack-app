@@ -4,7 +4,7 @@ name: Deploy to Prod environment
 #   push:
 #     branches:
 #       - production
- TEST
+
 jobs:
   deploy:
     permissions:
