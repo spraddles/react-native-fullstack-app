@@ -19,7 +19,11 @@ const secrets = [
 	'CLOUDFLARE_EMAIL',
 	// express
 	'EXPRESS_SERVICE_NAME',
-	'PORT'
+	'PORT',
+	// starkbank
+	'STARKBANK_ENVIRONMENT',
+	'STARKBANK_PROJECT_ID',
+	'STARKBANK_PRIVATE_KEY_BASE64'
 ]
 
 async function encryptSecret(secret, key) {
@@ -35,8 +39,10 @@ async function encryptSecret(secret, key) {
 
 async function run() {
 	const env = process.argv[2]
-	if (!['production', 'development'].includes(env)) {
-		console.error('Usage: node update-secrets.js [production|development]')
+	const validEnvironments = ['development', 'test', 'production']
+
+	if (!validEnvironments.includes(env)) {
+		console.error(`Error: Environment must be one of: ${validEnvironments.join(', ')}`)
 		process.exit(1)
 	}
 
@@ -63,12 +69,16 @@ async function run() {
 	)
 	const { key, key_id } = await keyResponse.json()
 
-	// Create/update secrets
-	for (const secretName of secrets) {
-		const secretValue = envConfig[secretName]
+	// Create/update secrets with environment suffix
+	for (const baseSecretName of secrets) {
+		const secretValue = envConfig[baseSecretName]
 		if (!secretValue) {
 			continue
 		}
+
+		// Create the environment-specific secret name
+		const envSuffix = env.toUpperCase()
+		const secretName = `${baseSecretName}_${envSuffix}`
 
 		try {
 			const encrypted = await encryptSecret(secretValue, key)
@@ -111,9 +121,14 @@ async function run() {
 	)
 	const existingSecrets = await existingResponse.json()
 
-	// Delete secrets not in array
+	// Generate the list of expected secret names with environment suffix
+	const expectedSecretNames = secrets.map((base) => `${base}_${env.toUpperCase()}`)
+
+	// Delete secrets not in expected list
 	for (const secret of existingSecrets.secrets) {
-		if (!secrets.includes(secret.name)) {
+		// Only delete secrets that match the current environment's suffix pattern
+		const envSuffix = `_${env.toUpperCase()}`
+		if (secret.name.endsWith(envSuffix) && !expectedSecretNames.includes(secret.name)) {
 			const deleteResponse = await fetch(
 				`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/secrets/${secret.name}`,
 				{

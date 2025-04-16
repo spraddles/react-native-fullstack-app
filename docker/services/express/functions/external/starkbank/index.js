@@ -7,8 +7,8 @@ const logging = false
 
 // init
 let user = new starkbank.Project({
-	environment: 'sandbox',
-	id: '4801747562266624',
+	environment: process.env.STARKBANK_ENVIRONMENT,
+	id: process.env.STARKBANK_PROJECT_ID,
 	privateKey: base64ToPem(process.env.STARKBANK_PRIVATE_KEY_BASE64, 'private')
 })
 starkbank.user = user

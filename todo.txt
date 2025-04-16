@@ -2,62 +2,20 @@ To do:
 
 
 
+EAS:
+https://www.youtube.com/watch?v=VZL_e0cEwo8
 
 
 
-
--api for transaction (pix)
--api for transaction (charge card): partially complete, waiting for celcoin contract
-
--setup prod environment & make a deployment
-> 3 environments: local, dev, prod
-
-
-
-Local:
--ios simulator
--docker
--supabase (local)
-
-Dev:
--testflight (limited users)
--GCP (dev)
--supabase (dev)
-
-Prod:
--app store / play store (US/BR)
--GCP (prod)
--supabase (prod)
+update terms link > user agreement
+add RLS to card_transactions table
+remove merchant_id ENV
 
 
 
 
 
 
-
-Bugs:
--security: run docker local & check for env files etc.
--security: remove debug logs in prod (just run express not debug)
--security: supabase: only users to read/write their own data, not others (RLS / row level security)
--security: supabase: OTP expiry exceeds recommended threshold
--security: docker: USER appuser - into dockerfile (no root access)
--security: docker: add dockerignore: .env,.env.*,*.log,.git,.gitignore,node_modules, npm-debug.log, config,*.yml, secrets.yml
--security: add custom headers, validation check on server side so can block non-matching headers
--security: add security headers, helmet npm helmetjs.github.io
--security: rate limiting
--security: storing sensitive fields should be encrypted or hashed (cpf, passport, etc), key management?
--random [AuthApiError: Invalid Refresh Token: Refresh Token Not Found], solve with AsyncStorage.clear()
--display error toast message when not connected to the internet
--handle transaction errors (in transactionMethods) so users cant continue if db field write/update is incorrect (see editProfile + newUserEditProfile)
--add profile loading status (like transaction history)
--email login + signup: validate fields & catch blank fields before hitting supabase api
--forgot password (for email method)
--fix styling for pix method tabs, make responsive right now its fixed width
--add canMakePayment function to catch potential device payment issues
--add canLoginVia (google, apple, etc.) function to catch potential device login issues
--collect errors & log them online
--applepay: return real errors from payment errors (for setTransactionStatus)
--circular dependency issue: store/base.js -> composables/api.ts -> composables/auth.ts -> store/base.js
 
 
 Wishlist:

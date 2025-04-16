@@ -123,31 +123,37 @@ IP_V6_LIST_FORMATTED=$(echo "$IP_V6_LIST" | tr '\n' ',') \
 IP_V6_LIST_FORMATTED=${IP_V6_LIST_FORMATTED%,}
 
 gcloud compute security-policies create allow-cloudflare-ranges \
+    --project=$PROJECT_ID \
     --description "Allow Cloudflare IP ranges"
 
 gcloud compute security-policies rules create 1000 \
+    --project=$PROJECT_ID \
     --security-policy="allow-cloudflare-ranges" \
     --description="Allow Cloudflare IPv4 ranges" \
     --src-ip-ranges="$IP_V4_LIST_FORMATTED_1" \
     --action="allow"
 
 gcloud compute security-policies rules create 2000 \
+    --project=$PROJECT_ID \
     --security-policy="allow-cloudflare-ranges" \
     --description="Allow Cloudflare IPv4 ranges" \
     --src-ip-ranges="$IP_V4_LIST_FORMATTED_2" \
     --action="allow"
 
 gcloud compute security-policies rules create 3000 \
+    --project=$PROJECT_ID \
     --security-policy="allow-cloudflare-ranges" \
     --description="Allow Cloudflare IPv6 ranges" \
     --src-ip-ranges="$IP_V6_LIST_FORMATTED" \
     --action="allow"
 
 gcloud compute security-policies rules update 2147483647 \
+    --project=$PROJECT_ID \
     --security-policy="allow-cloudflare-ranges" \
     --action="deny-404"
 
 gcloud compute backend-services update lb-backend \
+    --project=$PROJECT_ID \
     --security-policy="allow-cloudflare-ranges" \
     --global
 
@@ -247,6 +253,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 # artifact: add IAM policy
 gcloud artifacts repositories add-iam-policy-binding $ARTIFACT_REPO_NAME \
+    --project=$PROJECT_ID \
     --location=$REGION \
     --member="serviceAccount:$SERVICE_ACCOUNT_FULL" \
     --role="roles/artifactregistry.writer"
