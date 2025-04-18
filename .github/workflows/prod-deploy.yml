@@ -22,9 +22,9 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           token_format: 'access_token'
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_POOL_PROVIDER }}
+          project_id: ${{ secrets.GCP_PROJECT_ID_PRODUCTION }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_PRODUCTION }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_POOL_PROVIDER_PRODUCTION }}
 
       # docker auth
       - name: Docker Auth
@@ -33,23 +33,23 @@ jobs:
         with:
           username: 'oauth2accesstoken'
           password: '${{ steps.auth.outputs.access_token }}'
-          registry: '${{ secrets.GCP_REGION }}-docker.pkg.dev'
+          registry: '${{ secrets.GCP_REGION_PRODUCTION }}-docker.pkg.dev'
 
       # build app image
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.EXPRESS_SERVICE_NAME }} -f ./docker/services/express/dockerfile .
+          docker build -t ${{ secrets.EXPRESS_SERVICE_NAME_PRODUCTION }} -f ./docker/services/express/dockerfile .
 
       # tag app image
       - name: Tag Docker image
         run: |
-          IMAGE_ID=$(docker images -q ${{ secrets.EXPRESS_SERVICE_NAME }})
-          docker tag $IMAGE_ID ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/${{ secrets.EXPRESS_SERVICE_NAME }}:${{ github.sha }}
+          IMAGE_ID=$(docker images -q ${{ secrets.EXPRESS_SERVICE_NAME_PRODUCTION }})
+          docker tag $IMAGE_ID ${{ secrets.GCP_REGION_PRODUCTION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID_PRODUCTION }}/${{ secrets.GCP_ARTIFACT_REPO_NAME_PRODUCTION }}/${{ secrets.EXPRESS_SERVICE_NAME_PRODUCTION }}:${{ github.sha }}
 
       # push app image
       - name: Push Docker app image
         run: |
-          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/${{ secrets.EXPRESS_SERVICE_NAME }}:${{ github.sha }}
+          docker push ${{ secrets.GCP_REGIO_PRODUCTION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID_PRODUCTION }}/${{ secrets.GCP_ARTIFACT_REPO_NAME_PRODUCTION }}/${{ secrets.EXPRESS_SERVICE_NAME_PRODUCTION }}:${{ github.sha }}
 
       # get all secrets
       - name: Get secrets from GCP
@@ -60,11 +60,11 @@ jobs:
       # cloud run deploy app
       - name: Cloud run deploy app service
         run: |
-          gcloud beta run deploy ${{ secrets.EXPRESS_SERVICE_NAME }} \
-            --image=${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO_NAME }}/${{ secrets.EXPRESS_SERVICE_NAME }}:${{ github.sha }} \
+          gcloud beta run deploy ${{ secrets.EXPRESS_SERVICE_NAME_PRODUCTION }} \
+            --image=${{ secrets.GCP_REGION_PRODUCTION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID_PRODUCTION }}/${{ secrets.GCP_ARTIFACT_REPO_NAME_PRODUCTION }}/${{ secrets.EXPRESS_SERVICE_NAME_PRODUCTION }}:${{ github.sha }} \
             --set-secrets=${{ env.ALL_SECRETS_STRING }} \
             --platform=managed \
-            --region=${{ secrets.GCP_REGION }} \
+            --region=${{ secrets.GCP_REGION_PRODUCTION }} \
             --min-instances=1 \
             --max-instances=3 \
             --cpu=1 \
@@ -72,30 +72,30 @@ jobs:
             --cpu-boost \
             --ingress=internal-and-cloud-load-balancing \
             --no-default-url \
-            --service-account=${{ secrets.GCP_SERVICE_ACCOUNT }} \
-            --project=${{ secrets.GCP_PROJECT_ID }}
+            --service-account=${{ secrets.GCP_SERVICE_ACCOUNT_PRODUCTION }} \
+            --project=${{ secrets.GCP_PROJECT_ID_PRODUCTION }}
 
       # let service account invoke service
       - name: Add service account permissions
         run: |
-          gcloud run services add-iam-policy-binding ${{ secrets.EXPRESS_SERVICE_NAME }} \
-            --member="serviceAccount:${{ secrets.GCP_SERVICE_ACCOUNT }}" \
+          gcloud run services add-iam-policy-binding ${{ secrets.EXPRESS_SERVICE_NAME_PRODUCTION }} \
+            --member="serviceAccount:${{ secrets.GCP_SERVICE_ACCOUNT_PRODUCTION }}" \
             --role="roles/run.invoker" \
-            --region=${{ secrets.GCP_REGION }} \
-            --project=${{ secrets.GCP_PROJECT_ID }}
+            --region=${{ secrets.GCP_REGION_PRODUCTION }} \
+            --project=${{ secrets.GCP_PROJECT_ID_PRODUCTION }}
 
-          gcloud run services add-iam-policy-binding ${{ secrets.EXPRESS_SERVICE_NAME }} \
+          gcloud run services add-iam-policy-binding ${{ secrets.EXPRESS_SERVICE_NAME_PRODUCTION }} \
             --member="allUsers" \
             --role="roles/run.invoker" \
-            --region=${{ secrets.GCP_REGION }} \
-            --project=${{ secrets.GCP_PROJECT_ID }}
+            --region=${{ secrets.GCP_REGION_PRODUCTION }} \
+            --project=${{ secrets.GCP_PROJECT_ID_PRODUCTION }}
 
       # remove old services / only keep 3 previous
       - name: Remove old cloud run services
         run: |
           REVISIONS=$(gcloud run revisions list \
-            --service=${{ secrets.EXPRESS_SERVICE_NAME }} \
-            --region=${{ secrets.GCP_REGION }} \
+            --service=${{ secrets.EXPRESS_SERVICE_NAME_PRODUCTION }} \
+            --region=${{ secrets.GCP_REGION_PRODUCTION }} \
             --format="value(metadata.name)" \
             --sort-by=~metadata.creationTimestamp)
           COUNT=0
@@ -103,7 +103,7 @@ jobs:
           COUNT=$((COUNT + 1))
           if [ $COUNT -gt 3 ]; then
             gcloud run revisions delete $REVISION \
-              --region=${{ secrets.GCP_REGION }} \
+              --region=${{ secrets.GCP_REGION_PRODUCTION }} \
               --quiet
           fi
           done
@@ -112,10 +112,10 @@ jobs:
       - name: Purge Cloudflare cache
         run: |
           if ! response=$(curl -s -X POST \
-            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID_PRODUCTION }}/purge_cache" \
             -H "Content-Type: application/json" \
-            -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_EMAIL }}" \
-            -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
+            -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_EMAIL_PRODUCTION }}" \
+            -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY_PRODUCTION }}" \
             --data '{"purge_everything":true}'); then
             echo "Curl command failed"
             exit 1
