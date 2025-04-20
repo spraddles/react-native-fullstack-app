@@ -13,7 +13,7 @@
                 "simulator": false
             },
             "environment": "preview",
-            "prebuildCommand": "./scripts/expo-prebuild.sh",
+            "prebuildCommand": "prebuild --clean",
             "autoIncrement": true
         }
     }
