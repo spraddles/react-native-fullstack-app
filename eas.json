@@ -13,7 +13,7 @@
                 "simulator": false
             },
             "environment": "preview",
-            "prebuildCommand": "prebuild --clean",
+            "prebuildCommand": "npx expo prebuild --clean",
             "autoIncrement": true
         }
     }
