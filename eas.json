@@ -13,7 +13,7 @@
                 "simulator": false
             },
             "environment": "preview",
-            "prebuildCommand": "bash -c \"if [ -f ./scripts/expo-prebuild.sh ]; then ./scripts/expo-prebuild.sh; fi\"",
+            "prebuildCommand": "./scripts/expo-prebuild.sh",
             "autoIncrement": true
         }
     }
