@@ -16,4 +16,4 @@ if [ -d "./android" ]; then
 fi
 
 echo "Running Expo prebuild..."
-NODE_ENV=development npx expo prebuild
+NODE_ENV=test npx expo prebuild --clean

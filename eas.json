@@ -1,21 +1,20 @@
 {
-  "cli": {
-    "version": ">= 14.4.1",
-    "appVersionSource": "remote"
-  },
-  "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
+    "cli": {
+        "version": ">= 16.3.2",
+        "appVersionSource": "remote",
+        "requireCommit": true
     },
-    "preview": {
-      "distribution": "internal"
-    },
-    "production": {
-      "autoIncrement": true
+    "build": {
+        "preview": {
+            "channel": "preview",
+            "distribution": "internal",
+            "ios": {
+                "credentialsSource": "local",
+                "resourceClass": "default",
+                "simulator": false
+            },
+            "environment": "preview",
+            "autoIncrement": true
+        }
     }
-  },
-  "submit": {
-    "production": {}
-  }
 }

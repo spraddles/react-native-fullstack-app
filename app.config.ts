@@ -2,10 +2,13 @@ import { ExpoConfig, ConfigContext } from 'expo/config'
 import dotenv from 'dotenv'
 
 if (process.env.NODE_ENV === 'production') {
-	dotenv.config({ path: '.env.production' })
+	dotenv.config({ path: '.env.prod' })
 }
 if (process.env.NODE_ENV === 'development') {
-	dotenv.config({ path: '.env.development' })
+	dotenv.config({ path: '.env.dev' })
+}
+if (process.env.NODE_ENV === 'test') {
+	dotenv.config({ path: '.env.test' })
 }
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -22,6 +25,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		supportsTablet: true,
 		bundleIdentifier: process.env.EXPO_BUNDLE_ID,
 		infoPlist: {
+			ITSAppUsesNonExemptEncryption: false,
 			merchant_id: process.env.MERCHANT_ID,
 			CFBundleURLTypes: [
 				{
@@ -49,6 +53,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	},
 	plugins: [
 		'expo-router',
+		'expo-font',
 		// 'expo-apple-authentication',
 		[
 			'expo-splash-screen',
@@ -65,7 +70,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		[
 			'@react-native-google-signin/google-signin',
 			{
-				iosUrlScheme: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_URL_SCHEME
+				iosUrlScheme:
+					'com.googleusercontent.apps.392001664057-17c8g5m4kga63ol8a8q441s77v7q84i1'
 			}
 		]
 	],
