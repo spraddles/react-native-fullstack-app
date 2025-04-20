@@ -9,7 +9,6 @@
             "channel": "preview",
             "distribution": "internal",
             "ios": {
-                "credentialsSource": "local",
                 "resourceClass": "default",
                 "simulator": false
             },
