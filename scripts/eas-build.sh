@@ -38,6 +38,13 @@ else
     echo "No yarn.lock file to remove, continuing..."
 fi
 
+# install pods
+cd ios
+pod install
+
+# Return to root directory
+cd ..
+
 # set required env file vars for 'npx eas' command
 # note: this is different to the vars that are uploaded!
 source "$ENV_FILE"
