@@ -44,7 +44,7 @@ source "$ENV_FILE"
 
 if [ "$2" = "local" ]; then
     echo "Build will be on local..."
-    NODE_ENV=$NODE_ENV EXPO_TOKEN=$EXPO_TOKEN npx eas-cli build --profile $EAS_ENVIRONMENT --platform ios --clear-cache --local
+    NODE_ENV=$NODE_ENV EXPO_TOKEN=$EXPO_TOKEN npx eas build --profile $EAS_ENVIRONMENT --platform ios --clear-cache --local
 else
-    NODE_ENV=$NODE_ENV EXPO_TOKEN=$EXPO_TOKEN npx eas-cli build --profile $EAS_ENVIRONMENT --platform ios --clear-cache
+    NODE_ENV=$NODE_ENV EXPO_TOKEN=$EXPO_TOKEN npx eas build --profile $EAS_ENVIRONMENT --platform ios --clear-cache
 fi
