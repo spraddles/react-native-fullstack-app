@@ -13,19 +13,18 @@
         "resourceClass": "default",
         "simulator": true
       },
-      "env": {},
       "environment": "development",
       "channel": "dev"
     },
     "preview": {
       "channel": "preview",
-      "distribution": "internal",
+      "distribution": "store",
       "ios": {
         "resourceClass": "default",
         "simulator": false
       },
       "environment": "preview",
-      "prebuildCommand": "npx expo prebuild --clean",
+      // "prebuildCommand": "npx expo prebuild --clean",
       "autoIncrement": true
     },
     "production": {

@@ -1,15 +1,22 @@
 import { ExpoConfig, ConfigContext } from "expo/config";
 import dotenv from "dotenv";
 
-if (process.env.NODE_ENV === "production") {
-  dotenv.config({ path: ".env.prod" });
-}
-if (process.env.NODE_ENV === "development") {
-  dotenv.config({ path: ".env.dev" });
-}
-if (process.env.NODE_ENV === "test") {
-  dotenv.config({ path: ".env.test" });
-}
+// if (process.env.NODE_ENV === "production") {
+//   dotenv.config({ path: ".env.prod" });
+// }
+// if (process.env.NODE_ENV === "development") {
+//   dotenv.config({ path: ".env.dev" });
+// }
+// if (process.env.NODE_ENV === "test") {
+//   dotenv.config({ path: ".env.test" });
+// }
+// if (process.env.NODE_ENV === "preview") {
+//   dotenv.config({ path: ".env.preview" });
+// }
+
+dotenv.config({ path: ".env.preview" });
+
+console.log("env-file", process.env);
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -80,7 +87,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   owner: "brett.spradbury-org",
   extra: {
     eas: {
-      projectId: process.env.EXPO_PROJECT_ID, // "projectId": "a7a8462f-90e7-4306-914e-84e6cdf70246"
+      // projectId: process.env.EXPO_PROJECT_ID,
+      projectId: "5639e916-59f3-45ea-9138-a1b6ec93bef4",
     },
   },
 });
