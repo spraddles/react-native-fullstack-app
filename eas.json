@@ -1,20 +1,41 @@
 {
-    "cli": {
-        "version": ">= 16.3.1",
-        "appVersionSource": "remote",
-        "requireCommit": true
+  "cli": {
+    "version": ">= 16.3.1",
+    "appVersionSource": "remote",
+    "requireCommit": true
+  },
+  "build": {
+    "dev": {
+      "distribution": "internal",
+      "developmentClient": true,
+      "android": {},
+      "ios": {
+        "resourceClass": "default",
+        "simulator": true
+      },
+      "env": {},
+      "environment": "development",
+      "channel": "dev"
     },
-    "build": {
-        "preview": {
-            "channel": "preview",
-            "distribution": "internal",
-            "ios": {
-                "resourceClass": "default",
-                "simulator": false
-            },
-            "environment": "preview",
-            "prebuildCommand": "npx expo prebuild --clean",
-            "autoIncrement": true
-        }
+    "preview": {
+      "channel": "preview",
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "default",
+        "simulator": false
+      },
+      "environment": "preview",
+      "prebuildCommand": "npx expo prebuild --clean",
+      "autoIncrement": true
+    },
+    "production": {
+      "channel": "production",
+      "distribution": "store",
+      "ios": {
+        "resourceClass": "default",
+        "simulator": false
+      },
+      "environment": "production"
     }
+  }
 }
