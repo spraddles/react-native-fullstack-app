@@ -13,6 +13,7 @@ if (process.env.NODE_ENV === 'test') {
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
 	...config,
+	owner: process.env.EXPO_OWNER,
 	name: process.env.EXPO_PUBLIC_APP_NAME,
 	slug: process.env.EXPO_PROJECT_SLUG,
 	version: '1.0.0',
