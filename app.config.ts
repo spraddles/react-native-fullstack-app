@@ -31,7 +31,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     // usesAppleSignIn: true,
     supportsTablet: true,
     bundleIdentifier: process.env.EXPO_BUNDLE_ID,
-    buildNumber: "1.0.0",
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
       merchant_id: process.env.MERCHANT_ID,
