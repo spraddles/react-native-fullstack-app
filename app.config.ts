@@ -4,17 +4,16 @@ import dotenv from "dotenv";
 // if (process.env.NODE_ENV === "production") {
 //   dotenv.config({ path: ".env.prod" });
 // }
-// if (process.env.NODE_ENV === "development") {
-//   dotenv.config({ path: ".env.dev" });
-// }
+if (process.env.NODE_ENV === "development") {
+  // dotenv.config({ path: ".env.dev" });
+  dotenv.config({ path: ".env.preview" });
+}
 // if (process.env.NODE_ENV === "test") {
 //   dotenv.config({ path: ".env.test" });
 // }
-// if (process.env.NODE_ENV === "preview") {
-//   dotenv.config({ path: ".env.preview" });
-// }
-
-dotenv.config({ path: ".env.preview" });
+if (process.env.NODE_ENV === "preview") {
+  dotenv.config({ path: ".env.preview" });
+}
 
 console.log("env-file", process.env);
 

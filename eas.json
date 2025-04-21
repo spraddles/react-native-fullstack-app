@@ -1,8 +1,8 @@
 {
   "cli": {
     "version": ">= 16.3.1",
-    "appVersionSource": "remote",
-    "requireCommit": true
+    "appVersionSource": "remote"
+    // "requireCommit": true
   },
   "build": {
     "dev": {
@@ -13,7 +13,7 @@
         "resourceClass": "default",
         "simulator": true
       },
-      "environment": "development",
+      "environment": "preview",
       "channel": "dev"
     },
     "preview": {
