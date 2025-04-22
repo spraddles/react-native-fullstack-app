@@ -4,6 +4,7 @@
     "appVersionSource": "remote"
     // "requireCommit": true
   },
+
   "build": {
     "dev": {
       "distribution": "internal",
@@ -13,8 +14,8 @@
         "resourceClass": "default",
         "simulator": true
       },
-      "environment": "preview",
-      "channel": "dev"
+      "environment": "development", // LOCAL and for testing purposes
+      "channel": "dev" // eas OTA updates channel
     },
     "preview": {
       "channel": "preview",
@@ -23,18 +24,18 @@
         "resourceClass": "default",
         "simulator": false
       },
-      "environment": "preview",
+      "environment": "preview", // Testflight -> preview environment
       // "prebuildCommand": "npx expo prebuild --clean",
       "autoIncrement": true
     },
     "production": {
-      "channel": "production",
       "distribution": "store",
       "ios": {
         "resourceClass": "default",
         "simulator": false
       },
-      "environment": "production"
+      "environment": "production", // App store -> production environment
+      "channel": "production"
     }
   }
 }
