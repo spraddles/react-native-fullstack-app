@@ -1,34 +1,61 @@
 #!/bin/bash
 
-# check environment parameter was provided
-if [ -z "$1" ]; then
-  echo "Error: Environment parameter required (preview or production)"
-  echo "Usage: sh ./scripts/eas-push-secrets.sh [preview|production]"
-  exit 1
-fi
+# NOTE: the mapping between Test (env) & Preview (EAS) below
 
-# check environment parameter is either "preview" or "production"
-if [ "$1" != "preview" ] && [ "$1" != "production" ]; then
-  echo "Error: Environment must be either 'preview' or 'production'"
-  echo "Usage: sh ./scripts/eas-push-secrets.sh [preview|production]"
-  exit 1
-fi
+ENV_FILE_PATH=""
+EAS_ENVIRONMENT=""
 
-# store environment parameter
-EAS_ENVIRONMENT="$1"
-echo "Using environment: $EAS_ENVIRONMENT"
+# set environment file based on argument
+if [ "$1" == "local" ]; then
+  ENV_FILE_PATH=".env.local"
+  EAS_ENVIRONMENT="development"
+  echo "Using local environment file: local (but development on EAS)"
 
-ENV_FILE=""
-if [ "$EAS_ENVIRONMENT" == "preview" ]; then
-    ENV_FILE=".env.test"
-    NODE_ENV="test"
-elif [ "$EAS_ENVIRONMENT" == "production" ]; then
-    ENV_FILE=".env.prod"
-    NODE_ENV="production"
+elif [ "$1" == "development" ]; then
+  ENV_FILE_PATH=".env.test"
+  EAS_ENVIRONMENT="development"
+  echo "Using local environment file: test (but development on EAS)"
+
+elif [ "$1" == "preview" ]; then
+  ENV_FILE_PATH=".env.test"
+  EAS_ENVIRONMENT="preview"
+  echo "Using local environment file: test (but preview on EAS)"
+
+elif [ "$1" == "production" ]; then
+  ENV_FILE_PATH=".env.prod"
+  EAS_ENVIRONMENT="production"
+  echo "Using prod environment file: production"
+
 else
-    echo "Error: Unknown environment '$EAS_ENVIRONMENT'. Please use 'preview' or 'production'"
-    exit 1
+  echo "Unknown environment: '$1'. Please use one of: local, development, preview, or production."
+  exit 1
 fi
+
+# Check if environment file exists
+if [ ! -f "$ENV_FILE_PATH" ]; then
+  echo "Error: Environment file $ENV_FILE_PATH does not exist."
+  exit 1
+fi
+
+# set required env file vars for 'npx eas' command
+# note: this is different to the vars that are uploaded!
+source "$ENV_FILE_PATH"
+
+# Export ENV_FILE_PATH to make it available to other files
+export ENV_FILE="$ENV_FILE"
+
+# Check for required variables
+if [ -z "$EXPO_PROJECT_ID" ]; then
+  echo "Error: Required variable EXPO_PROJECT_ID is not set in $ENV_FILE_PATH."
+  exit 1
+fi
+
+# export so other files can use this var (like app.config.ts)
+export ENV_FILE="$ENV_FILE"
+
+# Set EAS project
+echo "EAS project: $EXPO_PROJECT_SLUG"
+npx eas project:init --id $EXPO_PROJECT_ID
 
 # Check if yarn.lock exists before trying to remove it (only keep package-json.lock)
 if [ -f yarn.lock ]; then
@@ -38,13 +65,17 @@ else
     echo "No yarn.lock file to remove, continuing..."
 fi
 
-# set required env file vars for 'npx eas' command
-# note: this is different to the vars that are uploaded!
-source "$ENV_FILE"
-
-if [ "$2" = "local" ]; then
+# Build command with appropriate environmental awareness
+if [ "$1" = "local" ]; then
     echo "Build will be on local..."
-    NODE_ENV=$NODE_ENV EXPO_TOKEN=$EXPO_TOKEN npx eas build --profile $EAS_ENVIRONMENT --platform ios --clear-cache --local
-else
-    NODE_ENV=$NODE_ENV EXPO_TOKEN=$EXPO_TOKEN npx eas build --profile $EAS_ENVIRONMENT --platform ios --clear-cache
+    # Use the variables directly from the sourced environment
+    npx eas build --profile $EAS_ENVIRONMENT --platform ios --clear-cache --local
+
+# Check for required variables before executing remote builds
+elif [ -z "$EXPO_TOKEN" ]; then
+    echo "Error: Required variable EXPO_TOKEN is not set in $ENV_FILE_PATH."
+    exit 1
+else 
+    echo "Running remote build..."
+    npx eas build --profile $EAS_ENVIRONMENT --platform ios --clear-cache
 fi

@@ -37,15 +37,4 @@ else
   exit 1
 fi
 
-# remove existing container
-docker stop node-express 2>/dev/null
-docker rm node-express 2>/dev/null
-
-# start new container
-docker run -d \
-    --name node-express \
-    -v ${PWD}/docker/services/express:/app \
-    -v express_node_modules:/app/node_modules \
-    --env-file "$ABSOLUTE_ENV_FILE_PATH" \
-    -p 0:${PORT} \
-    node-express:latest
+npx expo-doctor

@@ -12,6 +12,7 @@ web-build/
 expo-env.d.ts
 *.swp
 credentials.json
+*.ipa
 
 # supabase
 /supabase/.temp/*

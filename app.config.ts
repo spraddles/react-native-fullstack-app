@@ -1,14 +1,21 @@
 import { ExpoConfig, ConfigContext } from 'expo/config'
+import { isEasCi } from './composables/is-ci.js'
 import dotenv from 'dotenv'
 
-if (process.env.NODE_ENV === 'production') {
-	dotenv.config({ path: '.env.prod' })
-}
-if (process.env.NODE_ENV === 'development') {
-	dotenv.config({ path: '.env.dev' })
-}
-if (process.env.NODE_ENV === 'test') {
-	dotenv.config({ path: '.env.test' })
+dotenv.config({ path: '.env.local' })
+
+// check if ENV is for CI build
+if (!isEasCi()) {
+	// now running on local
+	if (process.env.ENV_FILE === 'local') {
+		dotenv.config({ path: '.env.local' })
+	}
+	if (process.env.ENV_FILE === 'test') {
+		dotenv.config({ path: '.env.test' })
+	}
+	if (process.env.ENV_FILE === 'production') {
+		dotenv.config({ path: '.env.prod' })
+	}
 }
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -24,7 +31,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	ios: {
 		// usesAppleSignIn: true,
 		supportsTablet: true,
-		bundleIdentifier: process.env.EXPO_BUNDLE_ID,
+		bundleIdentifier: process.env.EXPO_PUBLIC_BUNDLE_ID,
 		infoPlist: {
 			ITSAppUsesNonExemptEncryption: false,
 			merchant_id: process.env.MERCHANT_ID,
@@ -45,7 +52,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 			foregroundImage: './assets/images/adaptive-icon.png',
 			backgroundColor: '#ffffff'
 		},
-		package: process.env.EXPO_BUNDLE_ID
+		package: process.env.EXPO_PUBLIC_BUNDLE_ID
 	},
 	web: {
 		bundler: 'metro',

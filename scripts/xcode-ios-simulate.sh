@@ -1,16 +1,18 @@
 #!/bin/bash
 
-if [ -f .env.development ]; then
-    source .env.development
+if [ -f .env.local ]; then
+    source .env.local
 else
-    echo "Error: .env.development file not found"
+    echo "Error: .env.local file not found"
     exit 1
 fi
 
 if [ -z "$EXPO_PUBLIC_APP_NAME" ]; then
-    echo "Error: EXPO_PUBLIC_APP_NAME not found in .env.development file"
+    echo "Error: EXPO_PUBLIC_APP_NAME not found in .env.local file"
     exit 1
 fi
+
+export NODE_ENV=development
 
 echo "Opening simulator..."
 open -a Simulator
