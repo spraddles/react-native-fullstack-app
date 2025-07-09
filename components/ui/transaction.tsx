@@ -1,8 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-import { formatCurrency, formatCPF, formatPhone } from '@/composables/inputFormatter'
-import { Pill } from '@/components/ui/pill'
+import { formatCurrency } from '@/composables/inputFormatter'
 
 type TransactionProps = {
 	amount: number
@@ -26,52 +25,12 @@ export function Transaction({
 	})
 	const time = new Date(created_at).toLocaleTimeString()
 
-	const words = {
-		cpf: {
-			lower: 'cpf',
-			normal: 'CPF'
-		},
-		phone: {
-			lower: 'phone',
-			normal: 'Phone'
-		},
-		email: {
-			lower: 'email',
-			normal: 'Email'
-		},
-		key: {
-			lower: 'key',
-			normal: 'Key'
-		}
-	}
-
-	const formatPixMethodValue = (method: string, value: any) => {
-		if (method === 'cpf') {
-			return formatCPF(value)
-		}
-		if (method === 'phone') {
-			return formatPhone(value)
-		}
-		return value
-	}
-
 	return (
 		<View style={styles.container}>
 			<View style={styles.row}>
 				<Text style={styles.receiver}>{receiver}</Text>
 				<Text style={styles.amount}>R$ {formatCurrency(Number(amount).toFixed(2))}</Text>
 			</View>
-
-			<View style={styles.pixInfo}>
-				<Text style={styles.method}>Pix key: </Text>
-				<Text style={styles.value}>
-					{formatPixMethodValue(pix_method, pix_method_value)}
-				</Text>
-				<View>
-					<Pill text={words[pix_method].lower} />
-				</View>
-			</View>
-
 			<Text style={styles.date}>{date}</Text>
 			<Text style={styles.time}>{time}</Text>
 		</View>
@@ -81,8 +40,6 @@ export function Transaction({
 const styles = StyleSheet.create({
 	container: {
 		padding: 15,
-		paddingTop: 15,
-		paddingBottom: 15,
 		backgroundColor: '#fff',
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc'
@@ -101,16 +58,6 @@ const styles = StyleSheet.create({
 	receiver: {
 		fontSize: 16,
 		marginBottom: 5
-	},
-	pixInfo: {
-		flexDirection: 'row',
-		gap: 0
-	},
-	method: {
-		color: '#666'
-	},
-	value: {
-		color: '#666'
 	},
 	time: {
 		color: '#999',

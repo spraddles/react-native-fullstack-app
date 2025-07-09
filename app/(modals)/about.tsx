@@ -25,12 +25,12 @@ export default function ModalScreen() {
 
 	return (
 		<View style={styles.container}>
-			<Image style={styles.image} source={require('../../assets/images/logo.png')} />
+			<Image style={styles.image} source={require('../../assets/images/logo-light.png')} />
 			<Text style={styles.body}>
 				{process.env.EXPO_PUBLIC_APP_NAME} ® is a simple but powerful app that allows
 				instant funds transfers to more than 200 countries around the world. Visit our
 				website for more information about
-				<ExternalLink style={styles.helpLink} href="https://policies.google.com/privacy">
+				<ExternalLink style={styles.helpLink} href="https://gringopay.app/user-agreement">
 					<Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
 						{' '}
 						our legal{' '}
@@ -42,7 +42,7 @@ export default function ModalScreen() {
 				Copyright © 2000–2024 {process.env.EXPO_PUBLIC_APP_NAME} Inc. All rights reserved.
 			</Text>
 			<Text style={styles.versionText}>Version 1.02.367B </Text>
-			<Button text="Contact support" fill={false} onPress={handleClick} />
+			<Button text="Contact support" color={'black'} fill={false} onPress={handleClick} />
 			<Text style={styles.buttonSubText}>
 				or email: {process.env.EXPO_PUBLIC_SUPPORT_EMAIL}
 			</Text>

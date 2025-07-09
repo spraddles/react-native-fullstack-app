@@ -1,5 +1,5 @@
 {
-    "name": "globalpay",
+    "name": "gringopay",
     "main": "expo-router/entry",
     "license": "private",
     "version": "1.0.0",
@@ -23,7 +23,6 @@
         "eas:secrets:update:test": "sh ./scripts/eas-push-secrets.sh test",
         "eas:secrets:update:prod": "sh ./scripts/eas-push-secrets.sh production",
         "eas:build:local": "sh ./scripts/eas-build.sh local",
-        "eas:build:development": "sh ./scripts/eas-build.sh development",
         "eas:build:testflight": "sh ./scripts/eas-build.sh preview",
         "eas:build:production": "sh ./scripts/eas-build.sh production",
         "github:test:secrets:update": "node ./scripts/github-push-secrets.mjs test",

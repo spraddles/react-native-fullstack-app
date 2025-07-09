@@ -7,9 +7,14 @@ https://www.youtube.com/watch?v=VZL_e0cEwo8
 
 
 
-update terms link > user agreement
+
 add RLS to card_transactions table
 remove merchant_id ENV
+fix email signup (or remove)
+update fees inputs & recalculate them
+test other pix key options (phone, email, key)
+fix confirm_transaction (replace with stripe API)
+
 
 
 

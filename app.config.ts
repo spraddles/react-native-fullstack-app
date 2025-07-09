@@ -34,7 +34,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		bundleIdentifier: process.env.EXPO_PUBLIC_BUNDLE_ID,
 		infoPlist: {
 			ITSAppUsesNonExemptEncryption: false,
-			merchant_id: process.env.MERCHANT_ID,
 			CFBundleURLTypes: [
 				{
 					CFBundleURLSchemes: [process.env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_URL_SCHEME]
@@ -49,7 +48,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	},
 	android: {
 		adaptiveIcon: {
-			foregroundImage: './assets/images/adaptive-icon.png',
+			foregroundImage: './assets/images/icon.png',
 			backgroundColor: '#ffffff'
 		},
 		package: process.env.EXPO_PUBLIC_BUNDLE_ID
@@ -69,7 +68,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 				backgroundColor: '#000000',
 				image: './assets/images/logo-dark.png',
 				dark: {
-					image: './assets/images/logo.png',
+					image: './assets/images/logo-dark.png',
 					backgroundColor: '#000000'
 				},
 				imageWidth: 350

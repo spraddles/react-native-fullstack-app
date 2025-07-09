@@ -4,18 +4,6 @@
         "appVersionSource": "remote"
     },
     "build": {
-        "development": {
-            "channel": "development",
-            "environment": "preview",
-            "distribution": "internal",
-            "developmentClient": true,
-            "android": {},
-            "ios": {
-                "resourceClass": "default",
-                "simulator": false
-            },
-            "autoIncrement": true
-        },
         "preview": {
             "channel": "preview",
             "environment": "preview",
@@ -35,6 +23,18 @@
                 "simulator": false
             },
             "autoIncrement": true
+        }
+    },
+    "submit": {
+        "preview": {
+        "ios": {
+                "ascAppId": "6745099798"
+            }
+        },
+        "production": {
+            "ios": {
+                "ascAppId": "6745099798"
+            }
         }
     }
 }
