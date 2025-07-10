@@ -6,6 +6,7 @@ node_modules/
 /android
 
 # expo
+credentials.json
 .expo/
 dist/
 web-build/
