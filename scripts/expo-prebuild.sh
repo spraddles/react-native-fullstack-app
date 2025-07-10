@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if .env.local exists
+if [ ! -f "./.env.local" ]; then
+    echo "ERROR: .env.local file not found!"
+    exit 1
+fi
+
 if [ -d "./.expo" ]; then
     echo "Removing Expo directory..."
     rm -rf ./.expo
@@ -15,5 +21,10 @@ if [ -d "./android" ]; then
     rm -rf ./android
 fi
 
+echo "Loading variables from .env.local..."
+set -a
+source .env.local
+set +a
+
 echo "Running Expo prebuild..."
-NODE_ENV=development npx expo prebuild
+npx expo prebuild --clean

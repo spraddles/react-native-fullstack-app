@@ -1,15 +1,26 @@
 import { ExpoConfig, ConfigContext } from 'expo/config'
+import { isEasCi } from './composables/is-ci.js'
 import dotenv from 'dotenv'
 
-if (process.env.NODE_ENV === 'production') {
-	dotenv.config({ path: '.env.production' })
-}
-if (process.env.NODE_ENV === 'development') {
-	dotenv.config({ path: '.env.development' })
+dotenv.config({ path: '.env.local' })
+
+// check if ENV is for CI build
+if (!isEasCi()) {
+	// now running on local
+	if (process.env.ENV_FILE === 'local') {
+		dotenv.config({ path: '.env.local' })
+	}
+	if (process.env.ENV_FILE === 'test') {
+		dotenv.config({ path: '.env.test' })
+	}
+	if (process.env.ENV_FILE === 'production') {
+		dotenv.config({ path: '.env.prod' })
+	}
 }
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
 	...config,
+	owner: process.env.EXPO_OWNER,
 	name: process.env.EXPO_PUBLIC_APP_NAME,
 	slug: process.env.EXPO_PROJECT_SLUG,
 	version: '1.0.0',
@@ -20,9 +31,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	ios: {
 		// usesAppleSignIn: true,
 		supportsTablet: true,
-		bundleIdentifier: process.env.EXPO_BUNDLE_ID,
+		bundleIdentifier: process.env.EXPO_PUBLIC_BUNDLE_ID,
 		infoPlist: {
-			merchant_id: process.env.MERCHANT_ID,
+			ITSAppUsesNonExemptEncryption: false,
 			CFBundleURLTypes: [
 				{
 					CFBundleURLSchemes: [process.env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_URL_SCHEME]
@@ -37,10 +48,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	},
 	android: {
 		adaptiveIcon: {
-			foregroundImage: './assets/images/adaptive-icon.png',
+			foregroundImage: './assets/images/icon.png',
 			backgroundColor: '#ffffff'
 		},
-		package: process.env.EXPO_BUNDLE_ID
+		package: process.env.EXPO_PUBLIC_BUNDLE_ID
 	},
 	web: {
 		bundler: 'metro',
@@ -49,6 +60,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	},
 	plugins: [
 		'expo-router',
+		'expo-font',
 		// 'expo-apple-authentication',
 		[
 			'expo-splash-screen',
@@ -56,7 +68,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 				backgroundColor: '#000000',
 				image: './assets/images/logo-dark.png',
 				dark: {
-					image: './assets/images/logo.png',
+					image: './assets/images/logo-dark.png',
 					backgroundColor: '#000000'
 				},
 				imageWidth: 350
@@ -65,7 +77,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		[
 			'@react-native-google-signin/google-signin',
 			{
-				iosUrlScheme: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_IOS_URL_SCHEME
+				iosUrlScheme:
+					'com.googleusercontent.apps.392001664057-17c8g5m4kga63ol8a8q441s77v7q84i1'
 			}
 		]
 	],

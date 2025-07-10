@@ -7,9 +7,13 @@ https://www.youtube.com/watch?v=VZL_e0cEwo8
 
 
 
-update terms link > user agreement
+
 add RLS to card_transactions table
-remove merchant_id ENV
+fix email signup (or remove)
+update fees inputs & recalculate them
+test other pix key options (phone, email, key)
+fix confirm_transaction (replace with stripe API)
+
 
 
 
@@ -21,7 +25,7 @@ remove merchant_id ENV
 Wishlist:
 -android app for 40% of all users
 -send copy of transaction receipt via email
--add server logging for app
+-add server logging for app (user session? probably already tracked by supabase)
 -qr code scan for pix key
 -add email confirmation for email signups
 -let users change their email (how does this work with social logins)

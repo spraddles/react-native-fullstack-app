@@ -1,9 +1,29 @@
 #!/bin/bash
 
-if [ -f .env.development ]; then
-    export $(cat .env.development | grep -v '^#' | xargs)
+# Check if environment parameter is provided
+if [ -z "$1" ]; then
+    echo "Error: Environment parameter not specified. Please use 'dev' or 'prod'"
+    exit 1
+fi
+
+# Set environment based on parameter
+ENV=$1
+
+if [ "$ENV" == "dev" ]; then
+    ENV_FILE=".env.dev"
+elif [ "$ENV" == "prod" ]; then
+    ENV_FILE=".env.prod"
 else
-    echo "Error: .env.development file not found"
+    echo "Error: Unknown environment '$ENV'. Please use 'dev' or 'prod'"
+    exit 1
+fi
+
+echo "Using $ENV environment: $ENV_FILE"
+
+if [ -f $ENV_FILE ]; then
+    export $(cat $ENV_FILE | grep -v '^#' | xargs)
+else
+    echo "Error: $ENV_FILE file not found"
     exit 1
 fi
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { Platform, StyleSheet, Image, Linking } from 'react-native'
+import { Platform, StyleSheet, Image } from 'react-native'
+import * as WebBrowser from 'expo-web-browser'
 
 import { Button } from '@/components/ui/button'
 
@@ -11,42 +12,40 @@ import Colors from '@/constants/Colors'
 
 export default function ModalScreen() {
 	const handleClick = async () => {
-		const email = 'example@email.com'
+		const url = 'https://gringopay.app/contact'
 		try {
-			if (Platform.OS === 'ios') {
-				await Linking.openURL(`message:${email}`)
+			if (Platform.OS !== 'web') {
+				await WebBrowser.openBrowserAsync(url)
 			} else {
-				await Linking.openURL(`mailto:${email}`)
+				window.open(url, '_blank', 'noopener,noreferrer')
 			}
 		} catch (error) {
-			console.error('Error opening email:', error)
+			console.error('Error opening support page:', error)
 		}
 	}
 
 	return (
 		<View style={styles.container}>
-			<Image style={styles.image} source={require('../../assets/images/logo.png')} />
+			<Image style={styles.image} source={require('../../assets/images/logo-light.png')} />
+
 			<Text style={styles.body}>
 				{process.env.EXPO_PUBLIC_APP_NAME} ® is a simple but powerful app that allows
-				instant funds transfers to more than 200 countries around the world. Visit our
-				website for more information about
-				<ExternalLink style={styles.helpLink} href="https://policies.google.com/privacy">
-					<Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
-						{' '}
-						our legal{' '}
-					</Text>
+				instant Pix transfers from abroad into Brazil. Now you can truly pay like a local!
+				Visit our website for more information about
+				<ExternalLink href="https://gringopay.app/user-agreement">
+					<Text lightColor={Colors.light.tint}> our legal </Text>
 				</ExternalLink>
 				policies.
 			</Text>
+
 			<Text style={styles.body}>
-				Copyright © 2000–2024 {process.env.EXPO_PUBLIC_APP_NAME} Inc. All rights reserved.
+				Copyright © 2000–2025 {process.env.EXPO_PUBLIC_APP_NAME} Inc. All rights reserved.
 			</Text>
-			<Text style={styles.versionText}>Version 1.02.367B </Text>
-			<Button text="Contact support" fill={false} onPress={handleClick} />
-			<Text style={styles.buttonSubText}>
-				or email: {process.env.EXPO_PUBLIC_SUPPORT_EMAIL}
-			</Text>
+
+			<Button text="Contact support" color="black" fill={false} onPress={handleClick} />
+
 			{/* Use a light status bar on iOS to account for the black space above the modal */}
+			<Text style={styles.versionText}>Version 1.02.367B </Text>
 			<StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 		</View>
 	)
@@ -63,20 +62,17 @@ const styles = StyleSheet.create({
 	body: {
 		fontSize: 20,
 		textAlign: 'center',
-		marginBottom: 15
+		marginBottom: 30
 	},
 	image: {
-		width: '300',
-		height: '70',
+		width: 300,
+		height: 70,
 		marginBottom: 20
 	},
 	versionText: {
 		fontSize: 17,
 		color: '#777',
-		marginBottom: 70
-	},
-	buttonSubText: {
 		marginTop: 20,
-		color: '#888'
+		marginBottom: 70
 	}
 })

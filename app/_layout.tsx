@@ -60,7 +60,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	const colorScheme = useColorScheme()
-	const timeout = 300000
+	const timeout = 3000000
 
 	useEffect(() => {
 		let logoutTimer: NodeJS.Timeout | null = null
@@ -104,7 +104,7 @@ function RootLayoutNav() {
 					name="(pages)/confirmTransaction"
 					options={{
 						headerShown: true,
-						headerTitle: 'Payment',
+						headerTitle: 'Confirm',
 						headerBackVisible: false,
 						headerTitleStyle: { fontSize: 25 }
 					}}

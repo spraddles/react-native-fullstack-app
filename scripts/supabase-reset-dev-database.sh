@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ -f .env.development ]; then
-    export $(cat .env.development | grep -v '^#' | xargs)
+if [ -f .env.dev ]; then
+    export $(cat .env.dev | grep -v '^#' | xargs)
 else
-    echo "Error: .env.development file not found"
+    echo "Error: .env.dev file not found"
     exit 1
 fi
 

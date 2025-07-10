@@ -9,12 +9,12 @@ SECRETS=(
 ENV_FILE=""
 
 # Set environment file based on argument
-if [ "$1" = "production" ]; then
-  ENV_FILE="./.env.production" 
+if [ "$1" = "prod" ]; then
+  ENV_FILE="./.env.prod" 
 elif [ "$1" = "test" ]; then
   ENV_FILE="./.env.test" 
 else
-  echo "Error: Environment must be one of: test, production"
+  echo "Error: Environment must be one of: test, prod"
   exit 1
 fi
 

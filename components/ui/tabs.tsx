@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
 	},
 	activeTab: {
 		borderStyle: 'solid',
-		borderWidth: '2',
-		borderColor: '#209ff7',
+		borderWidth: '2.5',
+		borderColor: '#54d629',
 		borderRadius: 5
 	},
 	name: {
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
 		color: '#666'
 	},
 	activeName: {
-		color: '#209ff7'
+		color: '#000000'
 	}
 })

@@ -6,8 +6,8 @@ import _sodium from 'libsodium-wrappers'
 const secrets = [
 	// gcp
 	'GCP_PROJECT_ID',
-	'GCP_REGION',
 	'GCP_PROJECT_NUMBER',
+	'GCP_REGION',
 	'GCP_SERVICE_ACCOUNT',
 	'GCP_WORKLOAD_IDENTITY_PROVIDER',
 	'GCP_WORKLOAD_IDENTITY_POOL_PROVIDER',
@@ -21,8 +21,8 @@ const secrets = [
 	'EXPRESS_SERVICE_NAME',
 	'PORT',
 	// starkbank
-	'STARKBANK_ENVIRONMENT',
 	'STARKBANK_PROJECT_ID',
+	'STARKBANK_ENVIRONMENT',
 	'STARKBANK_PRIVATE_KEY_BASE64'
 ]
 
@@ -39,7 +39,7 @@ async function encryptSecret(secret, key) {
 
 async function run() {
 	const env = process.argv[2]
-	const validEnvironments = ['development', 'test', 'production']
+	const validEnvironments = ['test', 'prod']
 
 	if (!validEnvironments.includes(env)) {
 		console.error(`Error: Environment must be one of: ${validEnvironments.join(', ')}`)

@@ -1,18 +1,18 @@
 #!/bin/bash
 
-if [ -f .env.development ]; then
-    source .env.development
+if [ -f .env.local ]; then
+    source .env.local
 else
-    echo "Error: .env.development file not found"
+    echo "Error: .env.local file not found"
     exit 1
 fi
-
-export NODE_ENV=development
 
 if [ -z "$EXPO_PUBLIC_APP_NAME" ]; then
     echo "Error: EXPO_PUBLIC_APP_NAME not found in .env file"
     exit 1
 fi
+
+export NODE_ENV=development
 
 cd ios
 pod install
