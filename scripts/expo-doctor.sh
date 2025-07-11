@@ -9,18 +9,13 @@ if [ "$1" == "prod" ]; then
   ENV_NAME="prod"
   echo "Using prod environment file: $ENV_FILE"
 
-elif [ "$1" == "local" ]; then
-  ENV_FILE=".env.local"
-  ENV_NAME="local"
-  echo "Using local environment file: $ENV_FILE"
-
-elif [ "$1" == "test" ]; then
-  ENV_FILE=".env.test"
-  ENV_NAME="test"
-  echo "Using test environment file: $ENV_FILE"
+elif [ "$1" == "dev" ]; then
+  ENV_FILE=".env.dev"
+  ENV_NAME="dev"
+  echo "Using dev environment file: $ENV_FILE"
 
 else
-  echo "Unknown environment: '$1'. Please use 'local', 'test' or 'prod'."
+  echo "Unknown environment: '$1'. Please use 'dev' or 'prod'."
   exit 1
 fi
 

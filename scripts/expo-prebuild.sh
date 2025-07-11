@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Check if .env.local exists
-if [ ! -f "./.env.local" ]; then
-    echo "ERROR: .env.local file not found!"
+# Check if .env.dev exists
+if [ ! -f "./.env.dev" ]; then
+    echo "ERROR: .env.dev file not found!"
     exit 1
 fi
 
@@ -21,9 +21,9 @@ if [ -d "./android" ]; then
     rm -rf ./android
 fi
 
-echo "Loading variables from .env.local..."
+echo "Loading variables from .env.dev..."
 set -a
-source .env.local
+source .env.dev
 set +a
 
 echo "Running Expo prebuild..."

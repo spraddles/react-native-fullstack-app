@@ -2,16 +2,13 @@ import { ExpoConfig, ConfigContext } from 'expo/config'
 import { isEasCi } from './composables/is-ci.js'
 import dotenv from 'dotenv'
 
-dotenv.config({ path: '.env.local' })
+dotenv.config({ path: '.env.dev' })
 
 // check if ENV is for CI build
 if (!isEasCi()) {
 	// now running on local
-	if (process.env.ENV_FILE === 'local') {
-		dotenv.config({ path: '.env.local' })
-	}
-	if (process.env.ENV_FILE === 'test') {
-		dotenv.config({ path: '.env.test' })
+	if (process.env.ENV_FILE === 'dev') {
+		dotenv.config({ path: '.env.dev' })
 	}
 	if (process.env.ENV_FILE === 'production') {
 		dotenv.config({ path: '.env.prod' })

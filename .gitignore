@@ -11,6 +11,7 @@ dist/
 web-build/
 expo-env.d.ts
 *.swp
+/credentials/*
 credentials.json
 *.ipa
 

@@ -10,12 +10,14 @@ if [ "$1" == "production" ]; then
   ENV_FILE_PATH=".env.prod"
   EAS_ENVIRONMENT="production"
   echo "Using prod environment file: $ENV_FILE_PATH"
-elif [ "$1" == "test" ]; then
-  ENV_FILE_PATH=".env.test"
+
+elif [ "$1" == "dev" ]; then
+  ENV_FILE_PATH=".env.dev"
   EAS_ENVIRONMENT="preview"
   echo "Using test environment file: $ENV_FILE_PATH"
+
 else
-  echo "Unknown environment: '$1'. Please use 'test' or 'prod'."
+  echo "Unknown environment: '$1'. Please use 'dev' or 'prod'."
   exit 1
 fi
 

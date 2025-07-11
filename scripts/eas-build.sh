@@ -1,33 +1,23 @@
 #!/bin/bash
 
-# NOTE: the mapping between Test (env) & Preview (EAS) below
+# NOTE: the mapping between Dev (env) & Preview (EAS) below
 
 ENV_FILE_PATH=""
 EAS_ENVIRONMENT=""
 
 # set environment file based on argument
-if [ "$1" == "local" ]; then
-  ENV_FILE_PATH=".env.local"
-  EAS_ENVIRONMENT="development"
-  echo "Using local environment file: local (but development on EAS)"
-
-elif [ "$1" == "development" ]; then
-  ENV_FILE_PATH=".env.test"
-  EAS_ENVIRONMENT="development"
-  echo "Using local environment file: test (but development on EAS)"
-
-elif [ "$1" == "preview" ]; then
-  ENV_FILE_PATH=".env.test"
-  EAS_ENVIRONMENT="preview"
-  echo "Using local environment file: test (but preview on EAS)"
-
-elif [ "$1" == "production" ]; then
+if [ "$1" == "production" ]; then
   ENV_FILE_PATH=".env.prod"
   EAS_ENVIRONMENT="production"
-  echo "Using prod environment file: production"
+  echo "Using prod environment file: $ENV_FILE_PATH"
+
+elif [ "$1" == "dev" ]; then
+  ENV_FILE_PATH=".env.dev"
+  EAS_ENVIRONMENT="preview"
+  echo "Using test environment file: $ENV_FILE_PATH"
 
 else
-  echo "Unknown environment: '$1'. Please use one of: local, development, preview, or production."
+  echo "Unknown environment: '$1'. Please use development or production."
   exit 1
 fi
 

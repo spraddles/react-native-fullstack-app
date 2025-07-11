@@ -1,14 +1,14 @@
 #!/bin/bash
 
-if [ -f .env.local ]; then
-    source .env.local
+if [ -f .env.dev ]; then
+    source .env.dev
 else
-    echo "Error: .env.local file not found"
+    echo "Error: .env.dev file not found"
     exit 1
 fi
 
 if [ -z "$EXPO_PUBLIC_APP_NAME" ]; then
-    echo "Error: EXPO_PUBLIC_APP_NAME not found in .env file"
+    echo "Error: EXPO_PUBLIC_APP_NAME not found in .env.dev file"
     exit 1
 fi
 
