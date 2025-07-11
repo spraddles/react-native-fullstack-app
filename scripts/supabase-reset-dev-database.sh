@@ -21,4 +21,5 @@ ENCODED_PASSWORD=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$S
 
 supabase db reset \
     --dns-resolver=https \
-    --db-url "postgresql://postgres.${EXPO_PUBLIC_SUPABASE_ID}:${ENCODED_PASSWORD}@aws-0-sa-east-1.pooler.supabase.com:5432/postgres?connect_timeout=300"
+    --db-url "postgresql://postgres.${EXPO_PUBLIC_SUPABASE_ID}:${ENCODED_PASSWORD}@aws-0-sa-east-1.pooler.supabase.com:5432/postgres?connect_timeout=300" \
+    --exclude 20250319153252_create_rpc_get_secret_data.sql

@@ -22,9 +22,10 @@
         "eas:build:testflight": "sh ./scripts/eas-build.sh preview",
         "eas:build:production": "sh ./scripts/eas-build.sh production",
         "create-keys": "sh ./scripts/create-keys.sh",
+        "supabase:dev:rollback": "sh ./scripts/supabase-rollback-dev-database.sh --auto --force",
         "supabase:dev:reset": "sh ./scripts/supabase-reset-dev-database.sh",
         "supabase:migrate:new": "supabase migration new my_migration_name",
-        "supabase:migrate:push": "sh ./scripts/supabase-run-migrations.sh"
+        "supabase:migrate:push": "sh ./scripts/supabase-run-migrations.sh dev"
     },
     "dependencies": {
         "@expo/vector-icons": "^14.0.2",
