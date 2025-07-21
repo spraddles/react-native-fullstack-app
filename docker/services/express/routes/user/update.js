@@ -18,14 +18,14 @@ export default function () {
 			const cleanData = {
 				country: data.country,
 				cpf: encryptedCpf, // encrypted
-				cpf_key_id: !data.cpf ? null : secretData.key_id, // key ID field
+				cpf_key_id: !data.cpf ? null : secretData.key_id, // key ID field for decryption
 				dob_day: data.dob_day,
 				dob_month: data.dob_month,
 				dob_year: data.dob_year,
 				has_onboarded: data.has_onboarded,
 				name: data.name,
 				passport: encryptedPassport, // encrypted
-				passport_key_id: secretData.key_id, // key ID field
+				passport_key_id: secretData.key_id, // key ID field for decryption
 				phone: data.phone,
 				surname: data.surname,
 				user_id: data.user_id

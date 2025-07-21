@@ -31,6 +31,7 @@ export const googleLogin = async () => {
 			}
 			// not authenticated
 			else {
+				console.log('response: ', response)
 				return { status: false, message: "We can't sign you in right now sorry" }
 			}
 		}

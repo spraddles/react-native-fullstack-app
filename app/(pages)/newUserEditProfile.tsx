@@ -173,7 +173,7 @@ export default function NewUserEditProfileScreen() {
 				// for all accounts (email + social)
 				const supabaseUser = await supabase.auth.getUser()
 				const supabaseUserID = supabaseUser?.data?.user?.id
-				const updateUserMetaResponse = await updateUserMeta(supabaseUserID, {
+				const userData = {
 					user_id: supabaseUserID,
 					name: inputName.value,
 					surname: inputSurname.value,
@@ -185,7 +185,10 @@ export default function NewUserEditProfileScreen() {
 					passport: inputPassport.value,
 					cpf: inputCPF.value,
 					has_onboarded: true
-				})
+				}
+
+				const updateUserMetaResponse = await updateUserMeta(supabaseUserID, userData)
+                console.log('updateUserMetaResponse: ', updateUserMetaResponse)
 				await new Promise((resolve) => setTimeout(resolve, 2000)) // for smoothness
 				if (!updateUserMetaResponse.status) {
 					useBaseStore.getState().setLoading(false)

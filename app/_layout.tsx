@@ -60,7 +60,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	const colorScheme = useColorScheme()
-	const timeout = 3000000
+	const timeout = process.env.EXPO_PUBLIC_SESSION_TIMEOUT
 
 	useEffect(() => {
 		let logoutTimer: NodeJS.Timeout | null = null
